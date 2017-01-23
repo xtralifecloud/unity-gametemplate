@@ -26,15 +26,27 @@ namespace CotcSdkTemplate
 			}
 
 			// Register to the UnhandledException event
-			Promise.UnhandledException = LogUnhandledException;
+			Promise.UnhandledException += LogUnhandledException;
 
 			// Get the main Cloud object's reference
 			cotcGameObject.GetCloud()
+				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						CotcException cotcException = exception as CotcException;
+
+						if (cotcException != null)
+							Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] InitializeCloud failed >> ({0}) {1}: {2} >> {3}", cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
+						else
+							Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] InitializeCloud failed >> {0}", exception));
+					})
+				// The result if everything went well
 				.Done(delegate (Cloud cloudReference)
 					{
 						// Keep the Cloud's reference
 						cloud = cloudReference;
-						Debug.Log("[CotcSdkTemplate:CloudFeatures] Cloud initialized");
+						Debug.Log("[CotcSdkTemplate:CloudFeatures] InitializeCloud success");
 
 						// Register to the HttpRequestFailedHandler event
 						cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
@@ -46,11 +58,13 @@ namespace CotcSdkTemplate
 		}
 
 		// Check if the CotcSdk's Cloud is initialized
-		public static bool IsCloudInitialized()
+		public static bool IsCloudInitialized(bool verbose = true)
 		{
 			if (cloud == null)
 			{
-				Debug.LogError("[CotcSdkTemplate:CloudFeatures] Cloud is not initialized >> Please call CloudFeatures.InitializeCloud() first (CotcSdk features are not available otherwise)");
+				if (verbose)
+					Debug.LogError("[CotcSdkTemplate:CloudFeatures] Cloud is not initialized >> Please call CloudFeatures.InitializeCloud() first (CotcSdk features are not available otherwise)");
+				
 				return false;
 			}
 
@@ -58,14 +72,16 @@ namespace CotcSdkTemplate
 		}
 
 		// Check if the CotcSdk's Cloud is initialized and a Gamer is logged in
-		public static bool IsGamerLoggedIn()
+		public static bool IsGamerLoggedIn(bool verbose = true)
 		{
 			if (!IsCloudInitialized())
 				return false;
 
 			if (gamer == null)
 			{
-				Debug.LogError("[CotcSdkTemplate:CloudFeatures] No Gamer is logged in >> Please call a login method first (some of the CotcSdk features are not available otherwise)");
+				if (verbose)
+					Debug.LogError("[CotcSdkTemplate:CloudFeatures] No Gamer is logged in >> Please call a login method first (some of the CotcSdk features are not available otherwise)");
+				
 				return false;
 			}
 

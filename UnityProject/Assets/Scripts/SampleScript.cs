@@ -16,12 +16,13 @@ public class SampleScript : MonoBehaviour
 	private void OnCloudInitialized(Cloud cloud)
 	{
 		LoginFeatures.GamerLoggedIn += OnGamerLoggedIn;
-		//LoginFeatures.LoginAnonymously();
+		LoginFeatures.AutoLogin();
 	}
 
 	// What to do once a gamer has logged in
 	private void OnGamerLoggedIn(Gamer gamer)
 	{
 		// Do whatever...
+		Debug.LogWarning("LOGGED IN");
 	}
 }
