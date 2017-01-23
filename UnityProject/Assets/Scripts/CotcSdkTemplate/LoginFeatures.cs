@@ -1,36 +1,48 @@
-﻿//using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-//using CotcSdk;
+using CotcSdk;
 
 namespace CotcSdkTemplate
 {
 	public static class LoginFeatures
 	{
-//		// Signs in with an anonymous account
-//		public void DoLogin() {
-//			// Call the API method which returns an Promise<Gamer> (promising a Gamer result).
-//			// It may fail, in which case the .Then or .Done handlers are not called, so you
-//			// should provide a .Catch handler.
-//			cloud.LoginAnonymously()
-//				.Then(gamer => DidLogin(gamer))
-//				.Catch(ex => {
-//					// The exception should always be CotcException
-//					CotcException error = (CotcException)ex;
-//					Debug.LogError("Failed to login: " + error.ErrorCode + " (" + error.HttpStatusCode + ")");
-//				});
-//		}
-//	
-//		// Invoked when any sign in operation has completed
-//		private void DidLogin(Gamer newGamer)
-//		{
-//			if (gamer != null) {
-//				Debug.LogWarning("Current gamer " + gamer.GamerId + " has been dismissed");
-//				eventLoop.Stop();
-//			}
-//			gamer = newGamer;
-//			eventLoop = gamer.StartEventLoop();
-//			eventLoop.ReceivedEvent += Loop_ReceivedEvent;
-//			Debug.Log("Signed in successfully (ID = " + gamer.GamerId + ")");
-//		}
+		// Login with an anonymous account
+		public static void LoginAnonymously()
+		{
+			// Need an initialized Cloud to proceed
+			if (!CloudFeatures.IsCloudInitialized())
+				return;
+
+			// Call the API method which returns a Promise<Gamer> (promising a Gamer result)
+			CloudFeatures.cloud.LoginAnonymously()
+				// It may fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						CotcException cotcException = exception as CotcException;
+
+						if (cotcException != null)
+							Debug.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] Failed to login >> ({0}) {1}: {2} >> {3}", cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
+						else
+							Debug.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] Failed to login >> {0}", exception));
+					})
+				// The result if everything went well
+				.Done(delegate (Gamer loggedInGamer)
+					{
+						// Keep the Gamer's reference
+						CloudFeatures.gamer = loggedInGamer;
+						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] Gamer logged in anonymously >> {0}", loggedInGamer));
+
+						// Call the GamerLoggedIn event if any callback registered to it
+						if (GamerLoggedIn != null)
+							GamerLoggedIn(CloudFeatures.gamer);
+					});
+		}
+
+		#region Events Callbacks
+		// Allow the registration of callbacks for when a gamer has logged in
+		public static event Action<Gamer> GamerLoggedIn = null;
+		#endregion
 	}
 }

@@ -1,12 +1,27 @@
 ﻿using UnityEngine;
 
+using CotcSdk;
 using CotcSdkTemplate;
 
 public class SampleScript : MonoBehaviour
 {
+	// Initialize the CotcSdk's Cloud at start
 	private void Start()
 	{
-		// Initialize the CotcSdk's Cloud at start
+		CloudFeatures.CloudInitialized += OnCloudInitialized;
 		CloudFeatures.InitializeCloud();
+	}
+
+	// What to do once the CotcSdk's Cloud is initialized
+	private void OnCloudInitialized(Cloud cloud)
+	{
+		LoginFeatures.GamerLoggedIn += OnGamerLoggedIn;
+		//LoginFeatures.LoginAnonymously();
+	}
+
+	// What to do once a gamer has logged in
+	private void OnGamerLoggedIn(Gamer gamer)
+	{
+		// Do whatever...
 	}
 }

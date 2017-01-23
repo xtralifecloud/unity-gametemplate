@@ -7,7 +7,7 @@ namespace CotcSdkTemplate
 {
 	public static class CloudFeatures
 	{
-		#region Initialization
+		#region Cloud Initialization
 		// The cloud allows to make generic operations (non user related)
 		public static Cloud cloud = null;
 		// The gamer is the base to perform most operations. A gamer object is obtained after successfully signing in.
@@ -21,26 +21,55 @@ namespace CotcSdkTemplate
 
 			if (cotcGameObject == null)
 			{
-				Debug.LogError("[CotcSdkTemplate] Please attach a CotcGameObject script on an object of your scene! CotcSdk features are not available otherwise.");
+				Debug.LogError("[CotcSdkTemplate:CloudFeatures] Please attach a CotcGameObject script on an active object of your scene! (CotcSdk features are not available otherwise)");
 				return;
 			}
 
 			// Register to the UnhandledException event
-			Promise.UnhandledException += LogUnhandledException;
+			Promise.UnhandledException = LogUnhandledException;
 
 			// Get the main Cloud object's reference
-			cotcGameObject.GetCloud().Done(cloudReference =>
-				{
-					cloud = cloudReference;
-					Debug.Log("[CotcSdkTemplate] Cloud initialized");
+			cotcGameObject.GetCloud()
+				.Done(delegate (Cloud cloudReference)
+					{
+						// Keep the Cloud's reference
+						cloud = cloudReference;
+						Debug.Log("[CotcSdkTemplate:CloudFeatures] Cloud initialized");
 
-					// Register to the HttpRequestFailedHandler event
-					cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
+						// Register to the HttpRequestFailedHandler event
+						cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
 
-					// Call the CloudInitialized event if any callback registered to it
-					if (CloudInitialized != null)
-						CloudInitialized(cloud);
-				});
+						// Call the CloudInitialized event if any callback registered to it
+						if (CloudInitialized != null)
+							CloudInitialized(cloud);
+					});
+		}
+
+		// Check if the CotcSdk's Cloud is initialized
+		public static bool IsCloudInitialized()
+		{
+			if (cloud == null)
+			{
+				Debug.LogError("[CotcSdkTemplate:CloudFeatures] Cloud is not initialized >> Please call CloudFeatures.InitializeCloud() first (CotcSdk features are not available otherwise)");
+				return false;
+			}
+
+			return true;
+		}
+
+		// Check if the CotcSdk's Cloud is initialized and a Gamer is logged in
+		public static bool IsGamerLoggedIn()
+		{
+			if (!IsCloudInitialized())
+				return false;
+
+			if (gamer == null)
+			{
+				Debug.LogError("[CotcSdkTemplate:CloudFeatures] No Gamer is logged in >> Please call a login method first (some of the CotcSdk features are not available otherwise)");
+				return false;
+			}
+
+			return true;
 		}
 		#endregion
 
@@ -54,7 +83,13 @@ namespace CotcSdkTemplate
 		// Log unhandled exceptions (.Done block without .Catch -- Not called if there is any .Then)
 		private static void LogUnhandledException(object sender, ExceptionEventArgs exceptionEventArgs)
 		{
-			Debug.LogError("[CotcSdkTemplate] Unhandled exception: " + exceptionEventArgs.Exception);
+			// The exception should always be of the CotcException type
+			CotcException cotcException = exceptionEventArgs.Exception as CotcException;
+
+			if (cotcException != null)
+				Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] Unhandled exception >> ({0}) {1}: {2} >> {3}", cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
+			else
+				Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] Unhandled exception >> {0}", exceptionEventArgs.Exception));
 		}
 
 		// Retry failed HTTP requests once
@@ -62,13 +97,13 @@ namespace CotcSdkTemplate
 		{
 			if (httpRequestFailedEventArgs.UserData == null)
 			{
-				Debug.LogWarning(string.Format("[CotcSdkTemplate] HTTP request failed >> Retry in {0}ms ({1})", httpRequestRetryDelay, httpRequestFailedEventArgs.Url));
+				Debug.LogWarning(string.Format("[CotcSdkTemplate:CloudFeatures] HTTP request failed >> Retry in {0}ms ({1})", httpRequestRetryDelay, httpRequestFailedEventArgs.Url));
 				httpRequestFailedEventArgs.UserData = new object();
 				httpRequestFailedEventArgs.RetryIn(httpRequestRetryDelay);
 			}
 			else
 			{
-				Debug.LogError(string.Format("[CotcSdkTemplate] HTTP request failed >> Abort ({0})", httpRequestFailedEventArgs.Url));
+				Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] HTTP request failed >> Abort ({0})", httpRequestFailedEventArgs.Url));
 				httpRequestFailedEventArgs.Abort();
 			}
 		}
