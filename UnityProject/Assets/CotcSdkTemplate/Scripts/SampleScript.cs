@@ -23,6 +23,5 @@ public class SampleScript : MonoBehaviour
 	private void OnGamerLoggedIn(Gamer gamer)
 	{
 		// Do whatever...
-		Debug.LogWarning("LOGGED IN");
 	}
 }

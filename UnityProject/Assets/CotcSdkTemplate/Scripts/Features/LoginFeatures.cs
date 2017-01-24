@@ -107,6 +107,10 @@ namespace CotcSdkTemplate
 			// TODO: You may want to encrypt those credentials for obvious security reasons!
 			PlayerPrefs.SetString(gamerIDPrefKey, gamer.GamerId);
 			PlayerPrefs.SetString(gamerSecretPrefKey, gamer.GamerSecret);
+
+			// Update the login status text with the newly connected gamer infos
+			if (MonoSingletons.HasInstance<LoginHandler>())
+				MonoSingletons.Instance<LoginHandler>().UpdateText_LoginStatus(gamer);
 		}
 		#endregion
 	}
