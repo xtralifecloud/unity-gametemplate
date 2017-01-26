@@ -24,7 +24,7 @@ namespace CotcSdkTemplate
 			// Else, return null
 			else
 			{
-				Debug.LogError("[CotcSdkTemplate:MonoSingletons] " + typeof(T).Name + " class instance doesn't exist >> Null returned");
+				Debug.LogError(string.Format("[CotcSdkTemplate:MonoSingletons] {0} class instance doesn't exist >> Null returned", typeof(T).Name));
 				return null;
 			}
 		}
@@ -38,7 +38,7 @@ namespace CotcSdkTemplate
 			// Else, destroy the new instance
 			else
 			{
-				Debug.LogError("[CotcSdkTemplate:MonoSingletons] " + typeof(T).Name + " class instance already exists >> New instance dismissed");
+				Debug.LogError(string.Format("[CotcSdkTemplate:MonoSingletons] {0} class instance already exists >> New instance dismissed", typeof(T).Name));
 				Object.Destroy(instance);
 			}
 		}

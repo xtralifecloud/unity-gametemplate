@@ -16,8 +16,10 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Display
-		// Reference to the login status text UI element
+		// If the login status is displayed or not
 		[SerializeField] private bool displayLoginStatus = true;
+
+		// Reference to the login status UI element
 		[SerializeField] private Text loginStatus = null;
 
 		// Texts to display in case of logged out and logged in gamer

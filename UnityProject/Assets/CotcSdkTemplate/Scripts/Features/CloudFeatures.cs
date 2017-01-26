@@ -7,7 +7,7 @@ namespace CotcSdkTemplate
 {
 	public static class CloudFeatures
 	{
-		#region Cloud Initialization
+		#region Handling
 		// The cloud allows to make generic operations (non user related)
 		public static Cloud cloud = null;
 		// The gamer is the base to perform most operations. A gamer object is obtained after successfully signing in.
@@ -28,33 +28,8 @@ namespace CotcSdkTemplate
 			// Register to the UnhandledException event
 			Promise.UnhandledException += LogUnhandledException;
 
-			// Get the main Cloud object's reference
-			cotcGameObject.GetCloud()
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						CotcException cotcException = exception as CotcException;
-
-						if (cotcException != null)
-							Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] InitializeCloud failed >> ({0}) {1}: {2} >> {3}", cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
-						else
-							Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] InitializeCloud failed >> {0}", exception));
-					})
-				// The result if everything went well
-				.Done(delegate (Cloud cloudReference)
-					{
-						// Keep the Cloud's reference
-						cloud = cloudReference;
-						Debug.Log("[CotcSdkTemplate:CloudFeatures] InitializeCloud success");
-
-						// Register to the HttpRequestFailedHandler event
-						cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
-
-						// Call the CloudInitialized event if any callback registered to it
-						if (CloudInitialized != null)
-							CloudInitialized(cloud);
-					});
+			// Get and keep the Cloud instance reference
+			GetCloud(cotcGameObject);
 		}
 
 		// Check if the CotcSdk's Cloud is initialized
@@ -89,6 +64,36 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
+		#region Features
+		// Get the main Cloud object's reference
+		public static void GetCloud(CotcGameObject cotcGameObject)
+		{
+			// Call the API method which returns a Promise<Cloud> (promising a Cloud result)
+			cotcGameObject.GetCloud()
+				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("CloudFeatures", "GetCloud", exception);
+					})
+				// The result if everything went well
+				.Done(delegate (Cloud cloudReference)
+					{
+						Debug.Log("[CotcSdkTemplate:CloudFeatures] GetCloud success");
+
+						// Keep the Cloud's reference
+						cloud = cloudReference;
+
+						// Register to the HttpRequestFailedHandler event
+						cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
+
+						// Call the CloudInitialized event if any callback registered to it
+						if (CloudInitialized != null)
+							CloudInitialized(cloud);
+					});
+		}
+		#endregion
+
 		#region Events Callbacks
 		// Allow the registration of callbacks for when the Cloud is initialized
 		public static event Action<Cloud> CloudInitialized = null;
@@ -100,12 +105,7 @@ namespace CotcSdkTemplate
 		private static void LogUnhandledException(object sender, ExceptionEventArgs exceptionEventArgs)
 		{
 			// The exception should always be of the CotcException type
-			CotcException cotcException = exceptionEventArgs.Exception as CotcException;
-
-			if (cotcException != null)
-				Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] Unhandled exception >> ({0}) {1}: {2} >> {3}", cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
-			else
-				Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] Unhandled exception >> {0}", exceptionEventArgs.Exception));
+			ExceptionTools.LogCotcException("CloudFeatures", "Unhandled", exceptionEventArgs.Exception);
 		}
 
 		// Retry failed HTTP requests once

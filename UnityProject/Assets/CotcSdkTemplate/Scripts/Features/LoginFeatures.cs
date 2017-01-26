@@ -42,19 +42,15 @@ namespace CotcSdkTemplate
 				.Catch(delegate (Exception exception)
 					{
 						// The exception should always be of the CotcException type
-						CotcException cotcException = exception as CotcException;
-
-						if (cotcException != null)
-							Debug.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously failed >> ({0}) {1}: {2} >> {3}", cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
-						else
-							Debug.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously failed >> {0}", exception));
+						ExceptionTools.LogCotcException("LoginFeatures", "LoginAnonymously", exception);
 					})
 				// The result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
 					{
+						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success >> {0}", loggedInGamer));
+
 						// Keep the Gamer's reference
 						CloudFeatures.gamer = loggedInGamer;
-						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success >> {0}", loggedInGamer));
 
 						// Call the GamerLoggedIn event if any callback registered to it
 						if (GamerLoggedIn != null)
@@ -75,19 +71,15 @@ namespace CotcSdkTemplate
 				.Catch(delegate (Exception exception)
 					{
 						// The exception should always be of the CotcException type
-						CotcException cotcException = exception as CotcException;
-
-						if (cotcException != null)
-							Debug.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession failed >> ({0}) {1}: {2} >> {3}", cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
-						else
-							Debug.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession failed >> {0}", exception));
+						ExceptionTools.LogCotcException("LoginFeatures", "ResumeSession", exception);
 					})
 				// The result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
 					{
+						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success >> {0}", loggedInGamer));
+
 						// Keep the Gamer's reference
 						CloudFeatures.gamer = loggedInGamer;
-						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success >> {0}", loggedInGamer));
 
 						// Call the GamerLoggedIn event if any callback registered to it
 						if (GamerLoggedIn != null)
