@@ -2,7 +2,6 @@
 using UnityEngine;
 
 using CotcSdk;
-using LitJson;
 
 namespace CotcSdkTemplate
 {
@@ -16,10 +15,7 @@ namespace CotcSdkTemplate
 			CotcException cotcException = exception as CotcException;
 
 			if (cotcException != null)
-			{
-				JsonExceptionData jsonExceptionData = JsonMapper.ToObject<JsonExceptionData>(cotcException.ServerData.ToString());
-				return new ExceptionError(jsonExceptionData.name, jsonExceptionData.message);
-			}
+				return new ExceptionError(cotcException.ServerData["name"].AsString(), cotcException.ServerData["message"].AsString());
 			else
 				return new ExceptionError("UnknownException", exception.ToString());
 		}
