@@ -52,15 +52,13 @@ namespace CotcSdkTemplate
 		// TODO: You may want to cache the downloaded avatars to avoid to download them multiple times!
 		private IEnumerator UpdateAvatarFromURL()
 		{
-			// Create a new Texture2D to hold the future avatar download
-			Texture2D urlAvatarTexture = new Texture2D(avatarSize, avatarSize, TextureFormat.DXT1, false);
-
 			// Create a WWW handler and wait for the download request to complete
 			WWW www = new WWW(avatarUrlToDownload);
 			yield return www;
 
-			// Replace the gamer avatar with the downloaded one
-			gamerAvatar.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+			// Replace the gamer avatar with the downloaded one if no error occured
+			if (string.IsNullOrEmpty(www.error))
+				gamerAvatar.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
 		}
 		#endregion
 	}

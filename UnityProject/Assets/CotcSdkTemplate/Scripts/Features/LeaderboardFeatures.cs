@@ -54,7 +54,7 @@ namespace CotcSdkTemplate
 						// The exception should always be of the CotcException type
 						ExceptionTools.LogCotcException("LeaderboardFeatures", "ListAllHighScores", exception);
 
-						// Call the GamerLoggedIn action if any callback registered to it
+						// Call the OnError action if any callback registered to it
 						if (OnError != null)
 							OnError(boardName, ExceptionTools.GetExceptionError(exception));
 					})
@@ -63,7 +63,7 @@ namespace CotcSdkTemplate
 					{
 						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] ListAllHighScores success >> {0}", scoresList));
 
-						// Call the GamerLoggedIn action if any callback registered to it
+						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
 							OnSuccess(boardName, scoresList);
 					});
@@ -82,7 +82,7 @@ namespace CotcSdkTemplate
 							// The exception should always be of the CotcException type
 							ExceptionTools.LogCotcException("LeaderboardFeatures", "FetchPrevious", exception);
 
-							// Call the GamerLoggedIn action if any callback registered to it
+							// Call the OnError action if any callback registered to it
 							if (OnError != null)
 								OnError(null, ExceptionTools.GetExceptionError(exception));
 						})
@@ -91,7 +91,7 @@ namespace CotcSdkTemplate
 						{
 							Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchPrevious success >> {0}", scoresList));
 
-							// Call the GamerLoggedIn action if any callback registered to it
+							// Call the OnSuccess action if any callback registered to it
 							if (OnSuccess != null)
 								OnSuccess(null, scoresList);
 						});
@@ -113,7 +113,7 @@ namespace CotcSdkTemplate
 							// The exception should always be of the CotcException type
 							ExceptionTools.LogCotcException("LeaderboardFeatures", "FetchNext", exception);
 
-							// Call the GamerLoggedIn action if any callback registered to it
+							// Call the OnError action if any callback registered to it
 							if (OnError != null)
 								OnError(null, ExceptionTools.GetExceptionError(exception));
 						})
@@ -122,7 +122,7 @@ namespace CotcSdkTemplate
 						{
 							Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchNext success >> {0}", scoresList));
 
-							// Call the GamerLoggedIn action if any callback registered to it
+							// Call the OnSuccess action if any callback registered to it
 							if (OnSuccess != null)
 								OnSuccess(null, scoresList);
 						});

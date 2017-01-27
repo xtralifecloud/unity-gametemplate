@@ -17,7 +17,7 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Display
-		// Reference to the leaderboard UI elements
+		// Reference to the leaderboard panel UI elements
 		[SerializeField] private GameObject outClickMask = null;
 		[SerializeField] private GameObject leaderboardPanel = null;
 		[SerializeField] private Text leaderboardPanelTitle = null;
@@ -29,35 +29,35 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject scorePrefab = null;
 		[SerializeField] private Transform scoresScrollViewContent = null;
 
-		// List of the score GameObjects created on the leaderboard
-		private List<GameObject> leaderboardScores = new List<GameObject>();
+		// List of the score GameObjects created on the leaderboard panel
+		private List<GameObject> scoreItems = new List<GameObject>();
 
-		// The last PagedList<Score> used to fill the leaderboard
+		// The last PagedList<Score> used to fill the leaderboard panel
 		private PagedList<Score> currentScoresList = null;
 
-		// Hide the leaderboard's panel at Start
+		// Hide the leaderboard panel at Start
 		private void Start()
 		{
 			ShowLeaderboardPanel(false);
 		}
 
-		// Show or hide the leaderboard's panel
+		// Show or hide the leaderboard panel
 		public void ShowLeaderboardPanel(bool show = true)
 		{
 			outClickMask.SetActive(show);
 			leaderboardPanel.SetActive(show);
 		}
 
-		// Fill the leaderboard's panel with scores then show it
+		// Fill the leaderboard panel with scores then show it
 		public void FillAndShowLeaderboardPanel(string boardName, PagedList<Score> scoresList)
 		{
 			// Destroy the previously created score GameObjects if any exist and clear the list
-			foreach (GameObject leaderboardScore in leaderboardScores)
-				DestroyObject(leaderboardScore);
+			foreach (GameObject scoreItem in scoreItems)
+				DestroyObject(scoreItem);
 
-			leaderboardScores.Clear();
+			scoreItems.Clear();
 
-			// Set the leaderboard's title
+			// Set the leaderboard panel's title
 			if (!string.IsNullOrEmpty(boardName))
 				leaderboardPanelTitle.text = boardName;
 
@@ -80,7 +80,7 @@ namespace CotcSdkTemplate
 					leaderboardScoreHandler.FillData(score);
 
 					// Add the newly created GameObject to the list
-					leaderboardScores.Add(prefabInstance);
+					scoreItems.Add(prefabInstance);
 				}
 
 				// Keep the last PagedList<Score> to allow usage of previous and next leaderboard page
