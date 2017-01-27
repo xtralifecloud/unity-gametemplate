@@ -30,7 +30,7 @@ namespace CotcSdkTemplate
 		[SerializeField] private Transform scoresScrollViewContent = null;
 
 		// List of the score GameObjects created on the leaderboard panel
-		private List<GameObject> scoreItems = new List<GameObject>();
+		private List<GameObject> leaderboardScores = new List<GameObject>();
 
 		// The last PagedList<Score> used to fill the leaderboard panel
 		private PagedList<Score> currentScoresList = null;
@@ -52,17 +52,17 @@ namespace CotcSdkTemplate
 		public void FillAndShowLeaderboardPanel(string boardName, PagedList<Score> scoresList)
 		{
 			// Destroy the previously created score GameObjects if any exist and clear the list
-			foreach (GameObject scoreItem in scoreItems)
-				DestroyObject(scoreItem);
+			foreach (GameObject leaderboardScore in leaderboardScores)
+				DestroyObject(leaderboardScore);
 
-			scoreItems.Clear();
+			leaderboardScores.Clear();
 
 			// Set the leaderboard panel's title
 			if (!string.IsNullOrEmpty(boardName))
 				leaderboardPanelTitle.text = boardName;
 
 			// If there are scores to display, fill the leaderboard panel with score prefabs
-			if (scoresList != null)
+			if ((scoresList != null) && (scoresList.Count > 0))
 			{
 				// Hide the "no score" text and show the previous page and next page buttons
 				noScoreText.SetActive(false);
@@ -80,7 +80,7 @@ namespace CotcSdkTemplate
 					leaderboardScoreHandler.FillData(score);
 
 					// Add the newly created GameObject to the list
-					scoreItems.Add(prefabInstance);
+					leaderboardScores.Add(prefabInstance);
 				}
 
 				// Keep the last PagedList<Score> to allow usage of previous and next leaderboard page

@@ -17,9 +17,6 @@ namespace CotcSdkTemplate
 		[SerializeField] private Text scoreInfo = null;
 		[SerializeField] private GameObject scoreInfoLine = null;
 
-		// The avatars allowed size
-		[SerializeField] private int avatarSize = 100;
-
 		// Fill the leaderboard score with new data
 		public void FillData(Score score, bool displayScoreInfo = true)
 		{

@@ -10,14 +10,20 @@ public class SampleScript : MonoBehaviour
 	// Initialize the CotcSdk's Cloud at start
 	private void Start()
 	{
+		// Register to the CloudInitialized event
 		CloudFeatures.CloudInitialized += OnCloudInitialized;
+
+		// Call the template method
 		CloudFeatures.InitializeCloud();
 	}
 
 	// What to do once the CotcSdk's Cloud is initialized
 	private void OnCloudInitialized(Cloud cloud)
 	{
+		// Register to the GamerLoggedIn event
 		LoginFeatures.GamerLoggedIn += OnGamerLoggedIn;
+
+		// Call the template method
 		LoginFeatures.AutoLogin();
 	}
 
@@ -54,6 +60,15 @@ public class SampleScript : MonoBehaviour
 
 		// Call the template method
 		LeaderboardFeatures.DisplayAllHighScores(boardName, scoresPerPage);
+	}
+	#endregion
+
+	#region Achievement
+	// When the corresponding button is clicked, display all game's achievements
+	public void Button_DisplayAchievements()
+	{
+		// Call the template method
+		AchievementFeatures.DisplayAchievements();
 	}
 	#endregion
 }
