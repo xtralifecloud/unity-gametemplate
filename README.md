@@ -10,21 +10,21 @@ This template is made to be quickly plugged into your game (only a few minutes f
 
 A few very simple steps are required to use the game template within your Unity project:
 
-A. Get and open **XlGameTemplate.unitypackage** from the root of the Git repository to include the template and the C# SDK core files in your game.
+I. Get and open **XlGameTemplate.unitypackage** from the root of the Git repository to include the template and the C# SDK core files in your game.
 
  >*(You may already open the **SampleScene** scene to discover all features integrated by the template just by following the step **2.b**)*
 
-B. Now you'll need to use the game credentials (**API Key** and **Secret**) you can retrieve from your **FrontOffice** to allow the use of the SDK:
+II. Now you'll need to use the game credentials (**API Key** and **Secret**) you can retrieve from your **FrontOffice** to allow the use of the SDK:
 
-- 1) Include a **CotcSdk** prefab's instance in your scene.
+- a) Include a **CotcSdk** prefab's instance in your scene.
 
-- 2) On the **CotcGameObject** script of the **CotcSdk** object, fill in your game **API Key** and **Secret**.
+- b) On the **CotcGameObject** script of the **CotcSdk** object, fill in your game **API Key** and **Secret**.
 
  ![Screenshot-CotcGameObject](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-CotcGameObject.png)
 
-C. The last step is simply to use the template prefabs and scripts you previously included from the package:
+III. The last step is simply to use the template prefabs and scripts you previously included from the package:
 
-- 1) For each module you intend to display, just include a **CotcPanel-*Handler** (e.g. **CotcPanel-LeaderboardHandler** for the **leaderboard** scores) prefab's instance in your scene with a **Canvas** object as parent to allow the generic display of the corresponding features.
+- a) For each module you intend to display, just include a **CotcPanel-*Handler** (e.g. **CotcPanel-LeaderboardHandler** for the **leaderboard** scores) prefab's instance in your scene with a **Canvas** object as parent to allow the generic display of the corresponding features.
 >**Hint 1:** Please ensure the **CotcPanels** are the last children (top down of the list) in their level of your UI objects hierarchy, so they will come in the front of the screen when displayed (as they act like popups).
 >
 >![Screenshot-ObjectsHierarchy](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-ObjectsHierarchy.png)
@@ -39,13 +39,13 @@ C. The last step is simply to use the template prefabs and scripts you previousl
 >
 >**Hint 4:** If you are using complex UI structures, you probably have multiple **Layout Group** components in your **Canvas** children objects. When you are positioning/stretching the **CotcPanels**, please keep in mind that the **Layout Group** components may influence the panels positioning even if they have no **Layout Element** component attached.
 
-- 2) Attach the **SampleScript** to any object in your scene.
+- b) Attach the **SampleScript** to any object in your scene.
 >*(You may want to create **IntputFields** and link them into the corresponding serialized fields of the script to allow those inputs to replace the default script values)*
 
-- 3) For each feature you intend to use, just create a button and link it to the appropriate method on the **SampleScript** (e.g. **Button_DisplayAllHighScores()**).
+- c) For each feature you intend to use, just create a button and link it to the appropriate method on the **SampleScript** (e.g. **Button_DisplayAllHighScores()**).
 >*(You don't have to use buttons to trigger SDK features. Please notice that **SampleScript** calls the **Cloud** initilization and an **AutoLogin** method at **Start** to ensure the SDK is initialized and you get automatically logged in as a gamer)*
 
-- 4) Run the scene, wait to be logged in, then enjoy! =)
+- d) Run the scene, wait to be logged in, then enjoy! =)
 >*(Please note that obviously you will need to post scores or define achievements before you can display them on the **CotcPanels**)*
 
 ### **To get a bit further...**
@@ -54,7 +54,7 @@ This game template is only one of the infinite ways to integrate the XtraLife C#
 
 The template scripts structure mainly splits in 2 parts:
 
-1. The ***Features** scripts are basically holding the methods you will call from your scripts and buttons and they form the main logic (in a word: **"get/send data"**). They contain:
+I. The ***Features** scripts are basically holding the methods you will call from your scripts and buttons and they form the main logic (in a word: **"get/send data"**). They contain:
 
 - a) In the **Handling** code region: any internal logic to execute prior to the SDK methods.
 
@@ -62,7 +62,7 @@ The template scripts structure mainly splits in 2 parts:
 
 - c) In the **Delegate Callbacks** code region: the logic to react to success and error results.
 
-2. The ***Handler** scripts are UI handlers with the task to show results into a user convenient format (in a word: **"display results"**). They contain:
+II. The ***Handler** scripts are UI handlers with the task to show results into a user convenient format (in a word: **"display results"**). They contain:
 
 - a) In the **Display** code region: all what's necessary to display the results.
 
