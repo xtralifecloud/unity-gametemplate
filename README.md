@@ -9,14 +9,22 @@ This template is made to be quickly plugged into your game (only a few minutes f
 ### **How to?**
 
 A few very simple steps are required to use the game template within your Unity project:
-1. Get and open **XlGameTemplate.unitypackage** from the root of the Git repository to include the template and the C# SDK core files in your game.
+
+A. Get and open **XlGameTemplate.unitypackage** from the root of the Git repository to include the template and the C# SDK core files in your game.
+
  >*(You may already open the **SampleScene** scene to discover all features integrated by the template just by following the step **2.b**)*
-2. Now you'll need to use the game credentials (**API Key** and **Secret**) you can retrieve from your **FrontOffice** to allow the use of the SDK:
-- a) Include a **CotcSdk** prefab's instance in your scene.
-- b) On the **CotcGameObject** script of the **CotcSdk** object, fill in your game **API Key** and **Secret**.
+
+B. Now you'll need to use the game credentials (**API Key** and **Secret**) you can retrieve from your **FrontOffice** to allow the use of the SDK:
+
+- 1) Include a **CotcSdk** prefab's instance in your scene.
+
+- 2) On the **CotcGameObject** script of the **CotcSdk** object, fill in your game **API Key** and **Secret**.
+
  ![Screenshot-CotcGameObject](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-CotcGameObject.png)
-3. The last step is simply to use the template prefabs and scripts you previously included from the package:
-- a) For each module you intend to display, just include a **CotcPanel-*Handler** (e.g. **CotcPanel-LeaderboardHandler** for the **leaderboard** scores) prefab's instance in your scene with a **Canvas** object as parent to allow the generic display of the corresponding features.
+
+C. The last step is simply to use the template prefabs and scripts you previously included from the package:
+
+- 1) For each module you intend to display, just include a **CotcPanel-*Handler** (e.g. **CotcPanel-LeaderboardHandler** for the **leaderboard** scores) prefab's instance in your scene with a **Canvas** object as parent to allow the generic display of the corresponding features.
 >**Hint 1:** Please ensure the **CotcPanels** are the last children (top down of the list) in their level of your UI objects hierarchy, so they will come in the front of the screen when displayed (as they act like popups).
 >
 >![Screenshot-ObjectsHierarchy](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-ObjectsHierarchy.png)
@@ -30,11 +38,14 @@ A few very simple steps are required to use the game template within your Unity 
 >![Screenshot-PanelStretch](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-PanelStretch.png)
 >
 >**Hint 4:** If you are using complex UI structures, you probably have multiple **Layout Group** components in your **Canvas** children objects. When you are positioning/stretching the **CotcPanels**, please keep in mind that the **Layout Group** components may influence the panels positioning even if they have no **Layout Element** component attached.
-- b) Attach the **SampleScript** to any object in your scene.
+
+- 2) Attach the **SampleScript** to any object in your scene.
 >*(You may want to create **IntputFields** and link them into the corresponding serialized fields of the script to allow those inputs to replace the default script values)*
-- c) For each feature you intend to use, just create a button and link it to the appropriate method on the **SampleScript** (e.g. **Button_DisplayAllHighScores()**).
+
+- 3) For each feature you intend to use, just create a button and link it to the appropriate method on the **SampleScript** (e.g. **Button_DisplayAllHighScores()**).
 >*(You don't have to use buttons to trigger SDK features. Please notice that **SampleScript** calls the **Cloud** initilization and an **AutoLogin** method at **Start** to ensure the SDK is initialized and you get automatically logged in as a gamer)*
-- d) Run the scene, wait to be logged in, then enjoy! =)
+
+- 4) Run the scene, wait to be logged in, then enjoy! =)
 >*(Please note that obviously you will need to post scores or define achievements before you can display them on the **CotcPanels**)*
 
 ### **To get a bit further...**
