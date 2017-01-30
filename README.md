@@ -54,7 +54,7 @@ This game template is only one of the infinite ways to integrate the XtraLife C#
 
 The template scripts structure mainly splits in 2 parts:
 
-I. The** *Features **scripts are basically holding the methods you will call from your scripts and buttons and they form the main logic (in a word: **"get/send data"**). They contain:
+I. The -Features scripts are basically holding the methods you will call from your scripts and buttons and they form the main logic (in a word: **"get/send data"**). They contain:
 
 - a) In the **Handling** code region: any internal logic to execute prior to the SDK methods.
 
@@ -62,7 +62,7 @@ I. The** *Features **scripts are basically holding the methods you will call fro
 
 - c) In the **Delegate Callbacks** code region: the logic to react to success and error results.
 
-II. The** *Handler **scripts are UI handlers with the task to show results into a user convenient format (in a word: **"display results"**). They contain:
+II. The -Handler scripts are UI handlers with the task to show results into a user convenient format (in a word: **"display results"**). They contain:
 
 - a) In the **Display** code region: all what's necessary to display the results.
 
