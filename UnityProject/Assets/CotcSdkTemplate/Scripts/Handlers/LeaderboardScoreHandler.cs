@@ -10,12 +10,16 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// Reference to the leaderboard score GameObject UI elements
+		[SerializeField] private Image leaderboardScoreBackground = null;
 		[SerializeField] private Text scoreRank = null;
 		[SerializeField] private Image gamerAvatar = null;
 		[SerializeField] private Text gamerNickname = null;
 		[SerializeField] private Text scoreValue = null;
 		[SerializeField] private Text scoreInfo = null;
 		[SerializeField] private GameObject scoreInfoLine = null;
+
+		// The current gamer score background color
+		[SerializeField] private Color gamerScoreBackgroundColor = new Color(1f, 1f, 0.9f, 1f);
 
 		// Fill the leaderboard score with new data
 		public void FillData(Score score, bool displayScoreInfo = true)
@@ -30,6 +34,10 @@ namespace CotcSdkTemplate
 			scoreValue.text = score.Value.ToString();
 			scoreInfo.text = score.Info;
 			scoreInfoLine.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));
+
+			// Change the background color to highlight if this is the current gamer's score
+			if (gamerInfo["gamer_id"].AsString() == CloudFeatures.gamer.GamerId)
+				leaderboardScoreBackground.color = gamerScoreBackgroundColor;
 		}
 		#endregion
 

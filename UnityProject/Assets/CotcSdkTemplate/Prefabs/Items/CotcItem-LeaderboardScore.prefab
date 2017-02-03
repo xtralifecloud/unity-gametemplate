@@ -277,12 +277,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e0a1cd2f7cdb5f40b9a6ddefe95cc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leaderboardScoreBackground: {fileID: 114000012593056620}
   scoreRank: {fileID: 114000011746533694}
   gamerAvatar: {fileID: 114000013952058742}
   gamerNickname: {fileID: 114000011398974346}
   scoreValue: {fileID: 114000012250875202}
   scoreInfo: {fileID: 114000011920506242}
   scoreInfoLine: {fileID: 1000012137719126}
+  gamerScoreBackgroundColor: {r: 1, g: 1, b: 0.9, a: 1}
 --- !u!114 &114000011746533694
 MonoBehaviour:
   m_ObjectHideFlags: 1
