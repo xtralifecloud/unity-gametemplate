@@ -21,7 +21,7 @@ namespace CotcSdkTemplate
 			else if (scoresPerPage <= 0)
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The scores per page amount is invalid >> Please enter a number superior to 0");
 			else
-				ListAllHighScores(boardName, scoresPerPage, 0, DisplayScores_OnSuccess, DisplayScores_OnError);
+				ListAllHighScores(boardName, scoresPerPage, 1, DisplayScores_OnSuccess, DisplayScores_OnError);
 		}
 
 		// Get the previous page of a previously obtained leaderboard
@@ -45,9 +45,9 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-			
+
 			// Call the API method which returns a Promise<PagedList<Score>> (promising a PagedList<Score> result)
-			CloudFeatures.gamer.Scores.Domain(domain).List(boardName, scoresPerPage, pageNumber * scoresPerPage)
+			CloudFeatures.gamer.Scores.Domain(domain).BestHighScores(boardName, scoresPerPage, pageNumber)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
 					{
