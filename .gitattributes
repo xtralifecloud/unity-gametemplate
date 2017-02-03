@@ -30,3 +30,4 @@
 *.unity binary
 *.asset binary
 *.dll binary
+*.unitypackage binary
