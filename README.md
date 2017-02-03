@@ -25,7 +25,7 @@ II. Now you'll need to use the game credentials (**API Key** and **Secret**) you
 III. The last step is simply to use the template prefabs and scripts you previously included from the package:
 
 - a) For each module you intend to display, just include a **CotcPanel-*Handler** (e.g. **CotcPanel-LeaderboardHandler** for the **leaderboard** scores) prefab's instance in your scene with a **Canvas** object as parent to allow the generic display of the corresponding features.
->**Hint 1:** Please ensure the **CotcPanels** are the last children (top down of the list) in their level of your UI objects hierarchy, so they will come in the front of the screen when displayed (as they act like popups).
+>**Hint 1:** Please ensure the **CotcPanel-*Handlers** are the last children (top down of the list) in their level of your UI objects hierarchy, so they will come in the front of the screen when displayed (as they act like popups).
 >
 >![Screenshot-ObjectsHierarchy](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-ObjectsHierarchy.png)
 >
