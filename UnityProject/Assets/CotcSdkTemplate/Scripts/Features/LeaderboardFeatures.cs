@@ -36,7 +36,7 @@ namespace CotcSdkTemplate
 			FetchNext(leaderboardScores, DisplayScores_OnSuccess, DisplayScores_OnError);
 		}
 
-		// Post a new socre to a given leaderboard for the current logged in gamer
+		// Post a new score to a given leaderboard for the current logged in gamer
 		public static void PostScore(string boardName, long scoreValue, string scoreDescription)
 		{
 			// The board name should not be empty

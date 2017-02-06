@@ -50,7 +50,7 @@ public class SampleScript : MonoBehaviour
 		if (displayAllHighScores_BoardName != null)
 			boardName = string.IsNullOrEmpty(displayAllHighScores_BoardName.text) ? boardName : displayAllHighScores_BoardName.text;
 		else
-			Debug.LogWarning("[SampleScript:Leaderboard] DisplayAllHighScores_BoardName InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+			Debug.LogWarning("[SampleScript:Leaderboard] displayAllHighScores_BoardName InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
 
 		// Check the scoresPerPage value
 		if (displayAllHighScores_ScoresPerPage != null)
@@ -104,6 +104,43 @@ public class SampleScript : MonoBehaviour
 	{
 		// Call the template method
 		AchievementFeatures.DisplayAchievements();
+	}
+	#endregion
+
+	#region Transaction
+	// References to the transaction InputField UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField postTransaction_CurrencyName = null;
+	[SerializeField] private InputField postTransaction_CurrencyAmount = null;
+	[SerializeField] private InputField postTransaction_TransactionDescription = null;
+
+	// When the corresponding button is clicked, post a new transaction of the given currency
+	public void Button_PostTransaction()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string currencyName = "TestCurrency";
+		float currencyAmount = 50f;
+		string transactionDescription = "This is a test transaction";
+
+		// Check the currencyName value
+		if (postTransaction_CurrencyName != null)
+			currencyName = string.IsNullOrEmpty(postTransaction_CurrencyName.text) ? currencyName : postTransaction_CurrencyName.text;
+		else
+			Debug.LogWarning("[SampleScript:Transaction] postTransaction_CurrencyName InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Check the currencyAmount value
+		if (postTransaction_CurrencyAmount != null)
+			currencyAmount = string.IsNullOrEmpty(postTransaction_CurrencyAmount.text) ? currencyAmount : float.Parse(postTransaction_CurrencyAmount.text);
+		else
+			Debug.LogWarning("[SampleScript:Transaction] postTransaction_CurrencyAmount InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Check the transactionDescription value
+		if (postTransaction_TransactionDescription != null)
+			transactionDescription = postTransaction_TransactionDescription.text;
+		else
+			Debug.LogWarning("[SampleScript:Transaction] postTransaction_TransactionDescription InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		
+		// Call the template method
+		TransactionFeatures.PostTransaction(currencyName, currencyAmount, transactionDescription);
 	}
 	#endregion
 }
