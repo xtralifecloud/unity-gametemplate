@@ -54,13 +54,13 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Delegate Callbacks
-		// What to do if any DisplayAchievements method succeeded
+		// What to do if any DisplayAchievements request succeeded
 		private static void DisplayAchievements_OnSuccess(Dictionary<string, AchievementDefinition> achievementsList)
 		{
 			MonoSingletons.Instance<AchievementHandler>().FillAndShowAchievementPanel(achievementsList);
 		}
 
-		// What to do if any DisplayAchievements method failed
+		// What to do if any DisplayAchievements request failed
 		private static void DisplayAchievements_OnError(ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)

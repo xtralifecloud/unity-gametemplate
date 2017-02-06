@@ -21,7 +21,7 @@ namespace CotcSdkTemplate
 			else if (scoresPerPage <= 0)
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The scores per page amount is invalid >> Please enter a number superior to 0");
 			else
-				ListAllHighScores(boardName, scoresPerPage, 1, DisplayScores_OnSuccess, DisplayScores_OnError);
+				BestHighScores(boardName, scoresPerPage, 1, DisplayScores_OnSuccess, DisplayScores_OnError);
 		}
 
 		// Get the previous page of a previously obtained leaderboard
@@ -35,12 +35,25 @@ namespace CotcSdkTemplate
 		{
 			FetchNext(leaderboardScores, DisplayScores_OnSuccess, DisplayScores_OnError);
 		}
+
+		// Post a new socre to a given leaderboard for the current logged in gamer
+		public static void PostScore(string boardName, long scoreValue, string scoreDescription)
+		{
+			// The board name should not be empty
+			if (string.IsNullOrEmpty(boardName))
+				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty >> Please enter a valid board name");
+			// The score value should be positive
+			else if (scoreValue <= 0)
+				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The score value is invalid >> Please enter a number superior to 0");
+			else
+				Post(scoreValue, boardName, ScoreOrder.HighToLow, scoreDescription, PostScore_OnSuccess, PostScore_OnError);
+		}
 		#endregion
 
 		#region Features
 		// List all registered best scores for all gamers from a given leaderboard
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		public static void ListAllHighScores(string boardName, int scoresPerPage, int pageNumber, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null, string domain = "private")
+		public static void BestHighScores(string boardName, int scoresPerPage, int pageNumber, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -130,16 +143,47 @@ namespace CotcSdkTemplate
 			else
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The current leaderboard has no next page");
 		}
+
+		// Post a new score to a given leaderboard for the current logged in gamer
+		// We use the "private" domain by default (each game has its own data, not shared with the other games)
+		public static void Post(long scoreValue, string boardName, ScoreOrder scoreOrder, string scoreDescription, Action<PostedGameScore> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		{
+			// Need an initialized Cloud and a logged in gamer to proceed
+			if (!CloudFeatures.IsGamerLoggedIn())
+				return;
+
+			// Call the API method which returns a Promise<PostedGameScore> (promising a PostedGameScore result)
+			CloudFeatures.gamer.Scores.Domain(domain).Post(scoreValue, boardName, scoreOrder, scoreDescription)
+				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("LeaderboardFeatures", "Post", exception);
+
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(ExceptionTools.GetExceptionError(exception));
+					})
+				// The result if everything went well
+				.Done(delegate (PostedGameScore postedScore)
+					{
+						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] Post success >> Has Been Saved: {0}, Score Rank: {1}", postedScore.HasBeenSaved, postedScore.Rank));
+
+						// Call the OnSuccess action if any callback registered to it
+						if (OnSuccess != null)
+							OnSuccess(postedScore);
+					});
+		}
 		#endregion
 
 		#region Delegate Callbacks
-		// What to do if any DisplayScores method succeeded
+		// What to do if any DisplayScores request succeeded
 		private static void DisplayScores_OnSuccess(string boardName, PagedList<Score> scoresList)
 		{
 			MonoSingletons.Instance<LeaderboardHandler>().FillAndShowLeaderboardPanel(boardName, scoresList);
 		}
 
-		// What to do if any DisplayScores method failed
+		// What to do if any DisplayScores request failed
 		private static void DisplayScores_OnError(string boardName, ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)
@@ -149,6 +193,24 @@ namespace CotcSdkTemplate
 				MonoSingletons.Instance<LeaderboardHandler>().FillAndShowLeaderboardPanel(boardName, null);
 				break;
 
+				// Unhandled error types
+				default:
+				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
+				break;
+			}
+		}
+
+		// What to do if any PostScore request succeeded
+		private static void PostScore_OnSuccess(PostedGameScore postedScore)
+		{
+			// Do whatever...
+		}
+
+		// What to do if any PostScore request failed
+		private static void PostScore_OnError(ExceptionError exceptionError)
+		{
+			switch (exceptionError.type)
+			{
 				// Unhandled error types
 				default:
 				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
