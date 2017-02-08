@@ -14,8 +14,8 @@ MonoBehaviour:
   FileVersion: 2
   Environments:
   - Name: Default
-    ApiKey: cloudbuilder-key
-    ApiSecret: azerty
+    ApiKey: 
+    ApiSecret: 
     ServerUrl: https://sandbox-api[id].clanofthecloud.mobi
     LbCount: 2
     HttpVerbose: 1
