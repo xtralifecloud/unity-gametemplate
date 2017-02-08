@@ -24,6 +24,7 @@ namespace CotcSdkTemplate
 		private const string progressText = "{0}: {1} / {2} ({3}%)";
 		private const string completedText = "Completed!";
 		private const string uncompletedText = "Uncompleted...";
+		private const string floatStringFormat = "0.##";
 
 		// Fill the leaderboard score with new data
 		// TODO: You may want to replace the default achievement icons by your own ones, according to achievements names
@@ -63,7 +64,7 @@ namespace CotcSdkTemplate
 			float currentProgress = achievement.Progress * achievement.Config["maxValue"].AsFloat();
 			int currentProgressPercent = Mathf.FloorToInt(achievement.Progress * 100f);
 
-			return string.Format(progressText, achievement.Config["unit"].AsString(), currentProgress.ToString(), achievement.Config["maxValue"].AsString(), currentProgressPercent.ToString());
+			return string.Format(progressText, achievement.Config["unit"].AsString(), currentProgress.ToString(floatStringFormat), achievement.Config["maxValue"].AsString(floatStringFormat), currentProgressPercent.ToString());
 		}
 		#endregion
 	}
