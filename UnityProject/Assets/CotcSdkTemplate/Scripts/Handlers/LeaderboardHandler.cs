@@ -6,16 +6,8 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
-	public class LeaderboardHandler : MonoBehaviour
+	public class LeaderboardHandler : MonoSingleton<LeaderboardHandler>
 	{
-		#region Instance Registering
-		// Register this MonoBehaviour's instance at Awake to be sure it's done before any Start executes
-		private void Awake()
-		{
-			MonoSingletons.Register<LeaderboardHandler>(this);
-		}
-		#endregion
-
 		#region Display
 		// Reference to the leaderboard panel UI elements
 		[SerializeField] private GameObject outClickMask = null;

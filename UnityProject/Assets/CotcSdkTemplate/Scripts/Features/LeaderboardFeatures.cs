@@ -12,7 +12,7 @@ namespace CotcSdkTemplate
 		public static void DisplayAllHighScores(string boardName, int scoresPerPage)
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
-			if (!MonoSingletons.HasInstance<LeaderboardHandler>())
+			if (!LeaderboardHandler.HasInstance)
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found >> Please attach a LeaderboardHandler script on an active object of the scene");
 			// The board name should not be empty
 			else if (string.IsNullOrEmpty(boardName))
@@ -180,7 +180,7 @@ namespace CotcSdkTemplate
 		// What to do if any DisplayScores request succeeded
 		private static void DisplayScores_OnSuccess(string boardName, PagedList<Score> scoresList)
 		{
-			MonoSingletons.Instance<LeaderboardHandler>().FillAndShowLeaderboardPanel(boardName, scoresList);
+			LeaderboardHandler.Instance.FillAndShowLeaderboardPanel(boardName, scoresList);
 		}
 
 		// What to do if any DisplayScores request failed
@@ -190,7 +190,7 @@ namespace CotcSdkTemplate
 			{
 				// Error type: no gamer ever scored on this leaderboard (board doesn't exist yet)
 				case "MissingScore":
-				MonoSingletons.Instance<LeaderboardHandler>().FillAndShowLeaderboardPanel(boardName, null);
+				LeaderboardHandler.Instance.FillAndShowLeaderboardPanel(boardName, null);
 				break;
 
 				// Unhandled error types

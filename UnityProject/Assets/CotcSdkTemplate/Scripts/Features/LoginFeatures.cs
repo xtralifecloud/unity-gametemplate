@@ -101,8 +101,8 @@ namespace CotcSdkTemplate
 			PlayerPrefs.SetString(gamerSecretPrefKey, gamer.GamerSecret);
 
 			// Update the login status text with the newly connected gamer infos
-			if (MonoSingletons.HasInstance<LoginHandler>())
-				MonoSingletons.Instance<LoginHandler>().UpdateText_LoginStatus(gamer);
+			if (LoginHandler.HasInstance)
+				LoginHandler.Instance.UpdateText_LoginStatus(gamer);
 		}
 		#endregion
 	}

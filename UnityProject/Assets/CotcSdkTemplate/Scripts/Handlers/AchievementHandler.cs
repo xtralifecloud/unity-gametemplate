@@ -6,16 +6,8 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
-	public class AchievementHandler : MonoBehaviour
+	public class AchievementHandler : MonoSingleton<AchievementHandler>
 	{
-		#region Instance Registering
-		// Register this MonoBehaviour's instance at Awake to be sure it's done before any Start executes
-		private void Awake()
-		{
-			MonoSingletons.Register<AchievementHandler>(this);
-		}
-		#endregion
-
 		#region Display
 		// Reference to the achievement panel UI elements
 		[SerializeField] private GameObject outClickMask = null;

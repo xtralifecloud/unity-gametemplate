@@ -5,16 +5,8 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
-	public class LoginHandler : MonoBehaviour
+	public class LoginHandler : MonoSingleton<LoginHandler>
 	{
-		#region Instance Registering
-		// Register this MonoBehaviour's instance at Awake to be sure it's done before any Start executes
-		private void Awake()
-		{
-			MonoSingletons.Register<LoginHandler>(this);
-		}
-		#endregion
-
 		#region Display
 		// If the login status is displayed or not
 		[SerializeField] private bool displayLoginStatus = true;

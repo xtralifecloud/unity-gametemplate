@@ -13,7 +13,7 @@ namespace CotcSdkTemplate
 		public static void DisplayAchievements()
 		{
 			// A AchievementHandler instance should be attached to an active object of the scene to display the result
-			if (!MonoSingletons.HasInstance<AchievementHandler>())
+			if (!AchievementHandler.HasInstance)
 				Debug.LogError("[CotcSdkTemplate:AchievementFeatures] No AchievementHandler instance found >> Please attach a AchievementHandler script on an active object of the scene");
 			else
 				ListAchievements(DisplayAchievements_OnSuccess, DisplayAchievements_OnError);
@@ -57,7 +57,7 @@ namespace CotcSdkTemplate
 		// What to do if any DisplayAchievements request succeeded
 		private static void DisplayAchievements_OnSuccess(Dictionary<string, AchievementDefinition> achievementsList)
 		{
-			MonoSingletons.Instance<AchievementHandler>().FillAndShowAchievementPanel(achievementsList);
+			AchievementHandler.Instance.FillAndShowAchievementPanel(achievementsList);
 		}
 
 		// What to do if any DisplayAchievements request failed
