@@ -6,6 +6,18 @@ using UnityEngine;
 public class SampleScriptEditor : Editor
 {
 	#region Serialized Object References
+	#region Gamer VFS References
+	// SetGamerKey properties references
+	private SerializedProperty setGamerKey_Key;
+	private SerializedProperty setGamerKey_Value;
+	private SerializedProperty setGamerKey_JsonTypeSelected;
+	private SerializedProperty setGamerKey_StringTypeSelected;
+	private SerializedProperty setGamerKey_FloatTypeSelected;
+	private SerializedProperty setGamerKey_IntTypeSelected;
+	private SerializedProperty setGamerKey_BoolTypeSelected;
+	#endregion
+
+	#region Leaderboard References
 	// DisplayAllHighScores properties references
 	private SerializedProperty displayAllHighScores_BoardName;
 	private SerializedProperty displayAllHighScores_ScoresPerPage;
@@ -14,14 +26,29 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty postScore_BoardName;
 	private SerializedProperty postScore_ScoreValue;
 	private SerializedProperty postScore_ScoreDescription;
+	#endregion
 
+	#region Transaction References
 	// PostTransaction properties references
 	private SerializedProperty postTransaction_CurrencyName;
 	private SerializedProperty postTransaction_CurrencyAmount;
 	private SerializedProperty postTransaction_TransactionDescription;
+	#endregion
 
 	private void OnEnable()
 	{
+		#region Gamer VFS Find
+		// Find PostTransaction properties references on the serialized object
+		setGamerKey_Key = serializedObject.FindProperty("setGamerKey_Key");
+		setGamerKey_Value = serializedObject.FindProperty("setGamerKey_Value");
+		setGamerKey_JsonTypeSelected = serializedObject.FindProperty("setGamerKey_JsonTypeSelected");
+		setGamerKey_StringTypeSelected = serializedObject.FindProperty("setGamerKey_StringTypeSelected");
+		setGamerKey_FloatTypeSelected = serializedObject.FindProperty("setGamerKey_FloatTypeSelected");
+		setGamerKey_IntTypeSelected = serializedObject.FindProperty("setGamerKey_IntTypeSelected");
+		setGamerKey_BoolTypeSelected = serializedObject.FindProperty("setGamerKey_BoolTypeSelected");
+		#endregion
+
+		#region Leaderboard Find
 		// Find DisplayAllHighScores properties references on the serialized object
 		displayAllHighScores_BoardName = serializedObject.FindProperty("displayAllHighScores_BoardName");
 		displayAllHighScores_ScoresPerPage = serializedObject.FindProperty("displayAllHighScores_ScoresPerPage");
@@ -30,11 +57,14 @@ public class SampleScriptEditor : Editor
 		postScore_BoardName = serializedObject.FindProperty("postScore_BoardName");
 		postScore_ScoreValue = serializedObject.FindProperty("postScore_ScoreValue");
 		postScore_ScoreDescription = serializedObject.FindProperty("postScore_ScoreDescription");
+		#endregion
 
+		#region Transaction Find
 		// Find PostTransaction properties references on the serialized object
 		postTransaction_CurrencyName = serializedObject.FindProperty("postTransaction_CurrencyName");
 		postTransaction_CurrencyAmount = serializedObject.FindProperty("postTransaction_CurrencyAmount");
 		postTransaction_TransactionDescription = serializedObject.FindProperty("postTransaction_TransactionDescription");
+		#endregion
 	}
 	#endregion
 
@@ -45,6 +75,7 @@ public class SampleScriptEditor : Editor
 	private const float verticalSpaces = 5f;
 
 	// The foldouts states
+	private bool gamerVFSFoldoutState = true;
 	private bool leaderboardFoldoutState = true;
 	private bool transactionFoldoutState = true;
 
@@ -62,9 +93,30 @@ public class SampleScriptEditor : Editor
 		// Get the current value of the serialized properties
 		serializedObject.Update();
 
-		// Open / Close the Leaderboard foldout
+		#region Gamer VFS Foldout
+		// Open / Close the foldout
+		GUILayout.Space(verticalSpaces);
+		gamerVFSFoldoutState = EditorGUILayout.Foldout(gamerVFSFoldoutState, "Gamer VFS", foldoutLabelToggle, foldoutStyle);
+
+		if (gamerVFSFoldoutState)
+		{
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Set Gamer Key", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(setGamerKey_Key, new GUIContent("  > Key"));
+			EditorGUILayout.PropertyField(setGamerKey_Value, new GUIContent("  > Value"));
+			EditorGUILayout.PropertyField(setGamerKey_JsonTypeSelected, new GUIContent("  > Json Type Selected"));
+			EditorGUILayout.PropertyField(setGamerKey_StringTypeSelected, new GUIContent("  > String Type Selected"));
+			EditorGUILayout.PropertyField(setGamerKey_FloatTypeSelected, new GUIContent("  > Float Type Selected"));
+			EditorGUILayout.PropertyField(setGamerKey_IntTypeSelected, new GUIContent("  > Int Type Selected"));
+			EditorGUILayout.PropertyField(setGamerKey_BoolTypeSelected, new GUIContent("  > Bool Type Selected"));
+		}
+		#endregion
+
+		#region Leaderboard Foldout
+		// Open / Close the foldout
 		GUILayout.Space(verticalSpaces);
 		leaderboardFoldoutState = EditorGUILayout.Foldout(leaderboardFoldoutState, "Leaderboard", foldoutLabelToggle, foldoutStyle);
+
 		if (leaderboardFoldoutState)
 		{
 			GUILayout.Space(verticalSpaces);
@@ -78,10 +130,13 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.PropertyField(postScore_ScoreValue, new GUIContent("  > Score Value"));
 			EditorGUILayout.PropertyField(postScore_ScoreDescription, new GUIContent("  > Score Description"));
 		}
+		#endregion
 
-		// Open / Close the Transaction foldout
+		#region Transaction Foldout
+		// Open / Close the foldout
 		GUILayout.Space(verticalSpaces);
 		transactionFoldoutState = EditorGUILayout.Foldout(transactionFoldoutState, "Transaction", foldoutLabelToggle, foldoutStyle);
+
 		if (transactionFoldoutState)
 		{
 			GUILayout.Space(verticalSpaces);
@@ -90,6 +145,7 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.PropertyField(postTransaction_CurrencyAmount, new GUIContent("  > Currency Amount"));
 			EditorGUILayout.PropertyField(postTransaction_TransactionDescription, new GUIContent("  > Transaction Description"));
 		}
+		#endregion
 
 		GUILayout.Space(verticalSpaces);
 

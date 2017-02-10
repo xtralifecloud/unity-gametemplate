@@ -8,7 +8,7 @@ namespace CotcSdkTemplate
 	public static class TransactionFeatures
 	{
 		#region Handling
-		// Post a new transaction of the given currency for the current logged in gamer
+		// Check variables to post a new transaction of the given currency for the current logged in gamer
 		public static void PostTransaction(string currencyName, float currencyAmount, string transactionDescription)
 		{
 			// The currency name should not be empty

@@ -6,6 +6,15 @@ using CotcSdkTemplate;
 
 public class SampleScript : MonoBehaviour
 {
+	#region Initialization
+	// Some convenient initializations
+	private void Awake()
+	{
+		// Select the default SetGamerKey type
+		Radio_SetGamerKey_SelectType(setGamerKey_Type);
+	}
+	#endregion
+
 	#region Cloud + Login
 	// Initialize the CotcSdk's Cloud at start
 	private void Start()
@@ -31,6 +40,64 @@ public class SampleScript : MonoBehaviour
 	private void OnGamerLoggedIn(Gamer gamer)
 	{
 		// Do whatever...
+	}
+	#endregion
+
+	#region Achievement
+	// When the corresponding button is clicked, display all game's achievements
+	public void Button_DisplayAchievements()
+	{
+		// Call the template method
+		AchievementFeatures.DisplayAchievements();
+	}
+	#endregion
+
+	#region Gamer VFS
+	// References to the gamer VFS InputField UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField setGamerKey_Key = null;
+	[SerializeField] private InputField setGamerKey_Value = null;
+	[SerializeField] private Image setGamerKey_JsonTypeSelected = null;
+	[SerializeField] private Image setGamerKey_StringTypeSelected = null;
+	[SerializeField] private Image setGamerKey_FloatTypeSelected = null;
+	[SerializeField] private Image setGamerKey_IntTypeSelected = null;
+	[SerializeField] private Image setGamerKey_BoolTypeSelected = null;
+
+	// The selected type radio name
+	private string setGamerKey_Type = "String";
+
+	// When the corresponding button is clicked, create / update the value of the given key associated to the current logged in gamer
+	public void Button_SetGamerKey()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string key = "TestString";
+		string value = "Test value.";
+
+		// Check the key value
+		if (setGamerKey_Key != null)
+			key = string.IsNullOrEmpty(setGamerKey_Key.text) ? key : setGamerKey_Key.text;
+		else
+			Debug.LogWarning("[SampleScript:Leaderboard] setGamerKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Check the value value
+		if (setGamerKey_Value != null)
+			value = string.IsNullOrEmpty(setGamerKey_Value.text) ? value : setGamerKey_Value.text;
+		else
+			Debug.LogWarning("[SampleScript:Leaderboard] setGamerKey_Value InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Call the template method
+		GamerVFSFeatures.SetGamerKey(setGamerKey_Type, key, value);
+	}
+
+	// Select only the clicked radio button type
+	public void Radio_SetGamerKey_SelectType(string type)
+	{
+		setGamerKey_Type = type;
+
+		setGamerKey_JsonTypeSelected.enabled = (type == "Json");
+		setGamerKey_StringTypeSelected.enabled = (type == "String");
+		setGamerKey_FloatTypeSelected.enabled = (type == "Float");
+		setGamerKey_IntTypeSelected.enabled = (type == "Int");
+		setGamerKey_BoolTypeSelected.enabled = (type == "Bool");
 	}
 	#endregion
 
@@ -95,15 +162,6 @@ public class SampleScript : MonoBehaviour
 
 		// Call the template method
 		LeaderboardFeatures.PostScore(boardName, scoreValue, scoreDescription);
-	}
-	#endregion
-
-	#region Achievement
-	// When the corresponding button is clicked, display all game's achievements
-	public void Button_DisplayAchievements()
-	{
-		// Call the template method
-		AchievementFeatures.DisplayAchievements();
 	}
 	#endregion
 

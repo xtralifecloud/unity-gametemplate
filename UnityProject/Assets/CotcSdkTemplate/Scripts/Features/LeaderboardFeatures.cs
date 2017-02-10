@@ -8,7 +8,7 @@ namespace CotcSdkTemplate
 	public static class LeaderboardFeatures
 	{
 		#region Handling
-		// Get and display on a leaderboard panel all registered best scores for all gamers from a given leaderboard
+		// Check variables to get and display on a leaderboard panel all registered best scores for all gamers from a given leaderboard
 		public static void DisplayAllHighScores(string boardName, int scoresPerPage)
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
@@ -36,7 +36,7 @@ namespace CotcSdkTemplate
 			FetchNext(leaderboardScores, DisplayScores_OnSuccess, DisplayScores_OnError);
 		}
 
-		// Post a new score to a given leaderboard for the current logged in gamer
+		// Check variables to post a new score to a given leaderboard for the current logged in gamer
 		public static void PostScore(string boardName, long scoreValue, string scoreDescription)
 		{
 			// The board name should not be empty
