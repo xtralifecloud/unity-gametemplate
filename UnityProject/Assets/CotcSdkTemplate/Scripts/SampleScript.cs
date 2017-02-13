@@ -29,8 +29,9 @@ public class SampleScript : MonoBehaviour
 	// What to do once the CotcSdk's Cloud is initialized
 	private void OnCloudInitialized(Cloud cloud)
 	{
-		// Register to the GamerLoggedIn event
+		// Register to the GamerLoggedIn and GamerLoggedOut events
 		LoginFeatures.GamerLoggedIn += OnGamerLoggedIn;
+		LoginFeatures.GamerLoggedOut += OnGamerLoggedOut;
 
 		// Call the template method
 		LoginFeatures.AutoLogin();
@@ -38,6 +39,12 @@ public class SampleScript : MonoBehaviour
 
 	// What to do once a gamer has logged in
 	private void OnGamerLoggedIn(Gamer gamer)
+	{
+		// Do whatever...
+	}
+
+	// What to do once a gamer has logged out
+	private void OnGamerLoggedOut()
 	{
 		// Do whatever...
 	}
@@ -278,6 +285,13 @@ public class SampleScript : MonoBehaviour
 
 		// Call the template method
 		LoginFeatures.LoginWithCredentials(gamerID, gamerSecret);
+	}
+
+	// When the corresponding button is clicked, logout the current logged in gamer
+	public void Button_LogoutGamer()
+	{
+		// Call the template method
+		LoginFeatures.LogoutGamer();
 	}
 	#endregion
 

@@ -45,6 +45,12 @@ namespace CotcSdkTemplate
 			else
 				ResumeSession(gamerID, gamerSecret);
 		}
+
+		// Logout the current logged in gamer
+		public static void LogoutGamer()
+		{
+			Logout();
+		}
 		#endregion
 
 		#region Features
@@ -105,11 +111,43 @@ namespace CotcSdkTemplate
 							GamerLoggedIn(CloudFeatures.gamer);
 					});
 		}
+
+		// Logout the current logged in gamer
+		private static void Logout()
+		{
+			// Need an initialized Cloud and a logged in gamer to proceed
+			if (!CloudFeatures.IsGamerLoggedIn())
+				return;
+
+			// Call the API method which returns a Promise<Done> (promising a Done result)
+			CloudFeatures.cloud.Logout()
+				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("LoginFeatures", "Logout", exception);
+					})
+				// The result if everything went well
+				.Done(delegate (Done logoutDone)
+					{
+						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success >> {0}", logoutDone));
+
+						// Discard the Gamer's reference
+						CloudFeatures.gamer = null;
+
+						// Call the GamerLoggedOut event if any callback registered to it
+						if (GamerLoggedOut != null)
+							GamerLoggedOut();
+					});
+		}
 		#endregion
 
 		#region Events Callbacks
 		// Allow the registration of callbacks for when a gamer has logged in
 		public static event Action<Gamer> GamerLoggedIn = OnGamerLoggedIn;
+
+		// Allow the registration of callbacks for when a gamer has logged out
+		public static event Action GamerLoggedOut = OnGamerLoggedOut;
 
 		// What to do once a gamer has logged in
 		private static void OnGamerLoggedIn(Gamer gamer)
@@ -122,6 +160,18 @@ namespace CotcSdkTemplate
 			// Update the login status text with the newly connected gamer infos
 			if (LoginHandler.HasInstance)
 				LoginHandler.Instance.UpdateText_LoginStatus(gamer);
+		}
+
+		// What to do once a gamer has logged out
+		private static void OnGamerLoggedOut()
+		{
+			// Discard the gamerID and gamerSecret credentials in PlayerPrefs to prevent to use them later to login with this same account again
+			PlayerPrefs.DeleteKey(gamerIDPrefKey);
+			PlayerPrefs.DeleteKey(gamerSecretPrefKey);
+
+			// Update the login status text with the newly connected gamer infos
+			if (LoginHandler.HasInstance)
+				LoginHandler.Instance.UpdateText_LoginStatus();
 		}
 		#endregion
 	}
