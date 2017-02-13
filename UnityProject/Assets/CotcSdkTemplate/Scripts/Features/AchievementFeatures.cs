@@ -23,7 +23,7 @@ namespace CotcSdkTemplate
 		#region Features
 		// List all registered game's achievements
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		public static void ListAchievements(Action<Dictionary<string, AchievementDefinition>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		private static void ListAchievements(Action<Dictionary<string, AchievementDefinition>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())

@@ -30,7 +30,7 @@ namespace CotcSdkTemplate
 
 		#region Features
 		// Login with an anonymous account
-		public static void LoginAnonymously()
+		private static void LoginAnonymously()
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
@@ -59,7 +59,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Login with the last used account
-		public static void ResumeSession(string gamerID, string gamerSecret)
+		private static void ResumeSession(string gamerID, string gamerSecret)
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())

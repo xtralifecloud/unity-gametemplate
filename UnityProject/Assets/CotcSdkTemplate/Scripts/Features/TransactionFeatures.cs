@@ -28,7 +28,7 @@ namespace CotcSdkTemplate
 		#region Features
 		// Post a new transaction of the given currency for the current logged in gamer
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		public static void Post(Bundle transaction, string description, Action<TransactionResult> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		private static void Post(Bundle transaction, string description, Action<TransactionResult> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())

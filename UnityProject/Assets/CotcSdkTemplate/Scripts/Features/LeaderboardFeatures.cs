@@ -53,7 +53,7 @@ namespace CotcSdkTemplate
 		#region Features
 		// List all registered best scores for all gamers from a given leaderboard
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		public static void BestHighScores(string boardName, int scoresPerPage, int pageNumber, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null, string domain = "private")
+		private static void BestHighScores(string boardName, int scoresPerPage, int pageNumber, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -83,7 +83,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Get the previous page of a previously obtained leaderboard
-		public static void FetchPrevious(PagedList<Score> leaderboardScores, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null)
+		private static void FetchPrevious(PagedList<Score> leaderboardScores, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null)
 		{
 			if (leaderboardScores.HasPrevious)
 			{
@@ -114,7 +114,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Get the next page of a previously obtained leaderboard
-		public static void FetchNext(PagedList<Score> leaderboardScores, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null)
+		private static void FetchNext(PagedList<Score> leaderboardScores, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null)
 		{
 			if (leaderboardScores.HasNext)
 			{
@@ -146,7 +146,7 @@ namespace CotcSdkTemplate
 
 		// Post a new score to a given leaderboard for the current logged in gamer
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		public static void Post(long scoreValue, string boardName, ScoreOrder scoreOrder, string scoreDescription, Action<PostedGameScore> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		private static void Post(long scoreValue, string boardName, ScoreOrder scoreOrder, string scoreDescription, Action<PostedGameScore> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())

@@ -66,7 +66,7 @@ namespace CotcSdkTemplate
 
 		#region Features
 		// Get the main Cloud object's reference
-		public static void GetCloud(CotcGameObject cotcGameObject)
+		private static void GetCloud(CotcGameObject cotcGameObject)
 		{
 			// Call the API method which returns a Promise<Cloud> (promising a Cloud result)
 			cotcGameObject.GetCloud()

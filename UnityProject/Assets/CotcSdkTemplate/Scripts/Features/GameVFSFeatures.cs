@@ -22,7 +22,7 @@ namespace CotcSdkTemplate
 		#region Features
 		// Read and display the value of the given key associated to the current game (or all keys if null or empty)
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		public static void GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		private static void GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
