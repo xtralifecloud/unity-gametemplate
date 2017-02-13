@@ -26,6 +26,25 @@ namespace CotcSdkTemplate
 			else
 				LoginAnonymously();
 		}
+
+		// Login with a new anonymous account
+		public static void LoginAsAnonymous()
+		{
+			LoginAnonymously();
+		}
+
+		// Login with a previously created account
+		public static void LoginWithCredentials(string gamerID, string gamerSecret)
+		{
+			// The gamer ID should not be empty
+			if (string.IsNullOrEmpty(gamerID))
+				Debug.LogError("[CotcSdkTemplate:LoginFeatures] The gamer ID is empty >> Please enter a valid gamer ID");
+			// The gamer secret should not be empty
+			else if (string.IsNullOrEmpty(gamerSecret))
+				Debug.LogError("[CotcSdkTemplate:LoginFeatures] The gamer secret is empty >> Please enter a valid gamer secret");
+			else
+				ResumeSession(gamerID, gamerSecret);
+		}
 		#endregion
 
 		#region Features

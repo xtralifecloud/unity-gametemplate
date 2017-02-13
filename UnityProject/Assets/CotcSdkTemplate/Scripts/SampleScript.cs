@@ -245,6 +245,42 @@ public class SampleScript : MonoBehaviour
 	}
 	#endregion
 
+	#region Login
+	// When the corresponding button is clicked, login with a new anonymous account
+	public void Button_LoginAsAnonymous()
+	{
+		// Call the template method
+		LoginFeatures.LoginAsAnonymous();
+	}
+
+	// References to the login UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField loginWithCredentials_GamerID = null;
+	[SerializeField] private InputField loginWithCredentials_GamerSecret = null;
+
+	// When the corresponding button is clicked, login with a previously created account
+	public void Button_LoginWithCredentials()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string gamerID = "";
+		string gamerSecret = "";
+
+		// Check the gamerID value
+		if (loginWithCredentials_GamerID != null)
+			gamerID = string.IsNullOrEmpty(loginWithCredentials_GamerID.text) ? gamerID : loginWithCredentials_GamerID.text;
+		else
+			Debug.LogWarning("[SampleScript:Login] loginWithCredentials_GamerID InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Check the gamerSecret value
+		if (loginWithCredentials_GamerSecret != null)
+			gamerSecret = string.IsNullOrEmpty(loginWithCredentials_GamerSecret.text) ? gamerSecret : loginWithCredentials_GamerSecret.text;
+		else
+			Debug.LogWarning("[SampleScript:Login] loginWithCredentials_GamerSecret InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Call the template method
+		LoginFeatures.LoginWithCredentials(gamerID, gamerSecret);
+	}
+	#endregion
+
 	#region Transaction
 	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField postTransaction_CurrencyName = null;

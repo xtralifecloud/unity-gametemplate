@@ -36,6 +36,12 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty postScore_ScoreDescription;
 	#endregion
 
+	#region Login References
+	// LoginWithCredentials properties references
+	private SerializedProperty loginWithCredentials_GamerID;
+	private SerializedProperty loginWithCredentials_GamerSecret;
+	#endregion
+
 	#region Transaction References
 	// PostTransaction properties references
 	private SerializedProperty postTransaction_CurrencyName;
@@ -75,6 +81,12 @@ public class SampleScriptEditor : Editor
 		postScore_ScoreDescription = serializedObject.FindProperty("postScore_ScoreDescription");
 		#endregion
 
+		#region Login Find
+		// Find LoginWithCredentials properties references on the serialized object
+		loginWithCredentials_GamerID = serializedObject.FindProperty("loginWithCredentials_GamerID");
+		loginWithCredentials_GamerSecret = serializedObject.FindProperty("loginWithCredentials_GamerSecret");
+		#endregion
+
 		#region Transaction Find
 		// Find PostTransaction properties references on the serialized object
 		postTransaction_CurrencyName = serializedObject.FindProperty("postTransaction_CurrencyName");
@@ -94,6 +106,7 @@ public class SampleScriptEditor : Editor
 	private bool gameVFSFoldoutState = true;
 	private bool gamerVFSFoldoutState = true;
 	private bool leaderboardFoldoutState = true;
+	private bool loginFoldoutState = true;
 	private bool transactionFoldoutState = true;
 
 	// Draw the custom inspector GUI
@@ -163,6 +176,20 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.PropertyField(postScore_BoardName, new GUIContent("  > Board Name"));
 			EditorGUILayout.PropertyField(postScore_ScoreValue, new GUIContent("  > Score Value"));
 			EditorGUILayout.PropertyField(postScore_ScoreDescription, new GUIContent("  > Score Description"));
+		}
+		#endregion
+
+		#region Login Foldout
+		// Open / Close the foldout
+		GUILayout.Space(verticalSpaces);
+		loginFoldoutState = EditorGUILayout.Foldout(loginFoldoutState, "Login", foldoutLabelToggle, foldoutStyle);
+
+		if (loginFoldoutState)
+		{
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Login With Credentials", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(loginWithCredentials_GamerID, new GUIContent("  > Gamer ID"));
+			EditorGUILayout.PropertyField(loginWithCredentials_GamerSecret, new GUIContent("  > Gamer Secret"));
 		}
 		#endregion
 
