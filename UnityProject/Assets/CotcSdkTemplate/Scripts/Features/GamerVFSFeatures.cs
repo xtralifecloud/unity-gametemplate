@@ -8,8 +8,14 @@ namespace CotcSdkTemplate
 	public static class GamerVFSFeatures
 	{
 		#region Handling
+		// Check variables to read and display the value of the given key associated to the current logged in gamer (or all keys if null or empty)
+		public static void DisplayGamerKey(string key)
+		{
+			GetValue(key, DisplayGamerKey_OnSuccess, DisplayGamerKey_OnError);
+		}
+
 		// Check variables to create / update the value of the given key associated to the current logged in gamer
-		public static void SetGamerKey(string valueType, string key, string value)
+		public static void SetGamerKey(Bundle.DataType valueType, string key, string value)
 		{
 			// The key name should not be empty
 			if (string.IsNullOrEmpty(key))
@@ -18,30 +24,30 @@ namespace CotcSdkTemplate
 			{
 				Bundle setValue;
 
-				// Create a Bundle from the given value string (a Bundle is an Json-like object to represent
+				// Create a Bundle from the given value string (a Bundle is an Json-like object to represent fields data)
 				switch (valueType)
 				{
-					case "Json":
+					case Bundle.DataType.Object:
 					setValue = Bundle.FromJson(value);
 					break;
 					
-					case "String":
+					case Bundle.DataType.String:
 					setValue = new Bundle(value);
 					break;
 
-					case "Float":
-					setValue = new Bundle(float.Parse(value));
+					case Bundle.DataType.Double:
+					setValue = new Bundle(double.Parse(value));
 					break;
 
-					case "Int":
+					case Bundle.DataType.Integer:
 					setValue = new Bundle(int.Parse(value));
 					break;
 
-					case "Bool":
+					case Bundle.DataType.Boolean:
 					setValue = new Bundle(bool.Parse(value));
 					break;
 
-					// TODO: You may want to add more types handled by Bundle (like double, List, Dictionary, ...)
+					// TODO: You may want to add more types handled by Bundle
 					default:
 					Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] The {0} type is unhandled >> Please handle it or use a handled type", valueType));
 					return;
@@ -53,6 +59,37 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Features
+		// Read and display the value of the given key associated to the current logged in gamer (or all keys if null or empty)
+		// We use the "private" domain by default (each game has its own data, not shared with the other games)
+		public static void GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		{
+			// Need an initialized Cloud and a logged in gamer to proceed
+			if (!CloudFeatures.IsGamerLoggedIn())
+				return;
+
+			// Call the API method which returns a Promise<Bundle> (promising a Bundle result)
+			CloudFeatures.gamer.GamerVfs.Domain(domain).GetValue(key)
+				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("GamerVFSFeatures", "GetValue", exception);
+
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(ExceptionTools.GetExceptionError(exception));
+					})
+				// The result if everything went well
+				.Done(delegate (Bundle keyValue)
+					{
+						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success >> Key Value: {0}", keyValue.ToString()));
+
+						// Call the OnSuccess action if any callback registered to it
+						if (OnSuccess != null)
+							OnSuccess(keyValue);
+					});
+		}
+
 		// Create / update the value of the given key associated to the current logged in gamer
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
 		public static void SetValue(string key, Bundle value, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
@@ -86,6 +123,36 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Delegate Callbacks
+		// What to do if any DisplayGamerKey request succeeded
+		private static void DisplayGamerKey_OnSuccess(Bundle keyValue)
+		{
+			string resultField = "result";
+
+			if (keyValue.Has(resultField))
+				GamerVFSHandler.Instance.FillAndShowGamerVFSPanel(keyValue[resultField].AsDictionary());
+			else
+				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] No {0} field found in the key value result", resultField));
+			
+			// TODO: You may want to parse the result Bundle fields (e.g.: if (keyValue["result"]["TestString"].Type == Bundle.DataType.String) { string testString = keyValue["result"]["TestString"].AsString(); })
+		}
+
+		// What to do if any DisplayGamerKey request failed
+		private static void DisplayGamerKey_OnError(ExceptionError exceptionError)
+		{
+			switch (exceptionError.type)
+			{
+				// Error type: the specified key doesn't exist yet
+				case "KeyNotFound":
+				GamerVFSHandler.Instance.FillAndShowGamerVFSPanel(null);
+				break;
+
+				// Unhandled error types
+				default:
+				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured >> {0}", exceptionError));
+				break;
+			}
+		}
+
 		// What to do if any SetGamerKey request succeeded
 		private static void SetGamerKey_OnSuccess(Done setDone)
 		{

@@ -57,7 +57,9 @@ namespace CotcSdkTemplate
 				}
 			}
 		}
+		#endregion
 
+		#region Achievement Progress Formating
 		// Format an achievement progress text
 		private string GetAchievementProgress(AchievementDefinition achievement)
 		{

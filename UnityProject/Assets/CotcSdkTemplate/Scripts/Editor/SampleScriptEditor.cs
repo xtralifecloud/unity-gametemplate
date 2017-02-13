@@ -7,12 +7,15 @@ public class SampleScriptEditor : Editor
 {
 	#region Serialized Object References
 	#region Gamer VFS References
+	// GetGamerKey properties references
+	private SerializedProperty displayGamerKey_Key;
+
 	// SetGamerKey properties references
 	private SerializedProperty setGamerKey_Key;
 	private SerializedProperty setGamerKey_Value;
 	private SerializedProperty setGamerKey_JsonTypeSelected;
 	private SerializedProperty setGamerKey_StringTypeSelected;
-	private SerializedProperty setGamerKey_FloatTypeSelected;
+	private SerializedProperty setGamerKey_DoubleTypeSelected;
 	private SerializedProperty setGamerKey_IntTypeSelected;
 	private SerializedProperty setGamerKey_BoolTypeSelected;
 	#endregion
@@ -38,12 +41,15 @@ public class SampleScriptEditor : Editor
 	private void OnEnable()
 	{
 		#region Gamer VFS Find
-		// Find PostTransaction properties references on the serialized object
+		// Find GetGamerKey properties references on the serialized object
+		displayGamerKey_Key = serializedObject.FindProperty("displayGamerKey_Key");
+
+		// Find SetGamerKey properties references on the serialized object
 		setGamerKey_Key = serializedObject.FindProperty("setGamerKey_Key");
 		setGamerKey_Value = serializedObject.FindProperty("setGamerKey_Value");
 		setGamerKey_JsonTypeSelected = serializedObject.FindProperty("setGamerKey_JsonTypeSelected");
 		setGamerKey_StringTypeSelected = serializedObject.FindProperty("setGamerKey_StringTypeSelected");
-		setGamerKey_FloatTypeSelected = serializedObject.FindProperty("setGamerKey_FloatTypeSelected");
+		setGamerKey_DoubleTypeSelected = serializedObject.FindProperty("setGamerKey_DoubleTypeSelected");
 		setGamerKey_IntTypeSelected = serializedObject.FindProperty("setGamerKey_IntTypeSelected");
 		setGamerKey_BoolTypeSelected = serializedObject.FindProperty("setGamerKey_BoolTypeSelected");
 		#endregion
@@ -101,12 +107,16 @@ public class SampleScriptEditor : Editor
 		if (gamerVFSFoldoutState)
 		{
 			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Display Gamer Key", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(displayGamerKey_Key, new GUIContent("  > Key"));
+
+			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Set Gamer Key", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(setGamerKey_Key, new GUIContent("  > Key"));
 			EditorGUILayout.PropertyField(setGamerKey_Value, new GUIContent("  > Value"));
 			EditorGUILayout.PropertyField(setGamerKey_JsonTypeSelected, new GUIContent("  > Json Type Selected"));
 			EditorGUILayout.PropertyField(setGamerKey_StringTypeSelected, new GUIContent("  > String Type Selected"));
-			EditorGUILayout.PropertyField(setGamerKey_FloatTypeSelected, new GUIContent("  > Float Type Selected"));
+			EditorGUILayout.PropertyField(setGamerKey_DoubleTypeSelected, new GUIContent("  > Double Type Selected"));
 			EditorGUILayout.PropertyField(setGamerKey_IntTypeSelected, new GUIContent("  > Int Type Selected"));
 			EditorGUILayout.PropertyField(setGamerKey_BoolTypeSelected, new GUIContent("  > Bool Type Selected"));
 		}

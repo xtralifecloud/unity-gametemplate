@@ -11,7 +11,7 @@ public class SampleScript : MonoBehaviour
 	private void Awake()
 	{
 		// Select the default SetGamerKey type
-		Radio_SetGamerKey_SelectType(setGamerKey_Type);
+		Radio_SetGamerKey_SelectType("String");
 	}
 	#endregion
 
@@ -53,17 +53,43 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Gamer VFS
-	// References to the gamer VFS InputField UI elements (their serialized references are directly assigned in the scene)
+	// When the corresponding button is clicked, read and display the value of all keys associated to the current logged in gamer
+	public void Button_DisplayAllGamerKeys()
+	{
+		// Call the template method
+		GamerVFSFeatures.DisplayGamerKey(null);
+	}
+
+	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField displayGamerKey_Key = null;
+
+	// When the corresponding button is clicked, read and display the value of the given key associated to the current logged in gamer
+	public void Button_DisplayGamerKey()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string key = "TestString";
+
+		// Check the key value
+		if (displayGamerKey_Key != null)
+			key = string.IsNullOrEmpty(displayGamerKey_Key.text) ? key : displayGamerKey_Key.text;
+		else
+			Debug.LogWarning("[SampleScript:GamerVFS] displayGamerKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Call the template method
+		GamerVFSFeatures.DisplayGamerKey(key);
+	}
+
+	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField setGamerKey_Key = null;
 	[SerializeField] private InputField setGamerKey_Value = null;
 	[SerializeField] private Image setGamerKey_JsonTypeSelected = null;
 	[SerializeField] private Image setGamerKey_StringTypeSelected = null;
-	[SerializeField] private Image setGamerKey_FloatTypeSelected = null;
+	[SerializeField] private Image setGamerKey_DoubleTypeSelected = null;
 	[SerializeField] private Image setGamerKey_IntTypeSelected = null;
 	[SerializeField] private Image setGamerKey_BoolTypeSelected = null;
 
-	// The selected type radio name
-	private string setGamerKey_Type = "String";
+	// The selected value type
+	private Bundle.DataType setGamerKey_Type = Bundle.DataType.String;
 
 	// When the corresponding button is clicked, create / update the value of the given key associated to the current logged in gamer
 	public void Button_SetGamerKey()
@@ -76,13 +102,13 @@ public class SampleScript : MonoBehaviour
 		if (setGamerKey_Key != null)
 			key = string.IsNullOrEmpty(setGamerKey_Key.text) ? key : setGamerKey_Key.text;
 		else
-			Debug.LogWarning("[SampleScript:Leaderboard] setGamerKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+			Debug.LogWarning("[SampleScript:GamerVFS] setGamerKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
 
 		// Check the value value
 		if (setGamerKey_Value != null)
 			value = string.IsNullOrEmpty(setGamerKey_Value.text) ? value : setGamerKey_Value.text;
 		else
-			Debug.LogWarning("[SampleScript:Leaderboard] setGamerKey_Value InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+			Debug.LogWarning("[SampleScript:GamerVFS] setGamerKey_Value InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
 
 		// Call the template method
 		GamerVFSFeatures.SetGamerKey(setGamerKey_Type, key, value);
@@ -91,18 +117,44 @@ public class SampleScript : MonoBehaviour
 	// Select only the clicked radio button type
 	public void Radio_SetGamerKey_SelectType(string type)
 	{
-		setGamerKey_Type = type;
+		setGamerKey_JsonTypeSelected.enabled = false;
+		setGamerKey_StringTypeSelected.enabled = false;
+		setGamerKey_DoubleTypeSelected.enabled = false;
+		setGamerKey_IntTypeSelected.enabled = false;
+		setGamerKey_BoolTypeSelected.enabled = false;
 
-		setGamerKey_JsonTypeSelected.enabled = (type == "Json");
-		setGamerKey_StringTypeSelected.enabled = (type == "String");
-		setGamerKey_FloatTypeSelected.enabled = (type == "Float");
-		setGamerKey_IntTypeSelected.enabled = (type == "Int");
-		setGamerKey_BoolTypeSelected.enabled = (type == "Bool");
+		switch (type)
+		{
+			case "Json":
+			setGamerKey_Type = Bundle.DataType.Object;
+			setGamerKey_JsonTypeSelected.enabled = true;
+			break;
+
+			case "String":
+			setGamerKey_Type = Bundle.DataType.String;
+			setGamerKey_StringTypeSelected.enabled = true;
+			break;
+
+			case "Double":
+			setGamerKey_Type = Bundle.DataType.Double;
+			setGamerKey_DoubleTypeSelected.enabled = true;
+			break;
+
+			case "Int":
+			setGamerKey_Type = Bundle.DataType.Integer;
+			setGamerKey_IntTypeSelected.enabled = true;
+			break;
+
+			case "Bool":
+			setGamerKey_Type = Bundle.DataType.Boolean;
+			setGamerKey_BoolTypeSelected.enabled = true;
+			break;
+		}
 	}
 	#endregion
 
 	#region Leaderboard
-	// References to the leaderboard InputField UI elements (their serialized references are directly assigned in the scene)
+	// References to the leaderboard UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField displayAllHighScores_BoardName = null;
 	[SerializeField] private InputField displayAllHighScores_ScoresPerPage = null;
 
@@ -129,7 +181,7 @@ public class SampleScript : MonoBehaviour
 		LeaderboardFeatures.DisplayAllHighScores(boardName, scoresPerPage);
 	}
 
-	// References to the leaderboard InputField UI elements (their serialized references are directly assigned in the scene)
+	// References to the leaderboard UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField postScore_BoardName = null;
 	[SerializeField] private InputField postScore_ScoreValue = null;
 	[SerializeField] private InputField postScore_ScoreDescription = null;
@@ -166,7 +218,7 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Transaction
-	// References to the transaction InputField UI elements (their serialized references are directly assigned in the scene)
+	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField postTransaction_CurrencyName = null;
 	[SerializeField] private InputField postTransaction_CurrencyAmount = null;
 	[SerializeField] private InputField postTransaction_TransactionDescription = null;
