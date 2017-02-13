@@ -52,6 +52,34 @@ public class SampleScript : MonoBehaviour
 	}
 	#endregion
 
+	#region Game VFS
+	// When the corresponding button is clicked, read and display the value of all keys associated to the current game
+	public void Button_DisplayAllGameKeys()
+	{
+		// Call the template method
+		GameVFSFeatures.DisplayGameKey(null);
+	}
+
+	// References to the game VFS UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField displayGameKey_Key = null;
+
+	// When the corresponding button is clicked, read and display the value of the given key associated to the current game
+	public void Button_DisplayGameKey()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string key = "TestString";
+
+		// Check the key value
+		if (displayGameKey_Key != null)
+			key = string.IsNullOrEmpty(displayGameKey_Key.text) ? key : displayGameKey_Key.text;
+		else
+			Debug.LogWarning("[SampleScript:GameVFS] displayGameKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Call the template method
+		GameVFSFeatures.DisplayGameKey(key);
+	}
+	#endregion
+
 	#region Gamer VFS
 	// When the corresponding button is clicked, read and display the value of all keys associated to the current logged in gamer
 	public void Button_DisplayAllGamerKeys()

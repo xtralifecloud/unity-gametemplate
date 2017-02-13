@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114184753599207662}
   - component: {fileID: 114409818697289124}
   m_Layer: 5
-  m_Name: CotcItem-GamerVFSKey
+  m_Name: CotcItem-VFSKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

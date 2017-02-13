@@ -7,6 +7,11 @@ public class SampleScriptEditor : Editor
 {
 	#region Serialized Object References
 	#region Gamer VFS References
+	// GetGameKey properties references
+	private SerializedProperty displayGameKey_Key;
+	#endregion
+
+	#region Gamer VFS References
 	// GetGamerKey properties references
 	private SerializedProperty displayGamerKey_Key;
 
@@ -40,6 +45,11 @@ public class SampleScriptEditor : Editor
 
 	private void OnEnable()
 	{
+		#region Game VFS Find
+		// Find GetGameKey properties references on the serialized object
+		displayGameKey_Key = serializedObject.FindProperty("displayGameKey_Key");
+		#endregion
+
 		#region Gamer VFS Find
 		// Find GetGamerKey properties references on the serialized object
 		displayGamerKey_Key = serializedObject.FindProperty("displayGamerKey_Key");
@@ -81,6 +91,7 @@ public class SampleScriptEditor : Editor
 	private const float verticalSpaces = 5f;
 
 	// The foldouts states
+	private bool gameVFSFoldoutState = true;
 	private bool gamerVFSFoldoutState = true;
 	private bool leaderboardFoldoutState = true;
 	private bool transactionFoldoutState = true;
@@ -98,6 +109,19 @@ public class SampleScriptEditor : Editor
 
 		// Get the current value of the serialized properties
 		serializedObject.Update();
+
+		#region Game VFS Foldout
+		// Open / Close the foldout
+		GUILayout.Space(verticalSpaces);
+		gameVFSFoldoutState = EditorGUILayout.Foldout(gameVFSFoldoutState, "Game VFS", foldoutLabelToggle, foldoutStyle);
+
+		if (gameVFSFoldoutState)
+		{
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Display Game Key", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(displayGameKey_Key, new GUIContent("  > Key"));
+		}
+		#endregion
 
 		#region Gamer VFS Foldout
 		// Open / Close the foldout

@@ -11,7 +11,11 @@ namespace CotcSdkTemplate
 		// Check variables to read and display the value of the given key associated to the current logged in gamer (or all keys if null or empty)
 		public static void DisplayGamerKey(string key)
 		{
-			GetValue(key, DisplayGamerKey_OnSuccess, DisplayGamerKey_OnError);
+			// A VFSHandler instance should be attached to an active object of the scene to display the result
+			if (!VFSHandler.HasInstance)
+				Debug.LogError("[CotcSdkTemplate:GamerVFSFeatures] No VFSHandler instance found >> Please attach a VFSHandler script on an active object of the scene");
+			else
+				GetValue(key, DisplayGamerKey_OnSuccess, DisplayGamerKey_OnError);
 		}
 
 		// Check variables to create / update the value of the given key associated to the current logged in gamer
@@ -129,7 +133,7 @@ namespace CotcSdkTemplate
 			string resultField = "result";
 
 			if (keyValue.Has(resultField))
-				GamerVFSHandler.Instance.FillAndShowGamerVFSPanel(keyValue[resultField].AsDictionary());
+				VFSHandler.Instance.FillAndShowVFSPanel(keyValue[resultField].AsDictionary());
 			else
 				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] No {0} field found in the key value result", resultField));
 			
@@ -143,7 +147,7 @@ namespace CotcSdkTemplate
 			{
 				// Error type: the specified key doesn't exist yet
 				case "KeyNotFound":
-				GamerVFSHandler.Instance.FillAndShowGamerVFSPanel(null);
+				VFSHandler.Instance.FillAndShowVFSPanel(null);
 				break;
 
 				// Unhandled error types

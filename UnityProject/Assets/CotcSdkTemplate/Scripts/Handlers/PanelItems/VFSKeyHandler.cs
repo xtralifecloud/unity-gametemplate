@@ -5,7 +5,7 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
-	public class GamerVFSKeyHandler : MonoBehaviour
+	public class VFSKeyHandler : MonoBehaviour
 	{
 		#region Handling
 		// Reference to the gamer VFS key GameObject UI elements
