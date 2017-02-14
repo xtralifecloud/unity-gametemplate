@@ -20,22 +20,22 @@ II. Now you'll need to use the game credentials (**API Key** and **Secret**) you
 
 - b) On the **CotcGameObject** script of the **CotcSdk** object, fill in your game **API Key** and **Secret**.
 
- ![Screenshot-CotcGameObject](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-CotcGameObject.png)
+ ![Screenshot-CotcGameObject](https://github.com/xtralifecloud/unity-gametemplate/raw/master/readme/Screenshot-CotcGameObject.png)
 
 III. The last step is simply to use the template prefabs and scripts you previously included from the package:
 
 - a) For each module you intend to display, just include a **CotcPanel-*Handler** (e.g. **CotcPanel-LeaderboardHandler** for the **leaderboard** scores) prefab's instance in your scene with a **Canvas** object as parent to allow the generic display of the corresponding features.
 >**Hint 1:** Please ensure the **CotcPanel-*Handlers** are the last children (top down of the list) in their level of your UI objects hierarchy, so they will come in the front of the screen when displayed (as they act like popups).
 >
->![Screenshot-ObjectsHierarchy](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-ObjectsHierarchy.png)
+>![Screenshot-ObjectsHierarchy](https://github.com/xtralifecloud/unity-gametemplate/raw/master/readme/Screenshot-ObjectsHierarchy.png)
 >
 >**Hint 2:** For a better display result, we recommend the canvas to have the **Render Mode** set to **Screen Space - Overlay** and the **Canvas Scaler** to have the **UI Scale Mode** set to **Scale With Screen Size**, so the **CotcPanels** will always come on the top of your UI and you can handle portrait and landscape orientations with more ease.
 >
->![Screenshot-CanvasSettings](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-CanvasSettings.png)
+>![Screenshot-CanvasSettings](https://github.com/xtralifecloud/unity-gametemplate/raw/master/readme/Screenshot-CanvasSettings.png)
 >
 >**Hint 3:** Still for a better display result, we recommend to **stretch** the **CotcPanels** (horizontaly and verticaly, full screen if you can) once you included them in your **Canvas** to ensure they are positioned in the correct bounds and have all the available space at their disposal.
 >
->![Screenshot-PanelStretch](http://gitlab.xtralife.cloud/xtralife/xtralife-unity-gametemplate/raw/master/readme/Screenshot-PanelStretch.png)
+>![Screenshot-PanelStretch](https://github.com/xtralifecloud/unity-gametemplate/raw/master/readme/Screenshot-PanelStretch.png)
 >
 >**Hint 4:** If you are using complex UI structures, you probably have multiple **Layout Group** components in your **Canvas** children objects. When you are positioning/stretching the **CotcPanels**, please keep in mind that the **Layout Group** components may influence the panels positioning even if they have no **Layout Element** component attached.
 
