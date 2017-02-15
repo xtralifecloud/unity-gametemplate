@@ -19,7 +19,7 @@ namespace CotcSdkTemplate
 
 		// Reference to the score GameObject prefab and the scores list scroll view
 		[SerializeField] private GameObject scorePrefab = null;
-		[SerializeField] private Transform scoresScrollViewContent = null;
+		[SerializeField] private GridLayoutGroup leaderboardScoresLayout = null;
 
 		// List of the score GameObjects created on the leaderboard panel
 		private List<GameObject> leaderboardScores = new List<GameObject>();
@@ -65,7 +65,7 @@ namespace CotcSdkTemplate
 				{
 					// Create a leaderboard score GameObject and hook it at the leaderboard scores scroll view
 					GameObject prefabInstance = Instantiate<GameObject>(scorePrefab);
-					prefabInstance.transform.SetParent(scoresScrollViewContent, false);
+					prefabInstance.transform.SetParent(leaderboardScoresLayout.transform, false);
 
 					// Fill the newly created GameObject with score data
 					LeaderboardScoreHandler leaderboardScoreHandler = prefabInstance.GetComponent<LeaderboardScoreHandler>();
@@ -120,6 +120,15 @@ namespace CotcSdkTemplate
 			// Call for the next page
 			if (currentScoresList != null)
 				LeaderboardFeatures.FetchNextLeaderboardPage(currentScoresList);
+		}
+		#endregion
+
+		#region Screen Orientation
+		// Adapt the layout display when the current screen orientation changes
+		public void OnRectTransformDimensionsChange()
+		{
+			// If on landscape orientation use 2 columns, else (portrait) use 1 column
+			leaderboardScoresLayout.constraintCount = Screen.width > Screen.height ? 2 : 1;
 		}
 		#endregion
 	}

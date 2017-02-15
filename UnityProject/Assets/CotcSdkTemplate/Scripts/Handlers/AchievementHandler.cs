@@ -16,7 +16,7 @@ namespace CotcSdkTemplate
 
 		// Reference to the achievement GameObject prefab and the achievements list scroll view
 		[SerializeField] private GameObject achievementPrefab = null;
-		[SerializeField] private Transform achievementScrollViewContent = null;
+		[SerializeField] private GridLayoutGroup achievementItemsLayout = null;
 
 		// List of the achievement GameObjects created on the achievement panel
 		private List<GameObject> achievementItems = new List<GameObject>();
@@ -53,7 +53,7 @@ namespace CotcSdkTemplate
 				{
 					// Create an achievement item GameObject and hook it at the achievements scroll view
 					GameObject prefabInstance = Instantiate<GameObject>(achievementPrefab);
-					prefabInstance.transform.SetParent(achievementScrollViewContent, false);
+					prefabInstance.transform.SetParent(achievementItemsLayout.transform, false);
 
 					// Fill the newly created GameObject with achievement data
 					AchievementItemHandler achievementItemHandler = prefabInstance.GetComponent<AchievementItemHandler>();
@@ -69,6 +69,15 @@ namespace CotcSdkTemplate
 
 			// Show the achievement panel
 			ShowAchievementPanel(true);
+		}
+		#endregion
+
+		#region Screen Orientation
+		// Adapt the layout display when the current screen orientation changes
+		public void OnRectTransformDimensionsChange()
+		{
+			// If on landscape orientation use 2 columns, else (portrait) use 1 column
+			achievementItemsLayout.constraintCount = Screen.width > Screen.height ? 2 : 1;
 		}
 		#endregion
 	}
