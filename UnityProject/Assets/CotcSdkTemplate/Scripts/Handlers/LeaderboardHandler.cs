@@ -79,9 +79,6 @@ namespace CotcSdkTemplate
 				currentScoresList = scoresList;
 				previousPageButton.interactable = currentScoresList.HasPrevious;
 				nextPageButton.interactable = currentScoresList.HasNext;
-
-				// Ensure the next page button stays at the end of the scores list
-				nextPageButton.transform.SetAsLastSibling();
 			}
 			// Else, show the "no score" text, hide the previous page and next page buttons, and prevent usage of previous and next leaderboard page
 			else

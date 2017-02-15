@@ -60,6 +60,12 @@ namespace CotcSdkTemplate
 				SetValue(key, setValue, SetGamerKey_OnSuccess, SetGamerKey_OnError);
 			}
 		}
+
+		// Check variables to delete the given key associated to the current logged in gamer (or all keys if null or empty)
+		public static void DeleteGamerKey(string key)
+		{
+			DeleteValue(key, DeleteGamerKey_OnSuccess, DeleteGamerKey_OnError);
+		}
 		#endregion
 
 		#region Features
@@ -124,6 +130,37 @@ namespace CotcSdkTemplate
 							OnSuccess(setDone);
 					});
 		}
+
+		// Delete the given key associated to the current logged in gamer (or all keys if null or empty)
+		// We use the "private" domain by default (each game has its own data, not shared with the other games)
+		private static void DeleteValue(string key, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		{
+			// Need an initialized Cloud and a logged in gamer to proceed
+			if (!CloudFeatures.IsGamerLoggedIn())
+				return;
+
+			// Call the API method which returns a Promise<Done> (promising a Done result)
+			CloudFeatures.gamer.GamerVfs.Domain(domain).DeleteValue(key)
+				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("GamerVFSFeatures", "DeleteValue", exception);
+
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(ExceptionTools.GetExceptionError(exception));
+					})
+				// The result if everything went well
+				.Done(delegate (Done deleteDone)
+					{
+						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success >> Key Deleted: {0}", deleteDone.ToString()));
+
+						// Call the OnSuccess action if any callback registered to it
+						if (OnSuccess != null)
+							OnSuccess(deleteDone);
+					});
+		}
 		#endregion
 
 		#region Delegate Callbacks
@@ -165,6 +202,24 @@ namespace CotcSdkTemplate
 
 		// What to do if any SetGamerKey request failed
 		private static void SetGamerKey_OnError(ExceptionError exceptionError)
+		{
+			switch (exceptionError.type)
+			{
+				// Unhandled error types
+				default:
+				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured >> {0}", exceptionError));
+				break;
+			}
+		}
+
+		// What to do if any DeleteGamerKey request succeeded
+		private static void DeleteGamerKey_OnSuccess(Done deleteDone)
+		{
+			// Do whatever...
+		}
+
+		// What to do if any DeleteGamerKey request failed
+		private static void DeleteGamerKey_OnError(ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)
 			{

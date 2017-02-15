@@ -186,6 +186,25 @@ public class SampleScript : MonoBehaviour
 			break;
 		}
 	}
+
+	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField deleteGamerKey_Key = null;
+
+	// When the corresponding button is clicked, delete the given key associated to the current logged in gamer
+	public void Button_DeleteGamerKey()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string key = "TestString";
+
+		// Check the key value
+		if (deleteGamerKey_Key != null)
+			key = string.IsNullOrEmpty(deleteGamerKey_Key.text) ? key : deleteGamerKey_Key.text;
+		else
+			Debug.LogWarning("[SampleScript:GamerVFS] deleteGamerKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
+		// Call the template method
+		GamerVFSFeatures.DeleteGamerKey(key);
+	}
 	#endregion
 
 	#region Leaderboard

@@ -16,7 +16,7 @@ namespace CotcSdkTemplate
 
 		// Reference to the key GameObject prefab and the keys list scroll view
 		[SerializeField] private GameObject keyPrefab = null;
-		[SerializeField] private Transform keysScrollViewContent = null;
+		[SerializeField] private VerticalLayoutGroup VFSKeysLayout = null;
 
 		// List of the key GameObjects created on the VFS panel
 		private List<GameObject> VFSKeys = new List<GameObject>();
@@ -53,7 +53,7 @@ namespace CotcSdkTemplate
 				{
 					// Create a VFS key GameObject and hook it at the VFS keys scroll view
 					GameObject prefabInstance = Instantiate<GameObject>(keyPrefab);
-					prefabInstance.transform.SetParent(keysScrollViewContent, false);
+					prefabInstance.transform.SetParent(VFSKeysLayout.transform, false);
 
 					// Fill the newly created GameObject with key data
 					VFSKeyHandler VFSKeyHandler = prefabInstance.GetComponent<VFSKeyHandler>();

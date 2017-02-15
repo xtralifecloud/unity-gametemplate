@@ -7,12 +7,12 @@ public class SampleScriptEditor : Editor
 {
 	#region Serialized Object References
 	#region Gamer VFS References
-	// GetGameKey properties references
+	// DisplayGameKey properties references
 	private SerializedProperty displayGameKey_Key;
 	#endregion
 
 	#region Gamer VFS References
-	// GetGamerKey properties references
+	// DisplayGamerKey properties references
 	private SerializedProperty displayGamerKey_Key;
 
 	// SetGamerKey properties references
@@ -23,6 +23,9 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty setGamerKey_DoubleTypeSelected;
 	private SerializedProperty setGamerKey_IntTypeSelected;
 	private SerializedProperty setGamerKey_BoolTypeSelected;
+
+	// DeleteGamerKey properties references
+	private SerializedProperty deleteGamerKey_Key;
 	#endregion
 
 	#region Leaderboard References
@@ -52,12 +55,12 @@ public class SampleScriptEditor : Editor
 	private void OnEnable()
 	{
 		#region Game VFS Find
-		// Find GetGameKey properties references on the serialized object
+		// Find DisplayGameKey properties references on the serialized object
 		displayGameKey_Key = serializedObject.FindProperty("displayGameKey_Key");
 		#endregion
 
 		#region Gamer VFS Find
-		// Find GetGamerKey properties references on the serialized object
+		// Find DisplayGamerKey properties references on the serialized object
 		displayGamerKey_Key = serializedObject.FindProperty("displayGamerKey_Key");
 
 		// Find SetGamerKey properties references on the serialized object
@@ -68,6 +71,9 @@ public class SampleScriptEditor : Editor
 		setGamerKey_DoubleTypeSelected = serializedObject.FindProperty("setGamerKey_DoubleTypeSelected");
 		setGamerKey_IntTypeSelected = serializedObject.FindProperty("setGamerKey_IntTypeSelected");
 		setGamerKey_BoolTypeSelected = serializedObject.FindProperty("setGamerKey_BoolTypeSelected");
+
+		// Find DeleteGamerKey properties references on the serialized object
+		deleteGamerKey_Key = serializedObject.FindProperty("deleteGamerKey_Key");
 		#endregion
 
 		#region Leaderboard Find
@@ -156,6 +162,10 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.PropertyField(setGamerKey_DoubleTypeSelected, new GUIContent("  > Double Type Selected"));
 			EditorGUILayout.PropertyField(setGamerKey_IntTypeSelected, new GUIContent("  > Int Type Selected"));
 			EditorGUILayout.PropertyField(setGamerKey_BoolTypeSelected, new GUIContent("  > Bool Type Selected"));
+
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Delete Gamer Key", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(deleteGamerKey_Key, new GUIContent("  > Key"));
 		}
 		#endregion
 
