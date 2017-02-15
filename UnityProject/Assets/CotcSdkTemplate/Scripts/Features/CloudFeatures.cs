@@ -29,7 +29,7 @@ namespace CotcSdkTemplate
 			Promise.UnhandledException += LogUnhandledException;
 
 			// Get and keep the Cloud instance reference
-			GetCloud(cotcGameObject);
+			GetCloud(cotcGameObject, InitializeCloud_OnSuccess, InitializeCloud_OnError);
 		}
 
 		// Check if the CotcSdk's Cloud is initialized
@@ -66,7 +66,7 @@ namespace CotcSdkTemplate
 
 		#region Features
 		// Get the main Cloud object's reference
-		private static void GetCloud(CotcGameObject cotcGameObject)
+		private static void GetCloud(CotcGameObject cotcGameObject, Action<Cloud> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Call the API method which returns a Promise<Cloud> (promising a Cloud result)
 			cotcGameObject.GetCloud()
@@ -75,6 +75,10 @@ namespace CotcSdkTemplate
 					{
 						// The exception should always be of the CotcException type
 						ExceptionTools.LogCotcException("CloudFeatures", "GetCloud", exception);
+
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(ExceptionTools.GetExceptionError(exception));
 					})
 				// The result if everything went well
 				.Done(delegate (Cloud cloudReference)
@@ -87,10 +91,34 @@ namespace CotcSdkTemplate
 						// Register to the HttpRequestFailedHandler event
 						cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
 
+						// Call the OnSuccess action if any callback registered to it
+						if (OnSuccess != null)
+							OnSuccess(cloudReference);
+
 						// Call the CloudInitialized event if any callback registered to it
 						if (CloudInitialized != null)
 							CloudInitialized(cloud);
 					});
+		}
+		#endregion
+
+		#region Delegate Callbacks
+		// What to do if any InitializeCloud request succeeded
+		private static void InitializeCloud_OnSuccess(Cloud cloudReference)
+		{
+			// Do whatever...
+		}
+
+		// What to do if any InitializeCloud request failed
+		private static void InitializeCloud_OnError(ExceptionError exceptionError)
+		{
+			switch (exceptionError.type)
+			{
+				// Unhandled error types
+				default:
+				Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] An unhandled error occured >> {0}", exceptionError));
+				break;
+			}
 		}
 		#endregion
 

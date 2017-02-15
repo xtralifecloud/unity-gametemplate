@@ -14,7 +14,7 @@ namespace CotcSdkTemplate
 			// The exception should always be of the CotcException type
 			CotcException cotcException = exception as CotcException;
 
-			if (cotcException != null)
+			if ((cotcException != null) && (cotcException.ServerData != null))
 				return new ExceptionError(cotcException.ServerData["name"].AsString(), cotcException.ServerData["message"].AsString());
 			else
 				return new ExceptionError("UnknownException", exception.ToString());
