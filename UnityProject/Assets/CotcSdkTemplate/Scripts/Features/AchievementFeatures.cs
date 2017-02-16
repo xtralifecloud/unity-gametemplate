@@ -35,7 +35,7 @@ namespace CotcSdkTemplate
 				.Catch(delegate (Exception exception)
 					{
 						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("AchievementFeatures", "ListAllAchievements", exception);
+						ExceptionTools.LogCotcException("AchievementFeatures", "List", exception);
 
 						// Call the OnError action if any callback registered to it
 						if (OnError != null)
@@ -44,7 +44,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Dictionary<string, AchievementDefinition> achievementsList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:AchievementFeatures] ListAllAchievements success >> {0}", achievementsList));
+						Debug.Log(string.Format("[CotcSdkTemplate:AchievementFeatures] List success >> {0}", achievementsList));
 
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)

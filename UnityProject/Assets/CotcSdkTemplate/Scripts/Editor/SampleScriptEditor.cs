@@ -28,6 +28,7 @@ public class SampleScriptEditor : Editor
 	// DisplayAllHighScores properties references
 	private SerializedProperty displayAllHighScores_BoardName;
 	private SerializedProperty displayAllHighScores_ScoresPerPage;
+	private SerializedProperty displayAllHighScores_CenteredBoard;
 
 	// PostScore properties references
 	private SerializedProperty postScore_BoardName;
@@ -72,6 +73,7 @@ public class SampleScriptEditor : Editor
 		// Find DisplayAllHighScores properties references on the serialized object
 		displayAllHighScores_BoardName = serializedObject.FindProperty("displayAllHighScores_BoardName");
 		displayAllHighScores_ScoresPerPage = serializedObject.FindProperty("displayAllHighScores_ScoresPerPage");
+		displayAllHighScores_CenteredBoard = serializedObject.FindProperty("displayAllHighScores_CenteredBoard");
 
 		// Find PostScore properties references on the serialized object
 		postScore_BoardName = serializedObject.FindProperty("postScore_BoardName");
@@ -168,6 +170,7 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.LabelField("  Display All High Scores", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(displayAllHighScores_BoardName, new GUIContent("  > Board Name"));
 			EditorGUILayout.PropertyField(displayAllHighScores_ScoresPerPage, new GUIContent("  > Scores Per Page"));
+			EditorGUILayout.PropertyField(displayAllHighScores_CenteredBoard, new GUIContent("  > Centered Board"));
 
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Post Score", EditorStyles.boldLabel);

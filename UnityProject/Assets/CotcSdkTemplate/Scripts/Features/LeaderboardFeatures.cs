@@ -9,7 +9,7 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// Check variables to get and display on a leaderboard panel all registered best scores for all gamers from a given leaderboard
-		public static void DisplayAllHighScores(string boardName, int scoresPerPage)
+		public static void DisplayAllHighScores(string boardName, int scoresPerPage, bool centeredBoard)
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
 			if (!LeaderboardHandler.HasInstance)
@@ -21,19 +21,26 @@ namespace CotcSdkTemplate
 			else if (scoresPerPage <= 0)
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The scores per page amount is invalid >> Please enter a number superior to 0");
 			else
-				BestHighScores(boardName, scoresPerPage, 1, DisplayScores_OnSuccess, DisplayScores_OnError);
+			{
+				// Display only the page in which the logged in gamer's score is on the given leaderboard
+				if (centeredBoard)
+					CenteredScore(boardName, scoresPerPage, DisplayNonpagedScores_OnSuccess, DisplayNonpagedScores_OnError);
+				// Display the first page of the given leaderboard
+				else
+					BestHighScores(boardName, scoresPerPage, 1, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
+			}
 		}
 
 		// Get the previous page of a previously obtained leaderboard
 		public static void FetchPreviousLeaderboardPage(PagedList<Score> leaderboardScores)
 		{
-			FetchPrevious(leaderboardScores, DisplayScores_OnSuccess, DisplayScores_OnError);
+			FetchPrevious(leaderboardScores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 		}
 
 		// Get the next page of a previously obtained leaderboard
 		public static void FetchNextLeaderboardPage(PagedList<Score> leaderboardScores)
 		{
-			FetchNext(leaderboardScores, DisplayScores_OnSuccess, DisplayScores_OnError);
+			FetchNext(leaderboardScores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 		}
 
 		// Check variables to post a new score to a given leaderboard for the current logged in gamer
@@ -65,7 +72,7 @@ namespace CotcSdkTemplate
 				.Catch(delegate (Exception exception)
 					{
 						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("LeaderboardFeatures", "ListAllHighScores", exception);
+						ExceptionTools.LogCotcException("LeaderboardFeatures", "BestHighScores", exception);
 
 						// Call the OnError action if any callback registered to it
 						if (OnError != null)
@@ -74,7 +81,38 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (PagedList<Score> scoresList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] ListAllHighScores success >> {0}", scoresList));
+						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] BestHighScores success >> {0}", scoresList));
+
+						// Call the OnSuccess action if any callback registered to it
+						if (OnSuccess != null)
+							OnSuccess(boardName, scoresList);
+					});
+		}
+
+		// List all registered best scores for all gamers from a given leaderboard (only the current logged in gamer score's page)
+		// We use the "private" domain by default (each game has its own data, not shared with the other games)
+		private static void CenteredScore(string boardName, int scoresPerPage, Action<string, NonpagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null, string domain = "private")
+		{
+			// Need an initialized Cloud and a logged in gamer to proceed
+			if (!CloudFeatures.IsGamerLoggedIn())
+				return;
+
+			// Call the API method which returns a Promise<NonpagedList<Score>> (promising a NonpagedList<Score> result)
+			CloudFeatures.gamer.Scores.Domain(domain).CenteredScore(boardName, scoresPerPage)
+				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("LeaderboardFeatures", "CenteredScore", exception);
+
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(boardName, ExceptionTools.GetExceptionError(exception));
+					})
+				// The result if everything went well
+				.Done(delegate (NonpagedList<Score> scoresList)
+					{
+						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] CenteredScore success >> {0}", scoresList));
 
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
@@ -120,7 +158,7 @@ namespace CotcSdkTemplate
 			{
 				// Call the API method which returns a Promise<PagedList<Score>> (promising a PagedList<Score> result)
 				leaderboardScores.FetchNext()
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+					// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 					.Catch(delegate (Exception exception)
 						{
 							// The exception should always be of the CotcException type
@@ -177,20 +215,43 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Delegate Callbacks
-		// What to do if any DisplayScores request succeeded
-		private static void DisplayScores_OnSuccess(string boardName, PagedList<Score> scoresList)
+		// What to do if any DisplayNonpagedScores request succeeded
+		private static void DisplayNonpagedScores_OnSuccess(string boardName, NonpagedList<Score> scoresList)
 		{
-			LeaderboardHandler.Instance.FillAndShowLeaderboardPanel(boardName, scoresList);
+			LeaderboardHandler.Instance.FillAndShowNonpagedLeaderboardPanel(boardName, scoresList);
 		}
 
-		// What to do if any DisplayScores request failed
-		private static void DisplayScores_OnError(string boardName, ExceptionError exceptionError)
+		// What to do if any DisplayNonpagedScores request failed
+		private static void DisplayNonpagedScores_OnError(string boardName, ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)
 			{
 				// Error type: no gamer ever scored on this leaderboard (board doesn't exist yet)
 				case "MissingScore":
-				LeaderboardHandler.Instance.FillAndShowLeaderboardPanel(boardName, null);
+				LeaderboardHandler.Instance.FillAndShowNonpagedLeaderboardPanel(boardName, null);
+				break;
+
+				// Unhandled error types
+				default:
+				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
+				break;
+			}
+		}
+
+		// What to do if any DisplayPagedScores request succeeded
+		private static void DisplayPagedScores_OnSuccess(string boardName, PagedList<Score> scoresList)
+		{
+			LeaderboardHandler.Instance.FillAndShowPagedLeaderboardPanel(boardName, scoresList);
+		}
+
+		// What to do if any DisplayPagedScores request failed
+		private static void DisplayPagedScores_OnError(string boardName, ExceptionError exceptionError)
+		{
+			switch (exceptionError.type)
+			{
+				// Error type: no gamer ever scored on this leaderboard (board doesn't exist yet)
+				case "MissingScore":
+				LeaderboardHandler.Instance.FillAndShowPagedLeaderboardPanel(boardName, null);
 				break;
 
 				// Unhandled error types

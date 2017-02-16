@@ -187,6 +187,7 @@ public class SampleScript : MonoBehaviour
 	// References to the leaderboard UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField displayAllHighScores_BoardName = null;
 	[SerializeField] private InputField displayAllHighScores_ScoresPerPage = null;
+	[SerializeField] private Toggle displayAllHighScores_CenteredBoard = null;
 
 	// When the corresponding button is clicked, display all high scores from the given leaderboard
 	public void Button_DisplayAllHighScores()
@@ -194,6 +195,7 @@ public class SampleScript : MonoBehaviour
 		// Default hardcoded values to use if no InputField elements references are assigned
 		string boardName = "TestBoard";
 		int scoresPerPage = 10;
+		bool centeredBoard = false;
 
 		// Check the boardName value
 		if (displayAllHighScores_BoardName != null)
@@ -207,8 +209,14 @@ public class SampleScript : MonoBehaviour
 		else
 			Debug.LogWarning("[SampleScript:Leaderboard] displayAllHighScores_ScoresPerPage InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
 
+		// Check the centeredBoard value
+		if (displayAllHighScores_CenteredBoard != null)
+			centeredBoard = displayAllHighScores_CenteredBoard.isOn;
+		else
+			Debug.LogWarning("[SampleScript:Leaderboard] displayAllHighScores_CenteredBoard InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
 		// Call the template method
-		LeaderboardFeatures.DisplayAllHighScores(boardName, scoresPerPage);
+		LeaderboardFeatures.DisplayAllHighScores(boardName, scoresPerPage, centeredBoard);
 	}
 
 	// References to the leaderboard UI elements (their serialized references are directly assigned in the scene)
