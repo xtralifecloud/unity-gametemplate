@@ -18,11 +18,7 @@ public class SampleScriptEditor : Editor
 	// SetGamerKey properties references
 	private SerializedProperty setGamerKey_Key;
 	private SerializedProperty setGamerKey_Value;
-	private SerializedProperty setGamerKey_JsonTypeSelected;
-	private SerializedProperty setGamerKey_StringTypeSelected;
-	private SerializedProperty setGamerKey_DoubleTypeSelected;
-	private SerializedProperty setGamerKey_IntTypeSelected;
-	private SerializedProperty setGamerKey_BoolTypeSelected;
+	private SerializedProperty setGamerKey_Type;
 
 	// DeleteGamerKey properties references
 	private SerializedProperty deleteGamerKey_Key;
@@ -66,11 +62,7 @@ public class SampleScriptEditor : Editor
 		// Find SetGamerKey properties references on the serialized object
 		setGamerKey_Key = serializedObject.FindProperty("setGamerKey_Key");
 		setGamerKey_Value = serializedObject.FindProperty("setGamerKey_Value");
-		setGamerKey_JsonTypeSelected = serializedObject.FindProperty("setGamerKey_JsonTypeSelected");
-		setGamerKey_StringTypeSelected = serializedObject.FindProperty("setGamerKey_StringTypeSelected");
-		setGamerKey_DoubleTypeSelected = serializedObject.FindProperty("setGamerKey_DoubleTypeSelected");
-		setGamerKey_IntTypeSelected = serializedObject.FindProperty("setGamerKey_IntTypeSelected");
-		setGamerKey_BoolTypeSelected = serializedObject.FindProperty("setGamerKey_BoolTypeSelected");
+		setGamerKey_Type = serializedObject.FindProperty("setGamerKey_Type");
 
 		// Find DeleteGamerKey properties references on the serialized object
 		deleteGamerKey_Key = serializedObject.FindProperty("deleteGamerKey_Key");
@@ -157,11 +149,7 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.LabelField("  Set Gamer Key", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(setGamerKey_Key, new GUIContent("  > Key"));
 			EditorGUILayout.PropertyField(setGamerKey_Value, new GUIContent("  > Value"));
-			EditorGUILayout.PropertyField(setGamerKey_JsonTypeSelected, new GUIContent("  > Json Type Selected"));
-			EditorGUILayout.PropertyField(setGamerKey_StringTypeSelected, new GUIContent("  > String Type Selected"));
-			EditorGUILayout.PropertyField(setGamerKey_DoubleTypeSelected, new GUIContent("  > Double Type Selected"));
-			EditorGUILayout.PropertyField(setGamerKey_IntTypeSelected, new GUIContent("  > Int Type Selected"));
-			EditorGUILayout.PropertyField(setGamerKey_BoolTypeSelected, new GUIContent("  > Bool Type Selected"));
+			EditorGUILayout.PropertyField(setGamerKey_Type, new GUIContent("  > Type"));
 
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Delete Gamer Key", EditorStyles.boldLabel);

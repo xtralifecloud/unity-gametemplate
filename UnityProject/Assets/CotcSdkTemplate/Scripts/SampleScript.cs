@@ -6,15 +6,6 @@ using CotcSdkTemplate;
 
 public class SampleScript : MonoBehaviour
 {
-	#region Initialization
-	// Some convenient initializations
-	private void Awake()
-	{
-		// Select the default SetGamerKey type
-		Radio_SetGamerKey_SelectType("String");
-	}
-	#endregion
-
 	#region Cloud + Login
 	// Initialize the CotcSdk's Cloud at start
 	private void Start()
@@ -117,14 +108,7 @@ public class SampleScript : MonoBehaviour
 	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField setGamerKey_Key = null;
 	[SerializeField] private InputField setGamerKey_Value = null;
-	[SerializeField] private Image setGamerKey_JsonTypeSelected = null;
-	[SerializeField] private Image setGamerKey_StringTypeSelected = null;
-	[SerializeField] private Image setGamerKey_DoubleTypeSelected = null;
-	[SerializeField] private Image setGamerKey_IntTypeSelected = null;
-	[SerializeField] private Image setGamerKey_BoolTypeSelected = null;
-
-	// The selected value type
-	private Bundle.DataType setGamerKey_Type = Bundle.DataType.String;
+	[SerializeField] private ToggleGroup setGamerKey_Type = null;
 
 	// When the corresponding button is clicked, create / update the value of the given key associated to the current logged in gamer
 	public void Button_SetGamerKey()
@@ -132,6 +116,7 @@ public class SampleScript : MonoBehaviour
 		// Default hardcoded values to use if no InputField elements references are assigned
 		string key = "TestString";
 		string value = "Test value.";
+		Bundle.DataType type = Bundle.DataType.String;
 
 		// Check the key value
 		if (setGamerKey_Key != null)
@@ -145,46 +130,37 @@ public class SampleScript : MonoBehaviour
 		else
 			Debug.LogWarning("[SampleScript:GamerVFS] setGamerKey_Value InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
 
+		// Check the type value
+		if (setGamerKey_Type != null)
+			// This foreach should give only one active toggle
+			foreach (Toggle activeToggle in setGamerKey_Type.ActiveToggles())
+				switch (activeToggle.name)
+				{
+					case "Toggle-JsonType":
+					type = Bundle.DataType.Object;
+					break;
+					
+					case "Toggle-StringType":
+					type = Bundle.DataType.String;
+					break;
+					
+					case "Toggle-DoubleType":
+					type = Bundle.DataType.Double;
+					break;
+					
+					case "Toggle-IntType":
+					type = Bundle.DataType.Integer;
+					break;
+					
+					case "Toggle-BoolType":
+					type = Bundle.DataType.Boolean;
+					break;
+				}
+		else
+			Debug.LogWarning("[SampleScript:GamerVFS] setGamerKey_Type ToggleGroup reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+
 		// Call the template method
-		GamerVFSFeatures.SetGamerKey(setGamerKey_Type, key, value);
-	}
-
-	// Select only the clicked radio button type
-	public void Radio_SetGamerKey_SelectType(string type)
-	{
-		setGamerKey_JsonTypeSelected.enabled = false;
-		setGamerKey_StringTypeSelected.enabled = false;
-		setGamerKey_DoubleTypeSelected.enabled = false;
-		setGamerKey_IntTypeSelected.enabled = false;
-		setGamerKey_BoolTypeSelected.enabled = false;
-
-		switch (type)
-		{
-			case "Json":
-			setGamerKey_Type = Bundle.DataType.Object;
-			setGamerKey_JsonTypeSelected.enabled = true;
-			break;
-
-			case "String":
-			setGamerKey_Type = Bundle.DataType.String;
-			setGamerKey_StringTypeSelected.enabled = true;
-			break;
-
-			case "Double":
-			setGamerKey_Type = Bundle.DataType.Double;
-			setGamerKey_DoubleTypeSelected.enabled = true;
-			break;
-
-			case "Int":
-			setGamerKey_Type = Bundle.DataType.Integer;
-			setGamerKey_IntTypeSelected.enabled = true;
-			break;
-
-			case "Bool":
-			setGamerKey_Type = Bundle.DataType.Boolean;
-			setGamerKey_BoolTypeSelected.enabled = true;
-			break;
-		}
+		GamerVFSFeatures.SetGamerKey(type, key, value);
 	}
 
 	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
