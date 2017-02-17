@@ -21,6 +21,9 @@ namespace CotcSdkTemplate
 		// The current gamer score background color
 		[SerializeField] private Color gamerScoreBackgroundColor = new Color(1f, 1f, 0.9f, 1f);
 
+		// Texts to display to show the score rank
+		private const string rankText = "# {0}";
+
 		// Fill the leaderboard score with new data
 		public void FillData(Score score, bool displayScoreInfo = true)
 		{
@@ -28,7 +31,7 @@ namespace CotcSdkTemplate
 			Bundle gamerInfo = Bundle.FromJson(score.GamerInfo.ToJson());
 
 			// Update fields
-			scoreRank.text = score.Rank.ToString();
+			scoreRank.text = string.Format(rankText, score.Rank);
 			gamerNickname.text = gamerInfo["profile"]["displayName"].AsString();
 			avatarUrlToDownload = gamerInfo["profile"]["avatar"].AsString();
 			scoreValue.text = score.Value.ToString();

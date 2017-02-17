@@ -219,6 +219,13 @@ public class SampleScript : MonoBehaviour
 		LeaderboardFeatures.DisplayAllHighScores(boardName, scoresPerPage, centeredBoard);
 	}
 
+	// When the corresponding button is clicked, display logged in gamer's high scores from all leaderboards in which he scored
+	public void Button_DisplayGamerHighScores()
+	{
+		// Call the template method
+		LeaderboardFeatures.DisplayGamerHighScores();
+	}
+
 	// References to the leaderboard UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField postScore_BoardName = null;
 	[SerializeField] private InputField postScore_ScoreValue = null;

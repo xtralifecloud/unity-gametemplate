@@ -43,7 +43,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Bundle keyValue)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:GameVFSFeatures] GetValue success >> Key Value: {0}", keyValue.ToString()));
+						Debug.Log(string.Format("[CotcSdkTemplate:GameVFSFeatures] GetValue success >> Key Value: {0}", keyValue));
 
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)

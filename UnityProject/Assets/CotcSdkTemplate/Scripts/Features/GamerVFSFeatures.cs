@@ -92,7 +92,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Bundle keyValue)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success >> Key Value: {0}", keyValue.ToString()));
+						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success >> Key Value: {0}", keyValue));
 
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
@@ -154,7 +154,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Done deleteDone)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success >> Key Deleted: {0}", deleteDone.ToString()));
+						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success >> Successful: {0}", deleteDone.Successful));
 
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)

@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 222000014068279242}
   - component: {fileID: 114000010820029960}
   m_Layer: 5
-  m_Name: Line
+  m_Name: Line-Achievement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

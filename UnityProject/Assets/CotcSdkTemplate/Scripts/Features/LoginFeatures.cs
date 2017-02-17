@@ -76,7 +76,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success >> {0}", loggedInGamer));
+						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success >> Logged In Gamer: {0}", loggedInGamer));
 
 						// Keep the Gamer's reference
 						CloudFeatures.gamer = loggedInGamer;
@@ -113,7 +113,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success >> {0}", loggedInGamer));
+						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success >> Logged In Gamer: {0}", loggedInGamer));
 
 						// Keep the Gamer's reference
 						CloudFeatures.gamer = loggedInGamer;
@@ -150,7 +150,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Done logoutDone)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success >> {0}", logoutDone));
+						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success >> Successful: {0}", logoutDone.Successful));
 
 						// Discard the Gamer's reference
 						CloudFeatures.gamer = null;

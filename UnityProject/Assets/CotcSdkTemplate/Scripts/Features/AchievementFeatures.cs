@@ -44,7 +44,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Dictionary<string, AchievementDefinition> achievementsList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:AchievementFeatures] List success >> {0}", achievementsList));
+						Debug.Log(string.Format("[CotcSdkTemplate:AchievementFeatures] List success >> {0} achievements", achievementsList.Count));
 
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)

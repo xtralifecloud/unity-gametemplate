@@ -13,14 +13,16 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject outClickMask = null;
 		[SerializeField] private GameObject leaderboardPanel = null;
 		[SerializeField] private Text leaderboardPanelTitle = null;
-		[SerializeField] private GameObject noScoreText = null;
+		[SerializeField] private GameObject noScorePostedInBoardText = null;
+		[SerializeField] private GameObject noScoreInBoardText = null;
 		[SerializeField] private GameObject noScorePostedText = null;
 		[SerializeField] private GameObject pageButtons = null;
 		[SerializeField] private Button previousPageButton = null;
 		[SerializeField] private Button nextPageButton = null;
 
-		// Reference to the score GameObject prefab and the scores list scroll view
+		// Reference to the score GameObject prefabs and the scores list scroll view
 		[SerializeField] private GameObject scorePrefab = null;
+		[SerializeField] private GameObject gamerScorePrefab = null;
 		[SerializeField] private GridLayoutGroup leaderboardScoresLayout = null;
 
 		// List of the score GameObjects created on the leaderboard panel
@@ -42,10 +44,57 @@ namespace CotcSdkTemplate
 			leaderboardPanel.SetActive(show);
 		}
 
+		// Fill the leaderboard panel with nonpaged scores then show it
+		public void FillAndShowNonpagedLeaderboardPanel(string boardName, NonpagedList<Score> scoresList)
+		{
+			// Hide the "no score in board" (for paged list) and "no score posted" (for multiple boards) texts and hide the previous page and next page buttons
+			noScoreInBoardText.SetActive(false);
+			noScorePostedText.SetActive(false);
+			pageButtons.SetActive(false);
+
+			// Destroy the previously created score GameObjects if any exist and clear the list
+			foreach (GameObject leaderboardScore in leaderboardScores)
+				DestroyObject(leaderboardScore);
+
+			leaderboardScores.Clear();
+
+			// Set the leaderboard panel's title
+			if (!string.IsNullOrEmpty(boardName))
+				leaderboardPanelTitle.text = boardName;
+
+			// If there are scores to display, fill the leaderboard panel with score prefabs
+			if ((scoresList != null) && (scoresList.Count > 0))
+			{
+				// Hide the "no score posted in board" text
+				noScorePostedInBoardText.SetActive(false);
+
+				foreach (Score score in scoresList)
+				{
+					// Create a leaderboard score GameObject and hook it at the leaderboard scores scroll view
+					GameObject prefabInstance = Instantiate<GameObject>(scorePrefab);
+					prefabInstance.transform.SetParent(leaderboardScoresLayout.transform, false);
+
+					// Fill the newly created GameObject with score data
+					LeaderboardScoreHandler leaderboardScoreHandler = prefabInstance.GetComponent<LeaderboardScoreHandler>();
+					leaderboardScoreHandler.FillData(score);
+
+					// Add the newly created GameObject to the list
+					leaderboardScores.Add(prefabInstance);
+				}
+			}
+			// Else, show the "no score posted in board" text
+			else
+				noScorePostedInBoardText.SetActive(true);
+
+			// Show the leaderboard panel
+			ShowLeaderboardPanel(true);
+		}
+
 		// Fill the leaderboard panel with paged scores then show it
 		public void FillAndShowPagedLeaderboardPanel(string boardName, PagedList<Score> scoresList)
 		{
-			// Hide the "no score posted" (for nonpaged list) text
+			// Hide the "no score posted in board" (for nonpaged list) and "no score posted" (for multiple boards) texts
+			noScorePostedInBoardText.SetActive(false);
 			noScorePostedText.SetActive(false);
 
 			// Destroy the previously created score GameObjects if any exist and clear the list
@@ -61,8 +110,8 @@ namespace CotcSdkTemplate
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
 			{
-				// Hide the "no score" text and show the previous page and next page buttons
-				noScoreText.SetActive(false);
+				// Hide the "no score in board" text and show the previous page and next page buttons
+				noScoreInBoardText.SetActive(false);
 				pageButtons.SetActive(true);
 
 				foreach (Score score in scoresList)
@@ -84,10 +133,10 @@ namespace CotcSdkTemplate
 				previousPageButton.interactable = currentScoresList.HasPrevious;
 				nextPageButton.interactable = currentScoresList.HasNext;
 			}
-			// Else, show the "no score" text, hide the previous page and next page buttons, and prevent usage of previous and next leaderboard page
+			// Else, show the "no score in board" text and hide the previous page and next page buttons
 			else
 			{
-				noScoreText.SetActive(true);
+				noScoreInBoardText.SetActive(true);
 				pageButtons.SetActive(false);
 				currentScoresList = null;
 			}
@@ -96,11 +145,12 @@ namespace CotcSdkTemplate
 			ShowLeaderboardPanel(true);
 		}
 
-		// Fill the leaderboard panel with nonpaged scores then show it
-		public void FillAndShowNonpagedLeaderboardPanel(string boardName, NonpagedList<Score> scoresList)
+		// Fill the leaderboard panel with scores from multiple boards then show it
+		public void FillAndShowMultipleLeaderboardPanel(Dictionary<string, Score> scoresList)
 		{
-			// Hide the "no score" (for paged list) text and show the previous page and next page buttons
-			noScoreText.SetActive(false);
+			// Hide the "no score posted in board" (for nonpaged list) and the "no score in board" (for paged list) texts and hide the previous page and next page buttons
+			noScorePostedInBoardText.SetActive(false);
+			noScoreInBoardText.SetActive(false);
 			pageButtons.SetActive(false);
 
 			// Destroy the previously created score GameObjects if any exist and clear the list
@@ -110,30 +160,29 @@ namespace CotcSdkTemplate
 			leaderboardScores.Clear();
 
 			// Set the leaderboard panel's title
-			if (!string.IsNullOrEmpty(boardName))
-				leaderboardPanelTitle.text = boardName;
+			leaderboardPanelTitle.text = CloudFeatures.gamer["profile"]["displayName"].AsString();
 
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
 			{
-				// Hide the "no score posted" text and show the previous page and next page buttons
+				// Hide the "no score posted" text
 				noScorePostedText.SetActive(false);
 
-				foreach (Score score in scoresList)
+				foreach (KeyValuePair<string, Score> score in scoresList)
 				{
-					// Create a leaderboard score GameObject and hook it at the leaderboard scores scroll view
-					GameObject prefabInstance = Instantiate<GameObject>(scorePrefab);
+					// Create a leaderboard gamer score GameObject and hook it at the leaderboard scores scroll view
+					GameObject prefabInstance = Instantiate<GameObject>(gamerScorePrefab);
 					prefabInstance.transform.SetParent(leaderboardScoresLayout.transform, false);
 
 					// Fill the newly created GameObject with score data
-					LeaderboardScoreHandler leaderboardScoreHandler = prefabInstance.GetComponent<LeaderboardScoreHandler>();
-					leaderboardScoreHandler.FillData(score);
+					LeaderboardGamerScoreHandler leaderboardGamerScoreHandler = prefabInstance.GetComponent<LeaderboardGamerScoreHandler>();
+					leaderboardGamerScoreHandler.FillData(score.Value, score.Key);
 
 					// Add the newly created GameObject to the list
 					leaderboardScores.Add(prefabInstance);
 				}
 			}
-			// Else, show the "no score posted" text, hide the previous page and next page buttons, and prevent usage of previous and next leaderboard page
+			// Else, show the "no score posted" text
 			else
 				noScorePostedText.SetActive(true);
 

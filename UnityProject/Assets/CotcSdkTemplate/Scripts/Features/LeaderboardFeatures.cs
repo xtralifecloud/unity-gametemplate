@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 using CotcSdk;
@@ -29,6 +30,16 @@ namespace CotcSdkTemplate
 				else
 					BestHighScores(boardName, scoresPerPage, 1, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 			}
+		}
+
+		// Display on a leaderboard panel logged in gamer's high scores from all leaderboards in which he scored
+		public static void DisplayGamerHighScores()
+		{
+			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
+			if (!LeaderboardHandler.HasInstance)
+				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found >> Please attach a LeaderboardHandler script on an active object of the scene");
+			else
+				ListUserBestScores(DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
 		}
 
 		// Get the previous page of a previously obtained leaderboard
@@ -81,7 +92,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (PagedList<Score> scoresList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] BestHighScores success >> {0}", scoresList));
+						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] BestHighScores success >> {0} scores", scoresList.Count));
 
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
@@ -112,7 +123,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (NonpagedList<Score> scoresList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] CenteredScore success >> {0}", scoresList));
+						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] CenteredScore success >> {0} scores", scoresList.Count));
 
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
@@ -140,7 +151,7 @@ namespace CotcSdkTemplate
 					// The result if everything went well
 					.Done(delegate (PagedList<Score> scoresList)
 						{
-							Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchPrevious success >> {0}", scoresList));
+							Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchPrevious success >> {0} scores", scoresList.Count));
 
 							// Call the OnSuccess action if any callback registered to it
 							if (OnSuccess != null)
@@ -171,7 +182,7 @@ namespace CotcSdkTemplate
 					// The result if everything went well
 					.Done(delegate (PagedList<Score> scoresList)
 						{
-							Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchNext success >> {0}", scoresList));
+							Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchNext success >> {0} scores", scoresList.Count));
 
 							// Call the OnSuccess action if any callback registered to it
 							if (OnSuccess != null)
@@ -180,6 +191,37 @@ namespace CotcSdkTemplate
 			}
 			else
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The current leaderboard has no next page");
+		}
+
+		// List logged in gamer's high scores from all leaderboards in which he scored
+		// We use the "private" domain by default (each game has its own data, not shared with the other games)
+		private static void ListUserBestScores(Action<Dictionary<string, Score>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		{
+			// Need an initialized Cloud and a logged in gamer to proceed
+			if (!CloudFeatures.IsGamerLoggedIn())
+				return;
+
+			// Call the API method which returns a Promise<Dictionary<string, Score>> (promising a Dictionary<string, Score> result)
+			CloudFeatures.gamer.Scores.Domain(domain).ListUserBestScores()
+				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
+				.Catch(delegate (Exception exception)
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("LeaderboardFeatures", "ListUserBestScores", exception);
+
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(ExceptionTools.GetExceptionError(exception));
+					})
+				// The result if everything went well
+				.Done(delegate (Dictionary<string, Score> scoresList)
+					{
+						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] ListUserBestScores success >> {0} scores", scoresList.Count));
+
+						// Call the OnSuccess action if any callback registered to it
+						if (OnSuccess != null)
+							OnSuccess(scoresList);
+					});
 		}
 
 		// Post a new score to a given leaderboard for the current logged in gamer
@@ -254,6 +296,24 @@ namespace CotcSdkTemplate
 				LeaderboardHandler.Instance.FillAndShowPagedLeaderboardPanel(boardName, null);
 				break;
 
+				// Unhandled error types
+				default:
+				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
+				break;
+			}
+		}
+
+		// What to do if any DisplayGamerHighScores request succeeded
+		private static void DisplayGamerHighScores_OnSuccess(Dictionary<string, Score> scoresList)
+		{
+			LeaderboardHandler.Instance.FillAndShowMultipleLeaderboardPanel(scoresList);
+		}
+
+		// What to do if any DisplayGamerHighScores request failed
+		private static void DisplayGamerHighScores_OnError(ExceptionError exceptionError)
+		{
+			switch (exceptionError.type)
+			{
 				// Unhandled error types
 				default:
 				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
