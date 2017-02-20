@@ -33,23 +33,23 @@ namespace CotcSdkTemplate
 			CloudFeatures.gamer.Achievements.Domain(domain).List()
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("AchievementFeatures", "List", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("AchievementFeatures", "List", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Dictionary<string, AchievementDefinition> achievementsList)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:AchievementFeatures] List success >> {0} achievements", achievementsList.Count));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:AchievementFeatures] List success >> {0} achievements", achievementsList.Count));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(achievementsList);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(achievementsList);
+				});
 		}
 		#endregion
 

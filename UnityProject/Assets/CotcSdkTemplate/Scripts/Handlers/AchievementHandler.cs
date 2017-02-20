@@ -40,7 +40,7 @@ namespace CotcSdkTemplate
 			// Destroy the previously created achievement GameObjects if any exist and clear the list
 			foreach (GameObject achievementItem in achievementItems)
 				DestroyObject(achievementItem);
-
+			
 			achievementItems.Clear();
 
 			// If there are achievements to display, fill the achievement panel with achievement prefabs
@@ -66,7 +66,7 @@ namespace CotcSdkTemplate
 			// Else, show the "no achievement" text
 			else
 				noAchievementText.SetActive(true);
-
+			
 			// Show the achievement panel
 			ShowAchievementPanel(true);
 		}

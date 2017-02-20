@@ -61,7 +61,7 @@ namespace CotcSdkTemplate
 			}
 		}
 
-		// Check variables to delete the given key associated to the current logged in gamer (or all keys if null or empty)
+		// Delete the given key associated to the current logged in gamer (or all keys if null or empty)
 		public static void DeleteGamerKey(string key)
 		{
 			DeleteValue(key, DeleteGamerKey_OnSuccess, DeleteGamerKey_OnError);
@@ -69,35 +69,35 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Features
-		// Read and display the value of the given key associated to the current logged in gamer (or all keys if null or empty)
+		// Read the value of the given key associated to the current logged in gamer (or all keys if null or empty)
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
 		private static void GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-
+			
 			// Call the API method which returns a Promise<Bundle> (promising a Bundle result)
 			CloudFeatures.gamer.GamerVfs.Domain(domain).GetValue(key)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("GamerVFSFeatures", "GetValue", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("GamerVFSFeatures", "GetValue", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Bundle keyValue)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success >> Key Value: {0}", keyValue));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success >> Key Value: {0}", keyValue));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(keyValue);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(keyValue);
+				});
 		}
 
 		// Create / update the value of the given key associated to the current logged in gamer
@@ -107,28 +107,28 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-
+			
 			// Call the API method which returns a Promise<Done> (promising a Done result)
 			CloudFeatures.gamer.GamerVfs.Domain(domain).SetValue(key, value)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("GamerVFSFeatures", "SetValue", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("GamerVFSFeatures", "SetValue", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Done setDone)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] SetValue success >> Successful: {0}", setDone.Successful));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] SetValue success >> Successful: {0}", setDone.Successful));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(setDone);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(setDone);
+				});
 		}
 
 		// Delete the given key associated to the current logged in gamer (or all keys if null or empty)
@@ -138,28 +138,28 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-
+			
 			// Call the API method which returns a Promise<Done> (promising a Done result)
 			CloudFeatures.gamer.GamerVfs.Domain(domain).DeleteValue(key)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("GamerVFSFeatures", "DeleteValue", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("GamerVFSFeatures", "DeleteValue", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Done deleteDone)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success >> Successful: {0}", deleteDone.Successful));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success >> Successful: {0}", deleteDone.Successful));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(deleteDone);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(deleteDone);
+				});
 		}
 		#endregion
 

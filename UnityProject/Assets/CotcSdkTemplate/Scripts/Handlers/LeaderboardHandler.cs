@@ -55,13 +55,13 @@ namespace CotcSdkTemplate
 			// Destroy the previously created score GameObjects if any exist and clear the list
 			foreach (GameObject leaderboardScore in leaderboardScores)
 				DestroyObject(leaderboardScore);
-
+			
 			leaderboardScores.Clear();
 
 			// Set the leaderboard panel's title
 			if (!string.IsNullOrEmpty(boardName))
 				leaderboardPanelTitle.text = boardName;
-
+			
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
 			{
@@ -85,7 +85,7 @@ namespace CotcSdkTemplate
 			// Else, show the "no score posted in board" text
 			else
 				noScorePostedInBoardText.SetActive(true);
-
+			
 			// Show the leaderboard panel
 			ShowLeaderboardPanel(true);
 		}
@@ -100,13 +100,13 @@ namespace CotcSdkTemplate
 			// Destroy the previously created score GameObjects if any exist and clear the list
 			foreach (GameObject leaderboardScore in leaderboardScores)
 				DestroyObject(leaderboardScore);
-
+			
 			leaderboardScores.Clear();
 
 			// Set the leaderboard panel's title
 			if (!string.IsNullOrEmpty(boardName))
 				leaderboardPanelTitle.text = boardName;
-
+			
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
 			{
@@ -140,7 +140,7 @@ namespace CotcSdkTemplate
 				pageButtons.SetActive(false);
 				currentScoresList = null;
 			}
-
+			
 			// Show the leaderboard panel
 			ShowLeaderboardPanel(true);
 		}
@@ -156,7 +156,7 @@ namespace CotcSdkTemplate
 			// Destroy the previously created score GameObjects if any exist and clear the list
 			foreach (GameObject leaderboardScore in leaderboardScores)
 				DestroyObject(leaderboardScore);
-
+			
 			leaderboardScores.Clear();
 
 			// Set the leaderboard panel's title
@@ -185,7 +185,7 @@ namespace CotcSdkTemplate
 			// Else, show the "no score posted" text
 			else
 				noScorePostedText.SetActive(true);
-
+			
 			// Show the leaderboard panel
 			ShowLeaderboardPanel(true);
 		}

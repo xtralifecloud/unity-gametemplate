@@ -20,35 +20,35 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Features
-		// Read and display the value of the given key associated to the current game (or all keys if null or empty)
+		// Read the value of the given key associated to the current game (or all keys if null or empty)
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
 		private static void GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 				return;
-
+			
 			// Call the API method which returns a Promise<Bundle> (promising a Bundle result)
 			CloudFeatures.cloud.Game.GameVfs.Domain(domain).GetValue(key)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("GameVFSFeatures", "GetValue", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("GameVFSFeatures", "GetValue", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Bundle keyValue)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:GameVFSFeatures] GetValue success >> Key Value: {0}", keyValue));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:GameVFSFeatures] GetValue success >> Key Value: {0}", keyValue));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(keyValue);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(keyValue);
+				});
 		}
 		#endregion
 

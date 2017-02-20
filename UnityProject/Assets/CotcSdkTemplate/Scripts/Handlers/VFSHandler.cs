@@ -40,7 +40,7 @@ namespace CotcSdkTemplate
 			// Destroy the previously created key GameObjects if any exist and clear the list
 			foreach (GameObject VFSKey in VFSKeys)
 				DestroyObject(VFSKey);
-
+			
 			VFSKeys.Clear();
 
 			// If there are keys to display, fill the VFS panel with key prefabs
@@ -66,7 +66,7 @@ namespace CotcSdkTemplate
 			// Else, show the "no key" text
 			else
 				noKeyText.SetActive(true);
-
+			
 			// Show the VFS panel
 			ShowVFSPanel(true);
 		}

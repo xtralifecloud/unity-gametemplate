@@ -32,7 +32,7 @@ namespace CotcSdkTemplate
 			}
 		}
 
-		// Display on a leaderboard panel logged in gamer's high scores from all leaderboards in which he scored
+		// Get and display on a leaderboard panel logged in gamer's high scores from all leaderboards in which he scored
 		public static void DisplayGamerHighScores()
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
@@ -42,13 +42,13 @@ namespace CotcSdkTemplate
 				ListUserBestScores(DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
 		}
 
-		// Get the previous page of a previously obtained leaderboard
+		// Get and display the previous page of a previously obtained leaderboard
 		public static void FetchPreviousLeaderboardPage(PagedList<Score> leaderboardScores)
 		{
 			FetchPrevious(leaderboardScores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 		}
 
-		// Get the next page of a previously obtained leaderboard
+		// Get and display the next page of a previously obtained leaderboard
 		public static void FetchNextLeaderboardPage(PagedList<Score> leaderboardScores)
 		{
 			FetchNext(leaderboardScores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
@@ -76,28 +76,28 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-
+			
 			// Call the API method which returns a Promise<PagedList<Score>> (promising a PagedList<Score> result)
 			CloudFeatures.gamer.Scores.Domain(domain).BestHighScores(boardName, scoresPerPage, pageNumber)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("LeaderboardFeatures", "BestHighScores", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("LeaderboardFeatures", "BestHighScores", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(boardName, ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(boardName, ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (PagedList<Score> scoresList)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] BestHighScores success >> {0} scores", scoresList.Count));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] BestHighScores success >> {0} scores", scoresList.Count));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(boardName, scoresList);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(boardName, scoresList);
+				});
 		}
 
 		// List all registered best scores for all gamers from a given leaderboard (only the current logged in gamer score's page)
@@ -107,28 +107,28 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-
+			
 			// Call the API method which returns a Promise<NonpagedList<Score>> (promising a NonpagedList<Score> result)
 			CloudFeatures.gamer.Scores.Domain(domain).CenteredScore(boardName, scoresPerPage)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("LeaderboardFeatures", "CenteredScore", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("LeaderboardFeatures", "CenteredScore", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(boardName, ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(boardName, ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (NonpagedList<Score> scoresList)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] CenteredScore success >> {0} scores", scoresList.Count));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] CenteredScore success >> {0} scores", scoresList.Count));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(boardName, scoresList);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(boardName, scoresList);
+				});
 		}
 
 		// Get the previous page of a previously obtained leaderboard
@@ -140,23 +140,23 @@ namespace CotcSdkTemplate
 				leaderboardScores.FetchPrevious()
 					// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 					.Catch(delegate (Exception exception)
-						{
-							// The exception should always be of the CotcException type
-							ExceptionTools.LogCotcException("LeaderboardFeatures", "FetchPrevious", exception);
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("LeaderboardFeatures", "FetchPrevious", exception);
 
-							// Call the OnError action if any callback registered to it
-							if (OnError != null)
-								OnError(null, ExceptionTools.GetExceptionError(exception));
-						})
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(null, ExceptionTools.GetExceptionError(exception));
+					})
 					// The result if everything went well
 					.Done(delegate (PagedList<Score> scoresList)
-						{
-							Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchPrevious success >> {0} scores", scoresList.Count));
+					{
+						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchPrevious success >> {0} scores", scoresList.Count));
 
-							// Call the OnSuccess action if any callback registered to it
-							if (OnSuccess != null)
-								OnSuccess(null, scoresList);
-						});
+						// Call the OnSuccess action if any callback registered to it
+						if (OnSuccess != null)
+							OnSuccess(null, scoresList);
+					});
 			}
 			else
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The current leaderboard has no previous page");
@@ -171,23 +171,23 @@ namespace CotcSdkTemplate
 				leaderboardScores.FetchNext()
 					// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 					.Catch(delegate (Exception exception)
-						{
-							// The exception should always be of the CotcException type
-							ExceptionTools.LogCotcException("LeaderboardFeatures", "FetchNext", exception);
+					{
+						// The exception should always be of the CotcException type
+						ExceptionTools.LogCotcException("LeaderboardFeatures", "FetchNext", exception);
 
-							// Call the OnError action if any callback registered to it
-							if (OnError != null)
-								OnError(null, ExceptionTools.GetExceptionError(exception));
-						})
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(null, ExceptionTools.GetExceptionError(exception));
+					})
 					// The result if everything went well
 					.Done(delegate (PagedList<Score> scoresList)
-						{
-							Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchNext success >> {0} scores", scoresList.Count));
+					{
+						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchNext success >> {0} scores", scoresList.Count));
 
-							// Call the OnSuccess action if any callback registered to it
-							if (OnSuccess != null)
-								OnSuccess(null, scoresList);
-						});
+						// Call the OnSuccess action if any callback registered to it
+						if (OnSuccess != null)
+							OnSuccess(null, scoresList);
+					});
 			}
 			else
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The current leaderboard has no next page");
@@ -200,28 +200,28 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-
+			
 			// Call the API method which returns a Promise<Dictionary<string, Score>> (promising a Dictionary<string, Score> result)
 			CloudFeatures.gamer.Scores.Domain(domain).ListUserBestScores()
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("LeaderboardFeatures", "ListUserBestScores", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("LeaderboardFeatures", "ListUserBestScores", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Dictionary<string, Score> scoresList)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] ListUserBestScores success >> {0} scores", scoresList.Count));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] ListUserBestScores success >> {0} scores", scoresList.Count));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(scoresList);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(scoresList);
+				});
 		}
 
 		// Post a new score to a given leaderboard for the current logged in gamer
@@ -231,28 +231,28 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-
+			
 			// Call the API method which returns a Promise<PostedGameScore> (promising a PostedGameScore result)
 			CloudFeatures.gamer.Scores.Domain(domain).Post(scoreValue, boardName, scoreOrder, scoreDescription)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("LeaderboardFeatures", "Post", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("LeaderboardFeatures", "Post", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (PostedGameScore postedScore)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] Post success >> Has Been Saved: {0}, Score Rank: {1}", postedScore.HasBeenSaved, postedScore.Rank));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] Post success >> Has Been Saved: {0}, Score Rank: {1}", postedScore.HasBeenSaved, postedScore.Rank));
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(postedScore);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(postedScore);
+				});
 		}
 		#endregion
 

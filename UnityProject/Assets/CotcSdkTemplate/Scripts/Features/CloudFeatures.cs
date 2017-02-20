@@ -72,33 +72,33 @@ namespace CotcSdkTemplate
 			cotcGameObject.GetCloud()
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("CloudFeatures", "GetCloud", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("CloudFeatures", "GetCloud", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Cloud cloudReference)
-					{
-						Debug.Log("[CotcSdkTemplate:CloudFeatures] GetCloud success");
+				{
+					Debug.Log("[CotcSdkTemplate:CloudFeatures] GetCloud success");
 
-						// Keep the Cloud's reference
-						cloud = cloudReference;
+					// Keep the Cloud's reference
+					cloud = cloudReference;
 
-						// Register to the HttpRequestFailedHandler event
-						cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
+					// Register to the HttpRequestFailedHandler event
+					cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(cloudReference);
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(cloudReference);
 
-						// Call the CloudInitialized event if any callback registered to it
-						if (CloudInitialized != null)
-							CloudInitialized(cloud);
-					});
+					// Call the CloudInitialized event if any callback registered to it
+					if (CloudInitialized != null)
+						CloudInitialized(cloud);
+				});
 		}
 		#endregion
 

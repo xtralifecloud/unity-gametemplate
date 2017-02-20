@@ -60,35 +60,35 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 				return;
-
+			
 			// Call the API method which returns a Promise<Gamer> (promising a Gamer result)
 			CloudFeatures.cloud.LoginAnonymously()
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("LoginFeatures", "LoginAnonymously", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("LoginFeatures", "LoginAnonymously", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success >> Logged In Gamer: {0}", loggedInGamer));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success >> Logged In Gamer: {0}", loggedInGamer));
 
-						// Keep the Gamer's reference
-						CloudFeatures.gamer = loggedInGamer;
+					// Keep the Gamer's reference
+					CloudFeatures.gamer = loggedInGamer;
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(loggedInGamer);
-						
-						// Call the GamerLoggedIn event if any callback registered to it
-						if (GamerLoggedIn != null)
-							GamerLoggedIn(CloudFeatures.gamer);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(loggedInGamer);
+					
+					// Call the GamerLoggedIn event if any callback registered to it
+					if (GamerLoggedIn != null)
+						GamerLoggedIn(CloudFeatures.gamer);
+				});
 		}
 
 		// Login with the last used account
@@ -97,35 +97,35 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 				return;
-
+			
 			// Call the API method which returns a Promise<Gamer> (promising a Gamer result)
 			CloudFeatures.cloud.ResumeSession(gamerID, gamerSecret)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("LoginFeatures", "ResumeSession", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("LoginFeatures", "ResumeSession", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success >> Logged In Gamer: {0}", loggedInGamer));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success >> Logged In Gamer: {0}", loggedInGamer));
 
-						// Keep the Gamer's reference
-						CloudFeatures.gamer = loggedInGamer;
+					// Keep the Gamer's reference
+					CloudFeatures.gamer = loggedInGamer;
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess(loggedInGamer);
-						
-						// Call the GamerLoggedIn event if any callback registered to it
-						if (GamerLoggedIn != null)
-							GamerLoggedIn(CloudFeatures.gamer);
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(loggedInGamer);
+					
+					// Call the GamerLoggedIn event if any callback registered to it
+					if (GamerLoggedIn != null)
+						GamerLoggedIn(CloudFeatures.gamer);
+				});
 		}
 
 		// Logout the current logged in gamer
@@ -134,35 +134,35 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
-
+			
 			// Call the API method which returns a Promise<Done> (promising a Done result)
 			CloudFeatures.cloud.Logout()
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("LoginFeatures", "Logout", exception);
+				{
+					// The exception should always be of the CotcException type
+					ExceptionTools.LogCotcException("LoginFeatures", "Logout", exception);
 
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+				})
 				// The result if everything went well
 				.Done(delegate (Done logoutDone)
-					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success >> Successful: {0}", logoutDone.Successful));
+				{
+					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success >> Successful: {0}", logoutDone.Successful));
 
-						// Discard the Gamer's reference
-						CloudFeatures.gamer = null;
+					// Discard the Gamer's reference
+					CloudFeatures.gamer = null;
 
-						// Call the OnSuccess action if any callback registered to it
-						if (OnSuccess != null)
-							OnSuccess();
-						
-						// Call the GamerLoggedOut event if any callback registered to it
-						if (GamerLoggedOut != null)
-							GamerLoggedOut();
-					});
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess();
+					
+					// Call the GamerLoggedOut event if any callback registered to it
+					if (GamerLoggedOut != null)
+						GamerLoggedOut();
+				});
 		}
 		#endregion
 

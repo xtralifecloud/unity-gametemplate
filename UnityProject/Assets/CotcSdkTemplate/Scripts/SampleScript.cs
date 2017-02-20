@@ -306,6 +306,13 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Transaction
+	// When the corresponding button is clicked, display the current currencies balance
+	public void Button_DisplayBalance()
+	{
+		// Call the template method
+		TransactionFeatures.DisplayBalance();
+	}
+
 	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField postTransaction_CurrencyName = null;
 	[SerializeField] private InputField postTransaction_CurrencyAmount = null;
