@@ -43,6 +43,13 @@ public class SampleScriptEditor : Editor
 	#endregion
 
 	#region Transaction References
+	// DisplayAllCurrenciesHistory properties references
+	private SerializedProperty displayAllCurrenciesHistory_CurrenciesPerPage;
+
+	// DisplayCurrencyHistory properties references
+	private SerializedProperty displayCurrencyHistory_CurrencyName;
+	private SerializedProperty displayCurrencyHistory_CurrenciesPerPage;
+
 	// PostTransaction properties references
 	private SerializedProperty postTransaction_CurrencyName;
 	private SerializedProperty postTransaction_CurrencyAmount;
@@ -88,6 +95,13 @@ public class SampleScriptEditor : Editor
 		#endregion
 
 		#region Transaction Find
+		// Find DisplayAllCurrenciesHistory properties references on the serialized object
+		displayAllCurrenciesHistory_CurrenciesPerPage = serializedObject.FindProperty("displayAllCurrenciesHistory_CurrenciesPerPage");
+
+		// Find DisplayCurrencyHistory properties references on the serialized object
+		displayCurrencyHistory_CurrencyName = serializedObject.FindProperty("displayCurrencyHistory_CurrencyName");
+		displayCurrencyHistory_CurrenciesPerPage = serializedObject.FindProperty("displayCurrencyHistory_CurrenciesPerPage");
+
 		// Find PostTransaction properties references on the serialized object
 		postTransaction_CurrencyName = serializedObject.FindProperty("postTransaction_CurrencyName");
 		postTransaction_CurrencyAmount = serializedObject.FindProperty("postTransaction_CurrencyAmount");
@@ -201,6 +215,15 @@ public class SampleScriptEditor : Editor
 
 		if (transactionFoldoutState)
 		{
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Display All Currencies History", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(displayAllCurrenciesHistory_CurrenciesPerPage, new GUIContent("  > Currencies Per Page"));
+
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Display Currency History", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(displayCurrencyHistory_CurrencyName, new GUIContent("  > Currency Name"));
+			EditorGUILayout.PropertyField(displayCurrencyHistory_CurrenciesPerPage, new GUIContent("  > Currencies Per Page"));
+
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Post Transaction", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(postTransaction_CurrencyName, new GUIContent("  > Currency Name"));

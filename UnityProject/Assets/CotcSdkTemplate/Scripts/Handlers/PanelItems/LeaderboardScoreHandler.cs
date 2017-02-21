@@ -21,7 +21,7 @@ namespace CotcSdkTemplate
 		// The current gamer score background color
 		[SerializeField] private Color gamerScoreBackgroundColor = new Color(1f, 1f, 0.9f, 1f);
 
-		// Texts to display to show the score rank
+		// Text to display to show the score rank
 		private const string rankText = "# {0}";
 
 		// Fill the leaderboard score with new data
@@ -36,6 +36,8 @@ namespace CotcSdkTemplate
 			avatarUrlToDownload = gamerInfo["profile"]["avatar"].AsString();
 			scoreValue.text = score.Value.ToString();
 			scoreInfo.text = score.Info;
+
+			// Display the score info only if there is one
 			scoreInfoLine.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));
 
 			// Change the background color to highlight if this is the current gamer's score

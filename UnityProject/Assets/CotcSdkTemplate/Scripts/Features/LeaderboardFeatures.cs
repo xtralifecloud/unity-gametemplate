@@ -42,16 +42,16 @@ namespace CotcSdkTemplate
 				ListUserBestScores(DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
 		}
 
-		// Get and display the previous page of a previously obtained leaderboard
-		public static void FetchPreviousLeaderboardPage(PagedList<Score> leaderboardScores)
+		// Get and display the previous page of a previously obtained leaderboard page
+		public static void FetchPreviousLeaderboardPage(PagedList<Score> scores)
 		{
-			FetchPrevious(leaderboardScores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
+			FetchPrevious(scores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 		}
 
-		// Get and display the next page of a previously obtained leaderboard
-		public static void FetchNextLeaderboardPage(PagedList<Score> leaderboardScores)
+		// Get and display the next page of a previously obtained leaderboard page
+		public static void FetchNextLeaderboardPage(PagedList<Score> scores)
 		{
-			FetchNext(leaderboardScores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
+			FetchNext(scores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 		}
 
 		// Check variables to post a new score to a given leaderboard for the current logged in gamer
@@ -131,13 +131,13 @@ namespace CotcSdkTemplate
 				});
 		}
 
-		// Get the previous page of a previously obtained leaderboard
-		private static void FetchPrevious(PagedList<Score> leaderboardScores, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null)
+		// Get the previous page of a previously obtained leaderboard page
+		private static void FetchPrevious(PagedList<Score> scores, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null)
 		{
-			if (leaderboardScores.HasPrevious)
+			if (scores.HasPrevious)
 			{
 				// Call the API method which returns a Promise<PagedList<Score>> (promising a PagedList<Score> result)
-				leaderboardScores.FetchPrevious()
+				scores.FetchPrevious()
 					// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 					.Catch(delegate (Exception exception)
 					{
@@ -159,16 +159,16 @@ namespace CotcSdkTemplate
 					});
 			}
 			else
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The current leaderboard has no previous page");
+				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] There is no previous page");
 		}
 
-		// Get the next page of a previously obtained leaderboard
-		private static void FetchNext(PagedList<Score> leaderboardScores, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null)
+		// Get the next page of a previously obtained leaderboard page
+		private static void FetchNext(PagedList<Score> scores, Action<string, PagedList<Score>> OnSuccess = null, Action<string, ExceptionError> OnError = null)
 		{
-			if (leaderboardScores.HasNext)
+			if (scores.HasNext)
 			{
 				// Call the API method which returns a Promise<PagedList<Score>> (promising a PagedList<Score> result)
-				leaderboardScores.FetchNext()
+				scores.FetchNext()
 					// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 					.Catch(delegate (Exception exception)
 					{
@@ -190,7 +190,7 @@ namespace CotcSdkTemplate
 					});
 			}
 			else
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The current leaderboard has no next page");
+				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] There is no next page");
 		}
 
 		// List logged in gamer's high scores from all leaderboards in which he scored

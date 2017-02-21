@@ -192,7 +192,7 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Buttons Actions
-		// Ask for the previous page on the current leaderboard
+		// Ask for the previous page on the current leaderboard panel
 		public void Button_PreviousPage()
 		{
 			// Disable buttons to avoid concurrent calls
@@ -204,7 +204,7 @@ namespace CotcSdkTemplate
 				LeaderboardFeatures.FetchPreviousLeaderboardPage(currentScoresList);
 		}
 
-		// Ask for the next page on the current leaderboard
+		// Ask for the next page on the current leaderboard panel
 		public void Button_NextPage()
 		{
 			// Disable buttons to avoid concurrent calls

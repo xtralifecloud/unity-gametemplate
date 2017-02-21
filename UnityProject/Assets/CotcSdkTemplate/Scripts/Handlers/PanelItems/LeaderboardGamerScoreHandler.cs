@@ -16,7 +16,7 @@ namespace CotcSdkTemplate
 		[SerializeField] private Text scoreValue = null;
 		[SerializeField] private Text scoreInfo = null;
 
-		// Texts to display to show the score rank
+		// Text to display to show the score rank
 		private const string rankText = "# {0}";
 
 		// Fill the leaderboard score with new data
@@ -35,6 +35,8 @@ namespace CotcSdkTemplate
 			scoreRank.text = string.Format(rankText, score.Rank);
 			scoreValue.text = score.Value.ToString();
 			scoreInfo.text = score.Info;
+
+			// Display the score info only if there is one
 			scoreInfo.gameObject.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));
 		}
 		#endregion
