@@ -10,20 +10,20 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// Get and display on an achievement panel all game's achievements
-		public static void DisplayAchievements()
+		public static void Handling_DisplayAchievements()
 		{
 			// A AchievementHandler instance should be attached to an active object of the scene to display the result
 			if (!AchievementHandler.HasInstance)
 				Debug.LogError("[CotcSdkTemplate:AchievementFeatures] No AchievementHandler instance found >> Please attach a AchievementHandler script on an active object of the scene");
 			else
-				ListAchievements(DisplayAchievements_OnSuccess, DisplayAchievements_OnError);
+				Backend_ListAchievements(DisplayAchievements_OnSuccess, DisplayAchievements_OnError);
 		}
 		#endregion
 
 		#region Features
 		// List all registered game's achievements
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void ListAchievements(Action<Dictionary<string, AchievementDefinition>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_ListAchievements(Action<Dictionary<string, AchievementDefinition>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())

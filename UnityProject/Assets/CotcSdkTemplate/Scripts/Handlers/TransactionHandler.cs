@@ -164,7 +164,7 @@ namespace CotcSdkTemplate
 
 			// Call for the previous page
 			if (currentTransactionsList != null)
-				TransactionFeatures.FetchPreviousTransactionPage(currentTransactionsList);
+				TransactionFeatures.Handling_FetchPreviousTransactionPage(currentTransactionsList);
 		}
 
 		// Ask for the next page on the current transaction panel
@@ -176,7 +176,7 @@ namespace CotcSdkTemplate
 
 			// Call for the next page
 			if (currentTransactionsList != null)
-				TransactionFeatures.FetchNextTransactionPage(currentTransactionsList);
+				TransactionFeatures.Handling_FetchNextTransactionPage(currentTransactionsList);
 		}
 		#endregion
 

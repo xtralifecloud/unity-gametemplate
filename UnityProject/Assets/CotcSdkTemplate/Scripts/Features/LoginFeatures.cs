@@ -13,7 +13,7 @@ namespace CotcSdkTemplate
 		private const string gamerSecretPrefKey = "GamerSecret";
 
 		// Login with the last used account if any exist or login anonymously
-		public static void AutoLogin()
+		public static void Handling_AutoLogin()
 		{
 			// Retrieve the last stored credentials if any
 			string storedGamerID = PlayerPrefs.GetString(gamerIDPrefKey);
@@ -21,20 +21,20 @@ namespace CotcSdkTemplate
 
 			// If credentials are found, use them to login to the last used account
 			if (!string.IsNullOrEmpty(storedGamerID) && !string.IsNullOrEmpty(storedGamerSecret))
-				ResumeSession(storedGamerID, storedGamerSecret, Login_OnSuccess, Login_OnError);
+				Backend_ResumeSession(storedGamerID, storedGamerSecret, Login_OnSuccess, Login_OnError);
 			// Else, create a new anonymous account
 			else
-				LoginAnonymously(Login_OnSuccess, Login_OnError);
+				Backend_LoginAnonymously(Login_OnSuccess, Login_OnError);
 		}
 
 		// Login with a new anonymous account
-		public static void LoginAsAnonymous()
+		public static void Handling_LoginAsAnonymous()
 		{
-			LoginAnonymously(Login_OnSuccess, Login_OnError);
+			Backend_LoginAnonymously(Login_OnSuccess, Login_OnError);
 		}
 
 		// Login with a previously created account
-		public static void LoginWithCredentials(string gamerID, string gamerSecret)
+		public static void Handling_LoginWithCredentials(string gamerID, string gamerSecret)
 		{
 			// The gamer ID should not be empty
 			if (string.IsNullOrEmpty(gamerID))
@@ -43,19 +43,19 @@ namespace CotcSdkTemplate
 			else if (string.IsNullOrEmpty(gamerSecret))
 				Debug.LogError("[CotcSdkTemplate:LoginFeatures] The gamer secret is empty >> Please enter a valid gamer secret");
 			else
-				ResumeSession(gamerID, gamerSecret, Login_OnSuccess, Login_OnError);
+				Backend_ResumeSession(gamerID, gamerSecret, Login_OnSuccess, Login_OnError);
 		}
 
 		// Logout the current logged in gamer
-		public static void LogoutGamer()
+		public static void Handling_LogoutGamer()
 		{
-			Logout(Logout_OnSuccess, Logout_OnError);
+			Backend_Logout(Logout_OnSuccess, Logout_OnError);
 		}
 		#endregion
 
 		#region Features
 		// Login with an anonymous account
-		private static void LoginAnonymously(Action<Gamer> OnSuccess = null, Action<ExceptionError> OnError = null)
+		public static void Backend_LoginAnonymously(Action<Gamer> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
@@ -86,13 +86,13 @@ namespace CotcSdkTemplate
 						OnSuccess(loggedInGamer);
 					
 					// Call the GamerLoggedIn event if any callback registered to it
-					if (GamerLoggedIn != null)
-						GamerLoggedIn(CloudFeatures.gamer);
+					if (Event_GamerLoggedIn != null)
+						Event_GamerLoggedIn(CloudFeatures.gamer);
 				});
 		}
 
 		// Login with the last used account
-		private static void ResumeSession(string gamerID, string gamerSecret, Action<Gamer> OnSuccess = null, Action<ExceptionError> OnError = null)
+		public static void Backend_ResumeSession(string gamerID, string gamerSecret, Action<Gamer> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
@@ -123,13 +123,13 @@ namespace CotcSdkTemplate
 						OnSuccess(loggedInGamer);
 					
 					// Call the GamerLoggedIn event if any callback registered to it
-					if (GamerLoggedIn != null)
-						GamerLoggedIn(CloudFeatures.gamer);
+					if (Event_GamerLoggedIn != null)
+						Event_GamerLoggedIn(CloudFeatures.gamer);
 				});
 		}
 
 		// Logout the current logged in gamer
-		private static void Logout(Action OnSuccess = null, Action<ExceptionError> OnError = null)
+		public static void Backend_Logout(Action OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -160,8 +160,8 @@ namespace CotcSdkTemplate
 						OnSuccess();
 					
 					// Call the GamerLoggedOut event if any callback registered to it
-					if (GamerLoggedOut != null)
-						GamerLoggedOut();
+					if (Event_GamerLoggedOut != null)
+						Event_GamerLoggedOut();
 				});
 		}
 		#endregion
@@ -210,10 +210,10 @@ namespace CotcSdkTemplate
 
 		#region Events Callbacks
 		// Allow the registration of callbacks for when a gamer has logged in
-		public static event Action<Gamer> GamerLoggedIn = OnGamerLoggedIn;
+		public static event Action<Gamer> Event_GamerLoggedIn = OnGamerLoggedIn;
 
 		// Allow the registration of callbacks for when a gamer has logged out
-		public static event Action GamerLoggedOut = OnGamerLoggedOut;
+		public static event Action Event_GamerLoggedOut = OnGamerLoggedOut;
 
 		// What to do once a gamer has logged in
 		private static void OnGamerLoggedIn(Gamer gamer)

@@ -9,39 +9,39 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// Check variables to get and display the current currencies balance
-		public static void DisplayBalance()
+		public static void Handling_DisplayBalance()
 		{
 			// A TransactionHandler instance should be attached to an active object of the scene to display the result
 			if (!TransactionHandler.HasInstance)
 				Debug.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found >> Please attach a TransactionHandler script on an active object of the scene");
 			else
-				Balance(DisplayBalance_OnSuccess, DisplayBalance_OnError);
+				Backend_Balance(DisplayBalance_OnSuccess, DisplayBalance_OnError);
 		}
 
 		// Check variables to get and display the gamer's history of the given currency (or all currencies if null or empty)
-		public static void DisplayCurrencyHistory(string currencyName, int currenciesPerPage)
+		public static void Handling_DisplayCurrencyHistory(string currencyName, int currenciesPerPage)
 		{
 			// A TransactionHandler instance should be attached to an active object of the scene to display the result
 			if (!TransactionHandler.HasInstance)
 				Debug.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found >> Please attach a TransactionHandler script on an active object of the scene");
 			else
-				History(currencyName, currenciesPerPage, 0, DisplayCurrencyHistory_OnSuccess, DisplayCurrencyHistory_OnError);
+				Backend_History(currencyName, currenciesPerPage, 0, DisplayCurrencyHistory_OnSuccess, DisplayCurrencyHistory_OnError);
 		}
 
 		// Get and display the previous page of a previously obtained transaction page
-		public static void FetchPreviousTransactionPage(PagedList<Transaction> transactions)
+		public static void Handling_FetchPreviousTransactionPage(PagedList<Transaction> transactions)
 		{
-			FetchPrevious(transactions, DisplayCurrencyHistory_OnSuccess, DisplayCurrencyHistory_OnError);
+			Backend_FetchPrevious(transactions, DisplayCurrencyHistory_OnSuccess, DisplayCurrencyHistory_OnError);
 		}
 
 		// Get and display the next page of a previously obtained transaction page
-		public static void FetchNextTransactionPage(PagedList<Transaction> transactions)
+		public static void Handling_FetchNextTransactionPage(PagedList<Transaction> transactions)
 		{
-			FetchNext(transactions, DisplayCurrencyHistory_OnSuccess, DisplayCurrencyHistory_OnError);
+			Backend_FetchNext(transactions, DisplayCurrencyHistory_OnSuccess, DisplayCurrencyHistory_OnError);
 		}
 
 		// Check variables to post a new transaction of the given currency for the current logged in gamer
-		public static void PostTransaction(string currencyName, float currencyAmount, string transactionDescription)
+		public static void Handling_PostTransaction(string currencyName, float currencyAmount, string transactionDescription)
 		{
 			// The currency name should not be empty
 			if (string.IsNullOrEmpty(currencyName))
@@ -52,7 +52,7 @@ namespace CotcSdkTemplate
 			else
 			{
 				Bundle transaction = Bundle.CreateObject(currencyName, currencyAmount);
-				Post(transaction, transactionDescription, PostTransaction_OnSuccess, PostTransaction_OnError);
+				Backend_Post(transaction, transactionDescription, PostTransaction_OnSuccess, PostTransaction_OnError);
 			}
 		}
 		#endregion
@@ -60,7 +60,7 @@ namespace CotcSdkTemplate
 		#region Features
 		// Get the current currencies balance
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void Balance(Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_Balance(Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -91,7 +91,7 @@ namespace CotcSdkTemplate
 
 		// Get the gamer's history of the given currency (or all currencies if null or empty)
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void History(string currencyName, int currenciesPerPage, int currenciesOffset, Action<PagedList<Transaction>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_History(string currencyName, int currenciesPerPage, int currenciesOffset, Action<PagedList<Transaction>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -121,7 +121,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Get the previous page of a previously obtained transaction page
-		private static void FetchPrevious(PagedList<Transaction> transactions, Action<PagedList<Transaction>> OnSuccess = null, Action<ExceptionError> OnError = null)
+		public static void Backend_FetchPrevious(PagedList<Transaction> transactions, Action<PagedList<Transaction>> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			if (transactions.HasPrevious)
 			{
@@ -152,7 +152,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Get the next page of a previously obtained transaction page
-		private static void FetchNext(PagedList<Transaction> transactions, Action<PagedList<Transaction>> OnSuccess = null, Action<ExceptionError> OnError = null)
+		public static void Backend_FetchNext(PagedList<Transaction> transactions, Action<PagedList<Transaction>> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			if (transactions.HasNext)
 			{
@@ -184,7 +184,7 @@ namespace CotcSdkTemplate
 
 		// Post a new transaction of the given currency for the current logged in gamer
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void Post(Bundle transaction, string description, Action<TransactionResult> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_Post(Bundle transaction, string description, Action<TransactionResult> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())

@@ -9,17 +9,17 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// Check variables to read and display the value of the given key associated to the current logged in gamer (or all keys if null or empty)
-		public static void DisplayGamerKey(string key)
+		public static void Handling_DisplayGamerKey(string key)
 		{
 			// A VFSHandler instance should be attached to an active object of the scene to display the result
 			if (!VFSHandler.HasInstance)
 				Debug.LogError("[CotcSdkTemplate:GamerVFSFeatures] No VFSHandler instance found >> Please attach a VFSHandler script on an active object of the scene");
 			else
-				GetValue(key, DisplayGamerKey_OnSuccess, DisplayGamerKey_OnError);
+				Backend_GetValue(key, DisplayGamerKey_OnSuccess, DisplayGamerKey_OnError);
 		}
 
 		// Check variables to create / update the value of the given key associated to the current logged in gamer
-		public static void SetGamerKey(Bundle.DataType valueType, string key, string value)
+		public static void Handling_SetGamerKey(Bundle.DataType valueType, string key, string value)
 		{
 			// The key name should not be empty
 			if (string.IsNullOrEmpty(key))
@@ -57,21 +57,21 @@ namespace CotcSdkTemplate
 					return;
 				}
 
-				SetValue(key, setValue, SetGamerKey_OnSuccess, SetGamerKey_OnError);
+				Backend_SetValue(key, setValue, SetGamerKey_OnSuccess, SetGamerKey_OnError);
 			}
 		}
 
 		// Delete the given key associated to the current logged in gamer (or all keys if null or empty)
-		public static void DeleteGamerKey(string key)
+		public static void Handling_DeleteGamerKey(string key)
 		{
-			DeleteValue(key, DeleteGamerKey_OnSuccess, DeleteGamerKey_OnError);
+			Backend_DeleteValue(key, DeleteGamerKey_OnSuccess, DeleteGamerKey_OnError);
 		}
 		#endregion
 
 		#region Features
 		// Read the value of the given key associated to the current logged in gamer (or all keys if null or empty)
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -102,7 +102,7 @@ namespace CotcSdkTemplate
 
 		// Create / update the value of the given key associated to the current logged in gamer
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void SetValue(string key, Bundle value, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_SetValue(string key, Bundle value, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -133,7 +133,7 @@ namespace CotcSdkTemplate
 
 		// Delete the given key associated to the current logged in gamer (or all keys if null or empty)
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void DeleteValue(string key, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_DeleteValue(string key, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())

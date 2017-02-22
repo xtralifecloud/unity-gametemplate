@@ -11,21 +11,21 @@ public class SampleScript : MonoBehaviour
 	private void Start()
 	{
 		// Register to the CloudInitialized event
-		CloudFeatures.CloudInitialized += OnCloudInitialized;
+		CloudFeatures.Event_CloudInitialized += OnCloudInitialized;
 
 		// Call the template method
-		CloudFeatures.InitializeCloud();
+		CloudFeatures.Handling_InitializeCloud();
 	}
 
 	// What to do once the CotcSdk's Cloud is initialized
 	private void OnCloudInitialized(Cloud cloud)
 	{
 		// Register to the GamerLoggedIn and GamerLoggedOut events
-		LoginFeatures.GamerLoggedIn += OnGamerLoggedIn;
-		LoginFeatures.GamerLoggedOut += OnGamerLoggedOut;
+		LoginFeatures.Event_GamerLoggedIn += OnGamerLoggedIn;
+		LoginFeatures.Event_GamerLoggedOut += OnGamerLoggedOut;
 
 		// Call the template method
-		LoginFeatures.AutoLogin();
+		LoginFeatures.Handling_AutoLogin();
 	}
 
 	// What to do once a gamer has logged in
@@ -46,7 +46,7 @@ public class SampleScript : MonoBehaviour
 	public void Button_DisplayAchievements()
 	{
 		// Call the template method
-		AchievementFeatures.DisplayAchievements();
+		AchievementFeatures.Handling_DisplayAchievements();
 	}
 	#endregion
 
@@ -55,7 +55,7 @@ public class SampleScript : MonoBehaviour
 	public void Button_DisplayAllGameKeys()
 	{
 		// Call the template method
-		GameVFSFeatures.DisplayGameKey(null);
+		GameVFSFeatures.Handling_DisplayGameKey(null);
 	}
 
 	// References to the game VFS UI elements (their serialized references are directly assigned in the scene)
@@ -74,7 +74,7 @@ public class SampleScript : MonoBehaviour
 			key = displayGameKey_Key.text;
 
 		// Call the template method
-		GameVFSFeatures.DisplayGameKey(key);
+		GameVFSFeatures.Handling_DisplayGameKey(key);
 	}
 	#endregion
 
@@ -83,7 +83,7 @@ public class SampleScript : MonoBehaviour
 	public void Button_DisplayAllGamerKeys()
 	{
 		// Call the template method
-		GamerVFSFeatures.DisplayGamerKey(null);
+		GamerVFSFeatures.Handling_DisplayGamerKey(null);
 	}
 
 	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
@@ -102,7 +102,7 @@ public class SampleScript : MonoBehaviour
 			key = displayGamerKey_Key.text;
 
 		// Call the template method
-		GamerVFSFeatures.DisplayGamerKey(key);
+		GamerVFSFeatures.Handling_DisplayGamerKey(key);
 	}
 
 	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
@@ -159,7 +159,7 @@ public class SampleScript : MonoBehaviour
 			}
 
 		// Call the template method
-		GamerVFSFeatures.SetGamerKey(type, key, value);
+		GamerVFSFeatures.Handling_SetGamerKey(type, key, value);
 	}
 
 	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
@@ -178,7 +178,7 @@ public class SampleScript : MonoBehaviour
 			key = deleteGamerKey_Key.text;
 
 		// Call the template method
-		GamerVFSFeatures.DeleteGamerKey(key);
+		GamerVFSFeatures.Handling_DeleteGamerKey(key);
 	}
 	#endregion
 
@@ -215,14 +215,14 @@ public class SampleScript : MonoBehaviour
 			centeredBoard = displayAllHighScores_CenteredBoard.isOn;
 
 		// Call the template method
-		LeaderboardFeatures.DisplayAllHighScores(boardName, scoresPerPage, centeredBoard);
+		LeaderboardFeatures.Handling_DisplayAllHighScores(boardName, scoresPerPage, centeredBoard);
 	}
 
 	// When the corresponding button is clicked, display logged in gamer's high scores from all leaderboards in which he scored
 	public void Button_DisplayGamerHighScores()
 	{
 		// Call the template method
-		LeaderboardFeatures.DisplayGamerHighScores();
+		LeaderboardFeatures.Handling_DisplayGamerHighScores();
 	}
 
 	// References to the leaderboard UI elements (their serialized references are directly assigned in the scene)
@@ -257,7 +257,7 @@ public class SampleScript : MonoBehaviour
 			scoreDescription = postScore_ScoreDescription.text;
 		
 		// Call the template method
-		LeaderboardFeatures.PostScore(boardName, scoreValue, scoreDescription);
+		LeaderboardFeatures.Handling_PostScore(boardName, scoreValue, scoreDescription);
 	}
 	#endregion
 
@@ -266,7 +266,7 @@ public class SampleScript : MonoBehaviour
 	public void Button_LoginAsAnonymous()
 	{
 		// Call the template method
-		LoginFeatures.LoginAsAnonymous();
+		LoginFeatures.Handling_LoginAsAnonymous();
 	}
 
 	// References to the login UI elements (their serialized references are directly assigned in the scene)
@@ -293,14 +293,14 @@ public class SampleScript : MonoBehaviour
 			gamerSecret = loginWithCredentials_GamerSecret.text;
 		
 		// Call the template method
-		LoginFeatures.LoginWithCredentials(gamerID, gamerSecret);
+		LoginFeatures.Handling_LoginWithCredentials(gamerID, gamerSecret);
 	}
 
 	// When the corresponding button is clicked, logout the current logged in gamer
 	public void Button_LogoutGamer()
 	{
 		// Call the template method
-		LoginFeatures.LogoutGamer();
+		LoginFeatures.Handling_LogoutGamer();
 	}
 	#endregion
 
@@ -309,7 +309,7 @@ public class SampleScript : MonoBehaviour
 	public void Button_DisplayBalance()
 	{
 		// Call the template method
-		TransactionFeatures.DisplayBalance();
+		TransactionFeatures.Handling_DisplayBalance();
 	}
 
 	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
@@ -328,7 +328,7 @@ public class SampleScript : MonoBehaviour
 			currenciesPerPage = int.Parse(displayAllCurrenciesHistory_CurrenciesPerPage.text);
 		
 		// Call the template method
-		TransactionFeatures.DisplayCurrencyHistory(null, currenciesPerPage);
+		TransactionFeatures.Handling_DisplayCurrencyHistory(null, currenciesPerPage);
 	}
 
 	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
@@ -355,7 +355,7 @@ public class SampleScript : MonoBehaviour
 			currenciesPerPage = int.Parse(displayCurrencyHistory_CurrenciesPerPage.text);
 		
 		// Call the template method
-		TransactionFeatures.DisplayCurrencyHistory(currencyName, currenciesPerPage);
+		TransactionFeatures.Handling_DisplayCurrencyHistory(currencyName, currenciesPerPage);
 	}
 
 	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
@@ -390,7 +390,7 @@ public class SampleScript : MonoBehaviour
 			transactionDescription = postTransaction_TransactionDescription.text;
 		
 		// Call the template method
-		TransactionFeatures.PostTransaction(currencyName, currencyAmount, transactionDescription);
+		TransactionFeatures.Handling_PostTransaction(currencyName, currencyAmount, transactionDescription);
 	}
 	#endregion
 }

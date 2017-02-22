@@ -14,7 +14,7 @@ namespace CotcSdkTemplate
 		public static Gamer gamer = null;
 
 		// Initialize the CotcSdk's Cloud
-		public static void InitializeCloud()
+		public static void Handling_InitializeCloud()
 		{
 			// Find the CotcGameObject instance in the scene
 			CotcGameObject cotcGameObject = GameObject.FindObjectOfType<CotcGameObject>();
@@ -29,7 +29,7 @@ namespace CotcSdkTemplate
 			Promise.UnhandledException += LogUnhandledException;
 
 			// Get and keep the Cloud instance reference
-			GetCloud(cotcGameObject, InitializeCloud_OnSuccess, InitializeCloud_OnError);
+			Backend_GetCloud(cotcGameObject, InitializeCloud_OnSuccess, InitializeCloud_OnError);
 		}
 
 		// Check if the CotcSdk's Cloud is initialized
@@ -66,7 +66,7 @@ namespace CotcSdkTemplate
 
 		#region Features
 		// Get the main Cloud object's reference
-		private static void GetCloud(CotcGameObject cotcGameObject, Action<Cloud> OnSuccess = null, Action<ExceptionError> OnError = null)
+		public static void Backend_GetCloud(CotcGameObject cotcGameObject, Action<Cloud> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Call the API method which returns a Promise<Cloud> (promising a Cloud result)
 			cotcGameObject.GetCloud()
@@ -96,8 +96,8 @@ namespace CotcSdkTemplate
 						OnSuccess(cloudReference);
 
 					// Call the CloudInitialized event if any callback registered to it
-					if (CloudInitialized != null)
-						CloudInitialized(cloud);
+					if (Event_CloudInitialized != null)
+						Event_CloudInitialized(cloud);
 				});
 		}
 		#endregion
@@ -124,7 +124,7 @@ namespace CotcSdkTemplate
 
 		#region Events Callbacks
 		// Allow the registration of callbacks for when the Cloud is initialized
-		public static event Action<Cloud> CloudInitialized = null;
+		public static event Action<Cloud> Event_CloudInitialized = null;
 
 		// Time to wait before a failed HTPP request retry
 		private const int httpRequestRetryDelay = 1000;

@@ -9,20 +9,20 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// Check variables to read and display the value of the given key associated to the current game (or all keys if null or empty)
-		public static void DisplayGameKey(string key)
+		public static void Handling_DisplayGameKey(string key)
 		{
 			// A VFSHandler instance should be attached to an active object of the scene to display the result
 			if (!VFSHandler.HasInstance)
 				Debug.LogError("[CotcSdkTemplate:GameVFSFeatures] No VFSHandler instance found >> Please attach a VFSHandler script on an active object of the scene");
 			else
-				GetValue(key, DisplayGameKey_OnSuccess, DisplayGameKey_OnError);
+				Backend_GetValue(key, DisplayGameKey_OnSuccess, DisplayGameKey_OnError);
 		}
 		#endregion
 
 		#region Features
 		// Read the value of the given key associated to the current game (or all keys if null or empty)
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())

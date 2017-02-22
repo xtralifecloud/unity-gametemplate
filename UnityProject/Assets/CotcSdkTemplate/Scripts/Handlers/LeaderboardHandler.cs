@@ -202,7 +202,7 @@ namespace CotcSdkTemplate
 
 			// Call for the previous page
 			if (currentScoresList != null)
-				LeaderboardFeatures.FetchPreviousLeaderboardPage(currentScoresList);
+				LeaderboardFeatures.Handling_FetchPreviousLeaderboardPage(currentScoresList);
 		}
 
 		// Ask for the next page on the current leaderboard panel
@@ -214,7 +214,7 @@ namespace CotcSdkTemplate
 
 			// Call for the next page
 			if (currentScoresList != null)
-				LeaderboardFeatures.FetchNextLeaderboardPage(currentScoresList);
+				LeaderboardFeatures.Handling_FetchNextLeaderboardPage(currentScoresList);
 		}
 		#endregion
 

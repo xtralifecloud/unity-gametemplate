@@ -10,7 +10,7 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// Check variables to get and display on a leaderboard panel all registered best scores for all gamers from a given leaderboard
-		public static void DisplayAllHighScores(string boardName, int scoresPerPage, bool centeredBoard)
+		public static void Handling_DisplayAllHighScores(string boardName, int scoresPerPage, bool centeredBoard)
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
 			if (!LeaderboardHandler.HasInstance)
@@ -25,37 +25,37 @@ namespace CotcSdkTemplate
 			{
 				// Display only the page in which the logged in gamer's score is on the given leaderboard
 				if (centeredBoard)
-					CenteredScore(boardName, scoresPerPage, DisplayNonpagedScores_OnSuccess, DisplayNonpagedScores_OnError);
+					Backend_CenteredScore(boardName, scoresPerPage, DisplayNonpagedScores_OnSuccess, DisplayNonpagedScores_OnError);
 				// Display the first page of the given leaderboard
 				else
-					BestHighScores(boardName, scoresPerPage, 1, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
+					Backend_BestHighScores(boardName, scoresPerPage, 1, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 			}
 		}
 
 		// Get and display on a leaderboard panel logged in gamer's high scores from all leaderboards in which he scored
-		public static void DisplayGamerHighScores()
+		public static void Handling_DisplayGamerHighScores()
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
 			if (!LeaderboardHandler.HasInstance)
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found >> Please attach a LeaderboardHandler script on an active object of the scene");
 			else
-				ListUserBestScores(DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
+				Backend_ListUserBestScores(DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
 		}
 
 		// Get and display the previous page of a previously obtained leaderboard page
-		public static void FetchPreviousLeaderboardPage(PagedList<Score> scores)
+		public static void Handling_FetchPreviousLeaderboardPage(PagedList<Score> scores)
 		{
-			FetchPrevious(scores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
+			Backend_FetchPrevious(scores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 		}
 
 		// Get and display the next page of a previously obtained leaderboard page
-		public static void FetchNextLeaderboardPage(PagedList<Score> scores)
+		public static void Handling_FetchNextLeaderboardPage(PagedList<Score> scores)
 		{
-			FetchNext(scores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
+			Backend_FetchNext(scores, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 		}
 
 		// Check variables to post a new score to a given leaderboard for the current logged in gamer
-		public static void PostScore(string boardName, long scoreValue, string scoreDescription)
+		public static void Handling_PostScore(string boardName, long scoreValue, string scoreDescription)
 		{
 			// The board name should not be empty
 			if (string.IsNullOrEmpty(boardName))
@@ -64,14 +64,14 @@ namespace CotcSdkTemplate
 			else if (scoreValue <= 0)
 				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The score value is invalid >> Please enter a number superior to 0");
 			else
-				Post(scoreValue, boardName, ScoreOrder.HighToLow, scoreDescription, PostScore_OnSuccess, PostScore_OnError);
+				Backend_Post(scoreValue, boardName, ScoreOrder.HighToLow, scoreDescription, PostScore_OnSuccess, PostScore_OnError);
 		}
 		#endregion
 
 		#region Features
 		// List all registered best scores for all gamers from a given leaderboard
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void BestHighScores(string boardName, int scoresPerPage, int pageNumber, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
+		public static void Backend_BestHighScores(string boardName, int scoresPerPage, int pageNumber, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -102,7 +102,7 @@ namespace CotcSdkTemplate
 
 		// List all registered best scores for all gamers from a given leaderboard (only the current logged in gamer score's page)
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void CenteredScore(string boardName, int scoresPerPage, Action<NonpagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
+		public static void Backend_CenteredScore(string boardName, int scoresPerPage, Action<NonpagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -132,7 +132,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Get the previous page of a previously obtained leaderboard page
-		private static void FetchPrevious(PagedList<Score> scores, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null)
+		public static void Backend_FetchPrevious(PagedList<Score> scores, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null)
 		{
 			if (scores.HasPrevious)
 			{
@@ -163,7 +163,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Get the next page of a previously obtained leaderboard page
-		private static void FetchNext(PagedList<Score> scores, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null)
+		public static void Backend_FetchNext(PagedList<Score> scores, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null)
 		{
 			if (scores.HasNext)
 			{
@@ -195,7 +195,7 @@ namespace CotcSdkTemplate
 
 		// List logged in gamer's high scores from all leaderboards in which he scored
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void ListUserBestScores(Action<Dictionary<string, Score>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_ListUserBestScores(Action<Dictionary<string, Score>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -226,7 +226,7 @@ namespace CotcSdkTemplate
 
 		// Post a new score to a given leaderboard for the current logged in gamer
 		// We use the "private" domain by default (each game has its own data, not shared with the other games)
-		private static void Post(long scoreValue, string boardName, ScoreOrder scoreOrder, string scoreDescription, Action<PostedGameScore> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_Post(long scoreValue, string boardName, ScoreOrder scoreOrder, string scoreDescription, Action<PostedGameScore> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
