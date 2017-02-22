@@ -746,6 +746,8 @@ MonoBehaviour:
   transactionPrefab: {fileID: 1194391118158080, guid: c42c8ac8aa377894086015099b652395,
     type: 2}
   transactionItemsLayout: {fileID: 114483988401440014}
+  currencyGridCellSizeY: 125
+  transactionGridCellSizeY: 175
 --- !u!114 &114132145888057970
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -24,6 +24,10 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject transactionPrefab = null;
 		[SerializeField] private GridLayoutGroup transactionItemsLayout = null;
 
+		// GridLayout cells Y size for the according to the type of items to display
+		[SerializeField] private float currencyGridCellSizeY = 125f;
+		[SerializeField] private float transactionGridCellSizeY = 175f;
+
 		// List of the currency/transaction GameObjects created on the transaction panel
 		private List<GameObject> transactionItems = new List<GameObject>();
 
@@ -55,6 +59,9 @@ namespace CotcSdkTemplate
 				DestroyObject(transactionCurrency);
 			
 			transactionItems.Clear();
+
+			// Adapt the GridLayout cells Y size for currencies
+			transactionItemsLayout.cellSize = new Vector2(transactionItemsLayout.cellSize.x, currencyGridCellSizeY);
 
 			// Set the leaderboard panel's title
 			if (!string.IsNullOrEmpty(panelTitle))
@@ -100,6 +107,9 @@ namespace CotcSdkTemplate
 				DestroyObject(transactionItem);
 
 			transactionItems.Clear();
+
+			// Adapt the GridLayout cells Y size for transactions
+			transactionItemsLayout.cellSize = new Vector2(transactionItemsLayout.cellSize.x, transactionGridCellSizeY);
 
 			// Set the leaderboard panel's title
 			if (!string.IsNullOrEmpty(panelTitle))
