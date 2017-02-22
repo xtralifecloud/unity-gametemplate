@@ -48,7 +48,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Fill the transaction panel with currencies then show it
-		public void FillAndShowTransactionPanel(string panelTitle, Dictionary<string, Bundle> currenciesList)
+		public void FillAndShowTransactionPanel(Dictionary<string, Bundle> currenciesList, string panelTitle = "Currencies Balance")
 		{
 			// Hide the "no transaction" text and hide the previous page and next page buttons
 			noTransactionText.SetActive(false);
@@ -63,7 +63,7 @@ namespace CotcSdkTemplate
 			// Adapt the GridLayout cells Y size for currencies
 			transactionItemsLayout.cellSize = new Vector2(transactionItemsLayout.cellSize.x, currencyGridCellSizeY);
 
-			// Set the leaderboard panel's title
+			// Set the transaction panel's title only if not null or empty
 			if (!string.IsNullOrEmpty(panelTitle))
 				transactionPanelTitle.text = panelTitle;
 
@@ -97,7 +97,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Fill the transaction panel with transactions history then show it
-		public void FillAndShowPagedTransactionPanel(string panelTitle, PagedList<Transaction> transactionsList)
+		public void FillAndShowPagedTransactionPanel(PagedList<Transaction> transactionsList, string panelTitle = "Transactions History")
 		{
 			// Hide the "no currency" text
 			noCurrencyText.SetActive(false);
@@ -111,7 +111,7 @@ namespace CotcSdkTemplate
 			// Adapt the GridLayout cells Y size for transactions
 			transactionItemsLayout.cellSize = new Vector2(transactionItemsLayout.cellSize.x, transactionGridCellSizeY);
 
-			// Set the leaderboard panel's title
+			// Set the transaction panel's title only if not null or empty
 			if (!string.IsNullOrEmpty(panelTitle))
 				transactionPanelTitle.text = panelTitle;
 
@@ -167,7 +167,7 @@ namespace CotcSdkTemplate
 				TransactionFeatures.FetchPreviousTransactionPage(currentTransactionsList);
 		}
 
-		// Ask for the next page on the current leaderboard panel
+		// Ask for the next page on the current transaction panel
 		public void Button_NextPage()
 		{
 			// Disable buttons to avoid concurrent calls

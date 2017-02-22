@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 114000013582833198}
   - component: {fileID: 114000012604843446}
   m_Layer: 5
-  m_Name: Text-Title
+  m_Name: Text-TransactionPanelTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

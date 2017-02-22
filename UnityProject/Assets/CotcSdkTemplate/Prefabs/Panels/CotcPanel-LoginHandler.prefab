@@ -77,9 +77,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '[Login Status]
+  m_Text: '[LoginStatus]
 
-'
+    [GamerId]'
 --- !u!114 &114000014195502300
 MonoBehaviour:
   m_ObjectHideFlags: 1

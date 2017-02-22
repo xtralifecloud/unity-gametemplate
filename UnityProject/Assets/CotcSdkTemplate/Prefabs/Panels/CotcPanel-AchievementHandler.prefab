@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 114000013435204246}
   - component: {fileID: 114000010919913218}
   m_Layer: 5
-  m_Name: Text-Title
+  m_Name: Text-AchievementPanelTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,7 +275,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Achievements
+  m_Text: '[PanelTitle]'
 --- !u!114 &114000011038786684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -416,6 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outClickMask: {fileID: 1724649620234558}
   achievementPanel: {fileID: 1000012672701730}
+  achievementPanelTitle: {fileID: 114000010919913218}
   noAchievementText: {fileID: 1000012083768996}
   achievementPrefab: {fileID: 1000010803891944, guid: 9b401c64f6c59674eab2f0a4659d9cd3,
     type: 2}

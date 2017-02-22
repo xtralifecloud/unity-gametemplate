@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 114911038894401078}
   - component: {fileID: 114646246579841950}
   m_Layer: 5
-  m_Name: Text-Title
+  m_Name: Text-VFSPanelTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,6 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outClickMask: {fileID: 1271702542252984}
   VFSPanel: {fileID: 1788472891682856}
+  VFSPanelTitle: {fileID: 114646246579841950}
   noKeyText: {fileID: 1172695159172896}
   keyPrefab: {fileID: 1175323338644906, guid: ed47a8b519acc1345af3211d4cd87c05, type: 2}
   VFSKeysLayout: {fileID: 114970407527041576}
@@ -467,7 +468,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: VFS Keys
+  m_Text: '[PanelTitle]'
 --- !u!114 &114659375517177866
 MonoBehaviour:
   m_ObjectHideFlags: 1

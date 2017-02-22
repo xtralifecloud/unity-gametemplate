@@ -188,13 +188,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114000013660338468, guid: 3851765d207e6464d83ba780416f1855,
-        type: 2}
-      propertyPath: m_Text
-      value: '[Login Status]
-
-        [Login Status]'
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3851765d207e6464d83ba780416f1855, type: 2}
   m_IsPrefabParent: 0

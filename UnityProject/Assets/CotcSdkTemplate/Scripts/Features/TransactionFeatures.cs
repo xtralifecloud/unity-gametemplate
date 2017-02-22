@@ -218,7 +218,7 @@ namespace CotcSdkTemplate
 		// What to do if any DisplayBalance request succeeded
 		private static void DisplayBalance_OnSuccess(Bundle currentBalance)
 		{
-			TransactionHandler.Instance.FillAndShowTransactionPanel("Balance", currentBalance.AsDictionary());
+			TransactionHandler.Instance.FillAndShowTransactionPanel(currentBalance.AsDictionary());
 		}
 
 		// What to do if any DisplayBalance request failed
@@ -236,7 +236,7 @@ namespace CotcSdkTemplate
 		// What to do if any DisplayCurrencyHistory request succeeded
 		private static void DisplayCurrencyHistory_OnSuccess(PagedList<Transaction> transactionsList)
 		{
-			TransactionHandler.Instance.FillAndShowPagedTransactionPanel("Transactions", transactionsList);
+			TransactionHandler.Instance.FillAndShowPagedTransactionPanel(transactionsList);
 		}
 
 		// What to do if any DisplayCurrencyHistory request failed

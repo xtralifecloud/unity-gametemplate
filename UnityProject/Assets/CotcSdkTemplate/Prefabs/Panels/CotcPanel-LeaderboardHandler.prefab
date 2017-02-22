@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 114000013582833198}
   - component: {fileID: 114000012604843446}
   m_Layer: 5
-  m_Name: Text-Title
+  m_Name: Text-LeaderboardPanelTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -803,7 +803,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[Board Name]'
+  m_Text: '[PanelTitle]'
 --- !u!114 &114000012783109458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1381,7 +1381,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 775, y: -0}
+  m_AnchoredPosition: {x: 775, y: 0}
   m_SizeDelta: {x: 350, y: 75}
   m_Pivot: {x: 1, y: 1}
 --- !u!224 &224000011179608322
@@ -1572,7 +1572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 350, y: -0}
+  m_AnchoredPosition: {x: 350, y: 0}
   m_SizeDelta: {x: 350, y: 75}
   m_Pivot: {x: 1, y: 1}
 --- !u!224 &224000013947815458

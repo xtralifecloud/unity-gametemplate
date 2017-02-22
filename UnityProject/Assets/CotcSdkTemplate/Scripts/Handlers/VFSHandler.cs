@@ -12,6 +12,7 @@ namespace CotcSdkTemplate
 		// Reference to the VFS panel UI elements
 		[SerializeField] private GameObject outClickMask = null;
 		[SerializeField] private GameObject VFSPanel = null;
+		[SerializeField] private Text VFSPanelTitle = null;
 		[SerializeField] private GameObject noKeyText = null;
 
 		// Reference to the key GameObject prefab and the keys list scroll view
@@ -35,13 +36,17 @@ namespace CotcSdkTemplate
 		}
 
 		// Fill the VFS panel with keys then show it
-		public void FillAndShowVFSPanel(Dictionary<string, Bundle> keysList)
+		public void FillAndShowVFSPanel(Dictionary<string, Bundle> keysList, string panelTitle = "VFS Keys")
 		{
 			// Destroy the previously created key GameObjects if any exist and clear the list
 			foreach (GameObject VFSKey in VFSKeys)
 				DestroyObject(VFSKey);
 			
 			VFSKeys.Clear();
+
+			// Set the VFS panel's title only if not null or empty
+			if (!string.IsNullOrEmpty(panelTitle))
+				VFSPanelTitle.text = panelTitle;
 
 			// If there are keys to display, fill the VFS panel with key prefabs
 			if ((keysList != null) && (keysList.Count > 0))

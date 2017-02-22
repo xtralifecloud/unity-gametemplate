@@ -169,12 +169,11 @@ namespace CotcSdkTemplate
 		{
 			string resultField = "result";
 
+			// TODO: You may want to parse the result Bundle fields (e.g.: if (keyValue["result"]["TestString"].Type == Bundle.DataType.String) { string testString = keyValue["result"]["TestString"].AsString(); })
 			if (keyValue.Has(resultField))
-				VFSHandler.Instance.FillAndShowVFSPanel(keyValue[resultField].AsDictionary());
+				VFSHandler.Instance.FillAndShowVFSPanel(keyValue[resultField].AsDictionary(), "Gamer VFS Keys");
 			else
 				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] No {0} field found in the key value result", resultField));
-			
-			// TODO: You may want to parse the result Bundle fields (e.g.: if (keyValue["result"]["TestString"].Type == Bundle.DataType.String) { string testString = keyValue["result"]["TestString"].AsString(); })
 		}
 
 		// What to do if any DisplayGamerKey request failed

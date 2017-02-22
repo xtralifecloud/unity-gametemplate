@@ -45,7 +45,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Fill the leaderboard panel with nonpaged scores then show it
-		public void FillAndShowNonpagedLeaderboardPanel(string boardName, NonpagedList<Score> scoresList)
+		public void FillAndShowNonpagedLeaderboardPanel(NonpagedList<Score> scoresList, string panelTitle = "Leaderboard Scores")
 		{
 			// Hide the "no score in board" (for paged list) and "no score posted" (for multiple boards) texts and hide the previous page and next page buttons
 			noScoreInBoardText.SetActive(false);
@@ -58,9 +58,9 @@ namespace CotcSdkTemplate
 			
 			leaderboardScores.Clear();
 
-			// Set the leaderboard panel's title
-			if (!string.IsNullOrEmpty(boardName))
-				leaderboardPanelTitle.text = boardName;
+			// Set the leaderboard panel's title only if not null or empty
+			if (!string.IsNullOrEmpty(panelTitle))
+				leaderboardPanelTitle.text = panelTitle;
 			
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
@@ -91,7 +91,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Fill the leaderboard panel with paged scores then show it
-		public void FillAndShowPagedLeaderboardPanel(string boardName, PagedList<Score> scoresList)
+		public void FillAndShowPagedLeaderboardPanel(PagedList<Score> scoresList, string panelTitle = "Leaderboard Scores")
 		{
 			// Hide the "no score posted in board" (for nonpaged list) and "no score posted" (for multiple boards) texts
 			noScorePostedInBoardText.SetActive(false);
@@ -103,10 +103,10 @@ namespace CotcSdkTemplate
 			
 			leaderboardScores.Clear();
 
-			// Set the leaderboard panel's title
-			if (!string.IsNullOrEmpty(boardName))
-				leaderboardPanelTitle.text = boardName;
-			
+			// Set the leaderboard panel's title only if not null or empty
+			if (!string.IsNullOrEmpty(panelTitle))
+				leaderboardPanelTitle.text = panelTitle;
+
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
 			{
@@ -146,7 +146,7 @@ namespace CotcSdkTemplate
 		}
 
 		// Fill the leaderboard panel with scores from multiple boards then show it
-		public void FillAndShowMultipleLeaderboardPanel(Dictionary<string, Score> scoresList)
+		public void FillAndShowMultipleLeaderboardPanel(Dictionary<string, Score> scoresList, string panelTitle = "Gamer Best Scores")
 		{
 			// Hide the "no score posted in board" (for nonpaged list) and the "no score in board" (for paged list) texts and hide the previous page and next page buttons
 			noScorePostedInBoardText.SetActive(false);
@@ -159,8 +159,9 @@ namespace CotcSdkTemplate
 			
 			leaderboardScores.Clear();
 
-			// Set the leaderboard panel's title
-			leaderboardPanelTitle.text = CloudFeatures.gamer["profile"]["displayName"].AsString();
+			// Set the leaderboard panel's title only if not null or empty
+			if (!string.IsNullOrEmpty(panelTitle))
+				leaderboardPanelTitle.text = panelTitle;
 
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))

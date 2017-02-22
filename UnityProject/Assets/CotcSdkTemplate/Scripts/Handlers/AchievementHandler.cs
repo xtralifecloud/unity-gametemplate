@@ -12,6 +12,7 @@ namespace CotcSdkTemplate
 		// Reference to the achievement panel UI elements
 		[SerializeField] private GameObject outClickMask = null;
 		[SerializeField] private GameObject achievementPanel = null;
+		[SerializeField] private Text achievementPanelTitle = null;
 		[SerializeField] private GameObject noAchievementText = null;
 
 		// Reference to the achievement GameObject prefab and the achievements list scroll view
@@ -35,13 +36,17 @@ namespace CotcSdkTemplate
 		}
 
 		// Fill the achievement panel with achievements then show it
-		public void FillAndShowAchievementPanel(Dictionary<string, AchievementDefinition> achievementsList)
+		public void FillAndShowAchievementPanel(Dictionary<string, AchievementDefinition> achievementsList, string panelTitle = "Achievements Progress")
 		{
 			// Destroy the previously created achievement GameObjects if any exist and clear the list
 			foreach (GameObject achievementItem in achievementItems)
 				DestroyObject(achievementItem);
 			
 			achievementItems.Clear();
+
+			// Set the achievement panel's title only if not null or empty
+			if (!string.IsNullOrEmpty(panelTitle))
+				achievementPanelTitle.text = panelTitle;
 
 			// If there are achievements to display, fill the achievement panel with achievement prefabs
 			if ((achievementsList != null) && (achievementsList.Count > 0))

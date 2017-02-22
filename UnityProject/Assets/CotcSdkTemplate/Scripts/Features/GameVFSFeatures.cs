@@ -59,7 +59,7 @@ namespace CotcSdkTemplate
 			string resultField = "result";
 
 			if (keyValue.Has(resultField))
-				VFSHandler.Instance.FillAndShowVFSPanel(keyValue[resultField].AsDictionary());
+				VFSHandler.Instance.FillAndShowVFSPanel(keyValue[resultField].AsDictionary(), "Game VFS Keys");
 			else
 				Debug.LogError(string.Format("[CotcSdkTemplate:GameVFSFeatures] No {0} field found in the key value result", resultField));
 			
