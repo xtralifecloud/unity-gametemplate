@@ -68,11 +68,11 @@ public class SampleScript : MonoBehaviour
 		string key = "TestString";
 
 		// Check the key value
-		if (displayGameKey_Key != null)
-			key = string.IsNullOrEmpty(displayGameKey_Key.text) ? key : displayGameKey_Key.text;
-		else
+		if (displayGameKey_Key == null)
 			Debug.LogWarning("[SampleScript:GameVFS] displayGameKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
-		
+		else if (!string.IsNullOrEmpty(displayGameKey_Key.text))
+			key = displayGameKey_Key.text;
+
 		// Call the template method
 		GameVFSFeatures.DisplayGameKey(key);
 	}
@@ -96,11 +96,11 @@ public class SampleScript : MonoBehaviour
 		string key = "TestString";
 
 		// Check the key value
-		if (displayGamerKey_Key != null)
-			key = string.IsNullOrEmpty(displayGamerKey_Key.text) ? key : displayGamerKey_Key.text;
-		else
+		if (displayGamerKey_Key == null)
 			Debug.LogWarning("[SampleScript:GamerVFS] displayGamerKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
-		
+		else if (!string.IsNullOrEmpty(displayGamerKey_Key.text))
+			key = displayGamerKey_Key.text;
+
 		// Call the template method
 		GamerVFSFeatures.DisplayGamerKey(key);
 	}
@@ -119,46 +119,45 @@ public class SampleScript : MonoBehaviour
 		Bundle.DataType type = Bundle.DataType.String;
 
 		// Check the key value
-		if (setGamerKey_Key != null)
-			key = string.IsNullOrEmpty(setGamerKey_Key.text) ? key : setGamerKey_Key.text;
-		else
+		if (setGamerKey_Key == null)
 			Debug.LogWarning("[SampleScript:GamerVFS] setGamerKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
-		
+		else if (!string.IsNullOrEmpty(setGamerKey_Key.text))
+			key = setGamerKey_Key.text;
+
 		// Check the value value
-		if (setGamerKey_Value != null)
-			value = string.IsNullOrEmpty(setGamerKey_Value.text) ? value : setGamerKey_Value.text;
-		else
+		if (setGamerKey_Value == null)
 			Debug.LogWarning("[SampleScript:GamerVFS] setGamerKey_Value InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(setGamerKey_Value.text))
+			value = setGamerKey_Value.text;
 		
 		// Check the type value
-		if (setGamerKey_Type != null)
-			// This foreach should give only one active toggle
-			foreach (Toggle activeToggle in setGamerKey_Type.ActiveToggles())
-				switch (activeToggle.name)
-				{
-					case "Toggle-JsonType":
-					type = Bundle.DataType.Object;
-					break;
-					
-					case "Toggle-StringType":
-					type = Bundle.DataType.String;
-					break;
-					
-					case "Toggle-DoubleType":
-					type = Bundle.DataType.Double;
-					break;
-					
-					case "Toggle-IntType":
-					type = Bundle.DataType.Integer;
-					break;
-					
-					case "Toggle-BoolType":
-					type = Bundle.DataType.Boolean;
-					break;
-				}
-		else
+		if (setGamerKey_Type == null)
 			Debug.LogWarning("[SampleScript:GamerVFS] setGamerKey_Type ToggleGroup reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
-		
+		// This foreach should give only one active toggle
+		else foreach (Toggle activeToggle in setGamerKey_Type.ActiveToggles())
+			switch (activeToggle.name)
+			{
+				case "Toggle-JsonType":
+				type = Bundle.DataType.Object;
+				break;
+				
+				case "Toggle-StringType":
+				type = Bundle.DataType.String;
+				break;
+				
+				case "Toggle-DoubleType":
+				type = Bundle.DataType.Double;
+				break;
+				
+				case "Toggle-IntType":
+				type = Bundle.DataType.Integer;
+				break;
+				
+				case "Toggle-BoolType":
+				type = Bundle.DataType.Boolean;
+				break;
+			}
+
 		// Call the template method
 		GamerVFSFeatures.SetGamerKey(type, key, value);
 	}
@@ -173,11 +172,11 @@ public class SampleScript : MonoBehaviour
 		string key = "TestString";
 
 		// Check the key value
-		if (deleteGamerKey_Key != null)
-			key = string.IsNullOrEmpty(deleteGamerKey_Key.text) ? key : deleteGamerKey_Key.text;
-		else
+		if (deleteGamerKey_Key == null)
 			Debug.LogWarning("[SampleScript:GamerVFS] deleteGamerKey_Key InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
-		
+		else if (!string.IsNullOrEmpty(deleteGamerKey_Key.text))
+			key = deleteGamerKey_Key.text;
+
 		// Call the template method
 		GamerVFSFeatures.DeleteGamerKey(key);
 	}
@@ -198,23 +197,23 @@ public class SampleScript : MonoBehaviour
 		bool centeredBoard = false;
 
 		// Check the boardName value
-		if (displayAllHighScores_BoardName != null)
-			boardName = string.IsNullOrEmpty(displayAllHighScores_BoardName.text) ? boardName : displayAllHighScores_BoardName.text;
-		else
+		if (displayAllHighScores_BoardName == null)
 			Debug.LogWarning("[SampleScript:Leaderboard] displayAllHighScores_BoardName InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(displayAllHighScores_BoardName.text))
+			boardName = displayAllHighScores_BoardName.text;
 		
 		// Check the scoresPerPage value
-		if (displayAllHighScores_ScoresPerPage != null)
-			scoresPerPage = string.IsNullOrEmpty(displayAllHighScores_ScoresPerPage.text) ? scoresPerPage : int.Parse(displayAllHighScores_ScoresPerPage.text);
-		else
+		if (displayAllHighScores_ScoresPerPage == null)
 			Debug.LogWarning("[SampleScript:Leaderboard] displayAllHighScores_ScoresPerPage InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(displayAllHighScores_ScoresPerPage.text))
+			scoresPerPage = int.Parse(displayAllHighScores_ScoresPerPage.text);
 		
 		// Check the centeredBoard value
-		if (displayAllHighScores_CenteredBoard != null)
-			centeredBoard = displayAllHighScores_CenteredBoard.isOn;
-		else
+		if (displayAllHighScores_CenteredBoard == null)
 			Debug.LogWarning("[SampleScript:Leaderboard] displayAllHighScores_CenteredBoard InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
-		
+		else
+			centeredBoard = displayAllHighScores_CenteredBoard.isOn;
+
 		// Call the template method
 		LeaderboardFeatures.DisplayAllHighScores(boardName, scoresPerPage, centeredBoard);
 	}
@@ -240,22 +239,22 @@ public class SampleScript : MonoBehaviour
 		string scoreDescription = "This is a test score";
 
 		// Check the boardName value
-		if (postScore_BoardName != null)
-			boardName = string.IsNullOrEmpty(postScore_BoardName.text) ? boardName : postScore_BoardName.text;
-		else
+		if (postScore_BoardName == null)
 			Debug.LogWarning("[SampleScript:Leaderboard] postScore_BoardName InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(postScore_BoardName.text))
+			boardName = postScore_BoardName.text;
 		
 		// Check the scoreValue value
-		if (postScore_ScoreValue != null)
-			scoreValue = string.IsNullOrEmpty(postScore_ScoreValue.text) ? scoreValue : long.Parse(postScore_ScoreValue.text);
-		else
+		if (postScore_ScoreValue == null)
 			Debug.LogWarning("[SampleScript:Leaderboard] postScore_ScoreValue InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(postScore_ScoreValue.text))
+			scoreValue = long.Parse(postScore_ScoreValue.text);
 		
 		// Check the scoreDescription value
-		if (postScore_ScoreDescription != null)
-			scoreDescription = postScore_ScoreDescription.text;
-		else
+		if (postScore_ScoreDescription == null)
 			Debug.LogWarning("[SampleScript:Leaderboard] postScore_ScoreDescription InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else
+			scoreDescription = postScore_ScoreDescription.text;
 		
 		// Call the template method
 		LeaderboardFeatures.PostScore(boardName, scoreValue, scoreDescription);
@@ -282,16 +281,16 @@ public class SampleScript : MonoBehaviour
 		string gamerSecret = "";
 
 		// Check the gamerID value
-		if (loginWithCredentials_GamerID != null)
-			gamerID = string.IsNullOrEmpty(loginWithCredentials_GamerID.text) ? gamerID : loginWithCredentials_GamerID.text;
-		else
+		if (loginWithCredentials_GamerID == null)
 			Debug.LogWarning("[SampleScript:Login] loginWithCredentials_GamerID InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(loginWithCredentials_GamerID.text))
+			gamerID = loginWithCredentials_GamerID.text;
 		
 		// Check the gamerSecret value
-		if (loginWithCredentials_GamerSecret != null)
-			gamerSecret = string.IsNullOrEmpty(loginWithCredentials_GamerSecret.text) ? gamerSecret : loginWithCredentials_GamerSecret.text;
-		else
+		if (loginWithCredentials_GamerSecret == null)
 			Debug.LogWarning("[SampleScript:Login] loginWithCredentials_GamerSecret InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(loginWithCredentials_GamerSecret.text))
+			gamerSecret = loginWithCredentials_GamerSecret.text;
 		
 		// Call the template method
 		LoginFeatures.LoginWithCredentials(gamerID, gamerSecret);
@@ -323,10 +322,10 @@ public class SampleScript : MonoBehaviour
 		int currenciesPerPage = 20;
 
 		// Check the currenciesPerPage value
-		if (displayAllCurrenciesHistory_CurrenciesPerPage != null)
-			currenciesPerPage = string.IsNullOrEmpty(displayAllCurrenciesHistory_CurrenciesPerPage.text) ? currenciesPerPage : int.Parse(displayAllCurrenciesHistory_CurrenciesPerPage.text);
-		else
+		if (displayAllCurrenciesHistory_CurrenciesPerPage == null)
 			Debug.LogWarning("[SampleScript:Transaction] displayAllCurrenciesHistory_CurrenciesPerPage InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(displayAllCurrenciesHistory_CurrenciesPerPage.text))
+			currenciesPerPage = int.Parse(displayAllCurrenciesHistory_CurrenciesPerPage.text);
 		
 		// Call the template method
 		TransactionFeatures.DisplayCurrencyHistory(null, currenciesPerPage);
@@ -344,16 +343,16 @@ public class SampleScript : MonoBehaviour
 		int currenciesPerPage = 20;
 
 		// Check the currencyName value
-		if (displayCurrencyHistory_CurrencyName != null)
-			currencyName = string.IsNullOrEmpty(displayCurrencyHistory_CurrencyName.text) ? currencyName : displayCurrencyHistory_CurrencyName.text;
-		else
+		if (displayCurrencyHistory_CurrencyName == null)
 			Debug.LogWarning("[SampleScript:Transaction] displayCurrencyHistory_CurrencyName InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(displayCurrencyHistory_CurrencyName.text))
+			currencyName = displayCurrencyHistory_CurrencyName.text;
 		
 		// Check the currenciesPerPage value
-		if (displayCurrencyHistory_CurrenciesPerPage != null)
-			currenciesPerPage = string.IsNullOrEmpty(displayCurrencyHistory_CurrenciesPerPage.text) ? currenciesPerPage : int.Parse(displayCurrencyHistory_CurrenciesPerPage.text);
-		else
+		if (displayCurrencyHistory_CurrenciesPerPage == null)
 			Debug.LogWarning("[SampleScript:Transaction] displayCurrencyHistory_CurrenciesPerPage InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(displayCurrencyHistory_CurrenciesPerPage.text))
+			currenciesPerPage = int.Parse(displayCurrencyHistory_CurrenciesPerPage.text);
 		
 		// Call the template method
 		TransactionFeatures.DisplayCurrencyHistory(currencyName, currenciesPerPage);
@@ -373,22 +372,22 @@ public class SampleScript : MonoBehaviour
 		string transactionDescription = "This is a test transaction";
 
 		// Check the currencyName value
-		if (postTransaction_CurrencyName != null)
-			currencyName = string.IsNullOrEmpty(postTransaction_CurrencyName.text) ? currencyName : postTransaction_CurrencyName.text;
-		else
+		if (postTransaction_CurrencyName == null)
 			Debug.LogWarning("[SampleScript:Transaction] postTransaction_CurrencyName InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(postTransaction_CurrencyName.text))
+			currencyName = postTransaction_CurrencyName.text;
 		
 		// Check the currencyAmount value
-		if (postTransaction_CurrencyAmount != null)
-			currencyAmount = string.IsNullOrEmpty(postTransaction_CurrencyAmount.text) ? currencyAmount : float.Parse(postTransaction_CurrencyAmount.text);
-		else
+		if (postTransaction_CurrencyAmount == null)
 			Debug.LogWarning("[SampleScript:Transaction] postTransaction_CurrencyAmount InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(postTransaction_CurrencyAmount.text))
+			currencyAmount = float.Parse(postTransaction_CurrencyAmount.text);
 		
 		// Check the transactionDescription value
-		if (postTransaction_TransactionDescription != null)
-			transactionDescription = postTransaction_TransactionDescription.text;
-		else
+		if (postTransaction_TransactionDescription == null)
 			Debug.LogWarning("[SampleScript:Transaction] postTransaction_TransactionDescription InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else
+			transactionDescription = postTransaction_TransactionDescription.text;
 		
 		// Call the template method
 		TransactionFeatures.PostTransaction(currencyName, currencyAmount, transactionDescription);
