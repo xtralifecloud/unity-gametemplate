@@ -9,6 +9,9 @@ using UnityEngine;
 public class SampleScriptEditor : Editor
 {
 	#region Serialized Object References
+	// The project's MonoScript reference
+	MonoScript script = null;
+
 	#region Gamer VFS References
 	// DisplayGameKey properties references
 	private SerializedProperty displayGameKey_Key;
@@ -64,6 +67,9 @@ public class SampleScriptEditor : Editor
 	/// </summary>
 	private void OnEnable()
 	{
+		// Get the project's MonoScript reference
+		script = MonoScript.FromMonoBehaviour((SampleScript)target);
+
 		#region Game VFS Find
 		// Find DisplayGameKey properties references on the serialized object
 		displayGameKey_Key = serializedObject.FindProperty("displayGameKey_Key");
@@ -144,6 +150,9 @@ public class SampleScriptEditor : Editor
 
 		// Get the current value of the serialized properties
 		serializedObject.Update();
+
+		// Display the SampleScript script field
+		script = EditorGUILayout.ObjectField("Script", script, typeof(MonoScript), false) as MonoScript;
 
 		#region Game VFS Foldout
 		// Open / Close the Game VFS foldout
