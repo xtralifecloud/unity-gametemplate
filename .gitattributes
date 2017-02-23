@@ -22,12 +22,13 @@
 
 *.properties text
 
+*.unity text
+
 *.png binary
 *.a binary
 *.bundle binary
 *.aar binary
 *.jar binary
-*.unity binary
 *.asset binary
 *.dll binary
 *.unitypackage binary
