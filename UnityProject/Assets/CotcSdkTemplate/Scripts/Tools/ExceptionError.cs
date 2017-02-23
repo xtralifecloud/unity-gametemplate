@@ -6,7 +6,7 @@
 	public class ExceptionError
 	{
 		// Format to display the error data under string Format
-		private const string toStringFormat = "{type: {0}, message: {1}}";
+		private const string toStringFormat = "[type: {0}, message: {1}]";
 
 		// Error data
 		public string type = "";
