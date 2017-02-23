@@ -6,6 +6,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to fill a displayed leaderboard score.
+	/// </summary>
 	public class LeaderboardScoreHandler : MonoBehaviour
 	{
 		#region Handling
@@ -24,7 +27,11 @@ namespace CotcSdkTemplate
 		// Text to display to show the score rank
 		private const string rankText = "# {0}";
 
-		// Fill the leaderboard score with new data
+		/// <summary>
+		/// Fill the leaderboard score with new data.
+		/// </summary>
+		/// <param name="score">The score details.</param>
+		/// <param name="displayScoreInfo">If the score description should be shown.</param>
 		public void FillData(Score score, bool displayScoreInfo = true)
 		{
 			// Get the gamer info from score's Json
@@ -47,21 +54,25 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Avatars Downloading
-		// Keep the avatar URL to download at Start
+		// Keep the avatar URL to download it at Start
 		private string avatarUrlToDownload = null;
 
-		// Download avatar from the given URL at Start
+		/// <summary>
+		/// Download avatar from the given URL at Start.
+		/// </summary>
 		private void Start()
 		{
 			if (!string.IsNullOrEmpty(avatarUrlToDownload))
 				StartCoroutine(UpdateAvatarFromURL());
 		}
 
-		// Actually, we need to wait the Start event to download the avatar as coroutines need the GameObject to be started to be launched
-		// As we use FillData() just after the LeaderboardScoreHandler Instantiate in LeaderboardHandler, it hasn't gone through an Update yet and is not considered as active
-		// TODO: You may want to cache the downloaded avatars to avoid to download them multiple times!
+		/// <summary>
+		/// Download the avatar image from an URL. Actually, we need to wait the Start event to download the avatar as coroutines need the GameObject to be started to be launched.
+		/// As we use FillData() just after the LeaderboardScoreHandler Instantiate in LeaderboardHandler, it hasn't gone through an Update yet and is not considered as active.
+		/// </summary>
 		private IEnumerator UpdateAvatarFromURL()
 		{
+			// TODO: You may want to cache the downloaded avatars to avoid to download them multiple times!
 			// Create a WWW handler and wait for the download request to complete
 			WWW www = new WWW(avatarUrlToDownload);
 			yield return www;

@@ -5,6 +5,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to fill a displayed achievement item.
+	/// </summary>
 	public class AchievementItemHandler : MonoBehaviour
 	{
 		#region Handling
@@ -26,10 +29,13 @@ namespace CotcSdkTemplate
 		private const string uncompletedText = "Uncompleted...";
 		private const string floatStringFormat = "0.##";
 
-		// Fill the leaderboard score with new data
-		// TODO: You may want to replace the default achievement icons by your own ones, according to achievements names
+		/// <summary>
+		/// Fill the achievement achievement with new data.
+		/// </summary>
+		/// <param name="achievement">The achievement details.</param>
 		public void FillData(AchievementDefinition achievement)
 		{
+			// TODO: You may want to replace the default achievement icons by your own ones, according to achievements names
 			// Update fields
 			achievementName.text = achievement.Name;
 
@@ -60,7 +66,10 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Achievement Progress Formating
-		// Format an achievement progress text
+		/// <summary>
+		/// Format an achievement progress text.
+		/// </summary>
+		/// <param name="achievement">The achievement details.</param>
 		private string GetAchievementProgress(AchievementDefinition achievement)
 		{
 			float currentProgress = achievement.Progress * achievement.Config["maxValue"].AsFloat();

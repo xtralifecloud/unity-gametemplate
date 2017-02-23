@@ -2,6 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// The custom editor for SampleScript.
+/// </summary>
 [CustomEditor(typeof(SampleScript))]
 public class SampleScriptEditor : Editor
 {
@@ -44,11 +47,11 @@ public class SampleScriptEditor : Editor
 
 	#region Transaction References
 	// DisplayAllCurrenciesHistory properties references
-	private SerializedProperty displayAllCurrenciesHistory_CurrenciesPerPage;
+	private SerializedProperty displayAllCurrenciesHistory_TransactionsPerPage;
 
 	// DisplayCurrencyHistory properties references
 	private SerializedProperty displayCurrencyHistory_CurrencyName;
-	private SerializedProperty displayCurrencyHistory_CurrenciesPerPage;
+	private SerializedProperty displayCurrencyHistory_TransactionsPerPage;
 
 	// PostTransaction properties references
 	private SerializedProperty postTransaction_CurrencyName;
@@ -56,6 +59,9 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty postTransaction_TransactionDescription;
 	#endregion
 
+	/// <summary>
+	/// Find the properties references on the serialized object when this script is enabled.
+	/// </summary>
 	private void OnEnable()
 	{
 		#region Game VFS Find
@@ -96,11 +102,11 @@ public class SampleScriptEditor : Editor
 
 		#region Transaction Find
 		// Find DisplayAllCurrenciesHistory properties references on the serialized object
-		displayAllCurrenciesHistory_CurrenciesPerPage = serializedObject.FindProperty("displayAllCurrenciesHistory_CurrenciesPerPage");
+		displayAllCurrenciesHistory_TransactionsPerPage = serializedObject.FindProperty("displayAllCurrenciesHistory_TransactionsPerPage");
 
 		// Find DisplayCurrencyHistory properties references on the serialized object
 		displayCurrencyHistory_CurrencyName = serializedObject.FindProperty("displayCurrencyHistory_CurrencyName");
-		displayCurrencyHistory_CurrenciesPerPage = serializedObject.FindProperty("displayCurrencyHistory_CurrenciesPerPage");
+		displayCurrencyHistory_TransactionsPerPage = serializedObject.FindProperty("displayCurrencyHistory_TransactionsPerPage");
 
 		// Find PostTransaction properties references on the serialized object
 		postTransaction_CurrencyName = serializedObject.FindProperty("postTransaction_CurrencyName");
@@ -123,7 +129,9 @@ public class SampleScriptEditor : Editor
 	private bool loginFoldoutState = true;
 	private bool transactionFoldoutState = true;
 
-	// Draw the custom inspector GUI
+	/// <summary>
+	/// Draw the custom inspector GUI in place of the default one.
+	/// </summary>
 	public override void OnInspectorGUI()
 	{
 		// Edit foldouts style only once
@@ -138,12 +146,13 @@ public class SampleScriptEditor : Editor
 		serializedObject.Update();
 
 		#region Game VFS Foldout
-		// Open / Close the foldout
+		// Open / Close the Game VFS foldout
 		GUILayout.Space(verticalSpaces);
 		gameVFSFoldoutState = EditorGUILayout.Foldout(gameVFSFoldoutState, "Game VFS", foldoutLabelToggle, foldoutStyle);
 
 		if (gameVFSFoldoutState)
 		{
+			// Show DisplayGameKey properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Display Game Key", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(displayGameKey_Key, new GUIContent("  > Key"));
@@ -151,22 +160,25 @@ public class SampleScriptEditor : Editor
 		#endregion
 
 		#region Gamer VFS Foldout
-		// Open / Close the foldout
+		// Open / Close the Gamer VFS foldout
 		GUILayout.Space(verticalSpaces);
 		gamerVFSFoldoutState = EditorGUILayout.Foldout(gamerVFSFoldoutState, "Gamer VFS", foldoutLabelToggle, foldoutStyle);
 
 		if (gamerVFSFoldoutState)
 		{
+			// Show DisplayGamerKey properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Display Gamer Key", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(displayGamerKey_Key, new GUIContent("  > Key"));
 
+			// Show SetGamerKey properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Set Gamer Key", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(setGamerKey_Key, new GUIContent("  > Key"));
 			EditorGUILayout.PropertyField(setGamerKey_Value, new GUIContent("  > Value"));
 			EditorGUILayout.PropertyField(setGamerKey_Type, new GUIContent("  > Type"));
 
+			// Show DeleteGamerKey properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Delete Gamer Key", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(deleteGamerKey_Key, new GUIContent("  > Key"));
@@ -174,18 +186,20 @@ public class SampleScriptEditor : Editor
 		#endregion
 
 		#region Leaderboard Foldout
-		// Open / Close the foldout
+		// Open / Close the Leaderboard foldout
 		GUILayout.Space(verticalSpaces);
 		leaderboardFoldoutState = EditorGUILayout.Foldout(leaderboardFoldoutState, "Leaderboard", foldoutLabelToggle, foldoutStyle);
 
 		if (leaderboardFoldoutState)
 		{
+			// Show DisplayAllHighScores properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Display All High Scores", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(displayAllHighScores_BoardName, new GUIContent("  > Board Name"));
 			EditorGUILayout.PropertyField(displayAllHighScores_ScoresPerPage, new GUIContent("  > Scores Per Page"));
 			EditorGUILayout.PropertyField(displayAllHighScores_CenteredBoard, new GUIContent("  > Centered Board"));
 
+			// Show PostScore properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Post Score", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(postScore_BoardName, new GUIContent("  > Board Name"));
@@ -195,12 +209,13 @@ public class SampleScriptEditor : Editor
 		#endregion
 
 		#region Login Foldout
-		// Open / Close the foldout
+		// Open / Close the Login foldout
 		GUILayout.Space(verticalSpaces);
 		loginFoldoutState = EditorGUILayout.Foldout(loginFoldoutState, "Login", foldoutLabelToggle, foldoutStyle);
 
 		if (loginFoldoutState)
 		{
+			// Show LoginWithCredentials properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Login With Credentials", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(loginWithCredentials_GamerID, new GUIContent("  > Gamer ID"));
@@ -209,21 +224,24 @@ public class SampleScriptEditor : Editor
 		#endregion
 
 		#region Transaction Foldout
-		// Open / Close the foldout
+		// Open / Close the Transaction foldout
 		GUILayout.Space(verticalSpaces);
 		transactionFoldoutState = EditorGUILayout.Foldout(transactionFoldoutState, "Transaction", foldoutLabelToggle, foldoutStyle);
 
 		if (transactionFoldoutState)
 		{
+			// Show DisplayAllCurrenciesHistory properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Display All Currencies History", EditorStyles.boldLabel);
-			EditorGUILayout.PropertyField(displayAllCurrenciesHistory_CurrenciesPerPage, new GUIContent("  > Currencies Per Page"));
+			EditorGUILayout.PropertyField(displayAllCurrenciesHistory_TransactionsPerPage, new GUIContent("  > Transactions Per Page"));
 
+			// Show DisplayCurrencyHistory properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Display Currency History", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(displayCurrencyHistory_CurrencyName, new GUIContent("  > Currency Name"));
-			EditorGUILayout.PropertyField(displayCurrencyHistory_CurrenciesPerPage, new GUIContent("  > Currencies Per Page"));
+			EditorGUILayout.PropertyField(displayCurrencyHistory_TransactionsPerPage, new GUIContent("  > Transactions Per Page"));
 
+			// Show PostTransaction properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Post Transaction", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(postTransaction_CurrencyName, new GUIContent("  > Currency Name"));

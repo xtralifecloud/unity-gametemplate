@@ -5,6 +5,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to initiliaze the CotcSdk and handle the Cloud and Gamer instances.
+	/// </summary>
 	public static class CloudFeatures
 	{
 		#region Handling
@@ -13,7 +16,9 @@ namespace CotcSdkTemplate
 		// The gamer is the base to perform most operations. A gamer object is obtained after successfully signing in.
 		public static Gamer gamer = null;
 
-		// Initialize the CotcSdk's Cloud
+		/// <summary>
+		/// Initialize the CotcSdk's Cloud instance.
+		/// </summary>
 		public static void Handling_InitializeCloud()
 		{
 			// Find the CotcGameObject instance in the scene
@@ -32,7 +37,10 @@ namespace CotcSdkTemplate
 			Backend_GetCloud(cotcGameObject, InitializeCloud_OnSuccess, InitializeCloud_OnError);
 		}
 
-		// Check if the CotcSdk's Cloud is initialized
+		/// <summary>
+		/// Check if the CotcSdk's Cloud instance is initialized.
+		/// </summary>
+		/// <param name="verbose">If the check should log in case of error.</param>
 		public static bool IsCloudInitialized(bool verbose = true)
 		{
 			if (cloud == null)
@@ -46,10 +54,13 @@ namespace CotcSdkTemplate
 			return true;
 		}
 
-		// Check if the CotcSdk's Cloud is initialized and a Gamer is logged in
+		/// <summary>
+		/// Check if the CotcSdk's Cloud instance is initialized and a Gamer is logged in.
+		/// </summary>
+		/// <param name="verbose">If the check should log in case of error.</param>
 		public static bool IsGamerLoggedIn(bool verbose = true)
 		{
-			if (!IsCloudInitialized())
+			if (!IsCloudInitialized(verbose))
 				return false;
 
 			if (gamer == null)
@@ -65,36 +76,41 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Features
-		// Get the main Cloud object's reference
+		/// <summary>
+		/// Get the CotcSdk's Cloud instance.
+		/// </summary>
+		/// <param name="cotcGameObject">CotcSdk's CotcGameObject instance.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
 		public static void Backend_GetCloud(CotcGameObject cotcGameObject, Action<Cloud> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
-			// Call the API method which returns a Promise<Cloud> (promising a Cloud result)
+			// Call the API method which returns a Cloud result
 			cotcGameObject.GetCloud()
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
 				{
 					// The exception should always be of the CotcException type
 					ExceptionTools.LogCotcException("CloudFeatures", "GetCloud", exception);
-
+					
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
 						OnError(ExceptionTools.GetExceptionError(exception));
 				})
 				// The result if everything went well
-				.Done(delegate (Cloud cloudReference)
+				.Done(delegate (Cloud cloudInstance)
 				{
 					Debug.Log("[CotcSdkTemplate:CloudFeatures] GetCloud success");
-
-					// Keep the Cloud's reference
-					cloud = cloudReference;
-
+					
+					// Keep the Cloud instance reference
+					cloud = cloudInstance;
+					
 					// Register to the HttpRequestFailedHandler event
 					cloud.HttpRequestFailedHandler = RetryFailedRequestOnce;
-
+					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
-						OnSuccess(cloudReference);
-
+						OnSuccess(cloudInstance);
+					
 					// Call the CloudInitialized event if any callback registered to it
 					if (Event_CloudInitialized != null)
 						Event_CloudInitialized(cloud);
@@ -103,13 +119,19 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Delegate Callbacks
-		// What to do if any InitializeCloud request succeeded
-		private static void InitializeCloud_OnSuccess(Cloud cloudReference)
+		/// <summary>
+		/// What to do if any InitializeCloud request succeeded.
+		/// </summary>
+		/// <param name="cloudInstance">The initiliazed Cloud instance.</param>
+		private static void InitializeCloud_OnSuccess(Cloud cloudInstance)
 		{
 			// Do whatever...
 		}
 
-		// What to do if any InitializeCloud request failed
+		/// <summary>
+		/// What to do if any InitializeCloud request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
 		private static void InitializeCloud_OnError(ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)
@@ -129,14 +151,21 @@ namespace CotcSdkTemplate
 		// Time to wait before a failed HTPP request retry
 		private const int httpRequestRetryDelay = 1000;
 
-		// Log unhandled exceptions (.Done block without .Catch -- Not called if there is any .Then)
+		/// <summary>
+		/// Log unhandled exceptions (when backend requests errors occur without any .Catch or .Then block set)
+		/// </summary>
+		/// <param name="sender">The exception sender object reference.</param>
+		/// <param name="exceptionEventArgs">The exception event details.</param>
 		private static void LogUnhandledException(object sender, ExceptionEventArgs exceptionEventArgs)
 		{
 			// The exception should always be of the CotcException type
 			ExceptionTools.LogCotcException("CloudFeatures", "Unhandled", exceptionEventArgs.Exception);
 		}
 
-		// Retry failed HTTP requests once
+		/// <summary>
+		/// Retry failed HTTP requests once.
+		/// </summary>
+		/// <param name="httpRequestFailedEventArgs">The exception event details.</param>
 		private static void RetryFailedRequestOnce(HttpRequestFailedEventArgs httpRequestFailedEventArgs)
 		{
 			if (httpRequestFailedEventArgs.UserData == null)

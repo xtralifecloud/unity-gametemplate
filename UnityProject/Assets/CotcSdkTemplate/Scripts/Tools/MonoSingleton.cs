@@ -2,11 +2,18 @@
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// A class derivated from MonoBehaviour and following the singleton design pattern.
+	/// </summary>
 	public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 	{
 		#region Instance Handling
+		// The singleton instance
 		private static MonoSingleton<T> instance = null;
 
+		/// <summary>
+		/// Register the singleton instance at Awake.
+		/// </summary>
 		private void Awake()
 		{
 			if (instance == null)
@@ -18,6 +25,9 @@ namespace CotcSdkTemplate
 			}
 		}
 
+		/// <summary>
+		/// Get the singleton instance.
+		/// </summary>
 		public static T Instance
 		{
 			get
@@ -32,12 +42,12 @@ namespace CotcSdkTemplate
 			}
 		}
 
+		/// <summary>
+		/// Check if a signleton instance is registered.
+		/// </summary>
 		public static bool HasInstance
 		{
-			get
-			{
-				return instance != null;
-			}
+			get { return instance != null; }
 		}
 		#endregion
 	}

@@ -4,10 +4,15 @@ using UnityEngine.UI;
 using CotcSdk;
 using CotcSdkTemplate;
 
+/// <summary>
+/// A sample script to show a way to use the CotcSdkTemplate features.
+/// </summary>
 public class SampleScript : MonoBehaviour
 {
 	#region Cloud + Login
-	// Initialize the CotcSdk's Cloud at start
+	/// <summary>
+	/// Initialize the CotcSdk's Cloud instance at Start.
+	/// </summary>
 	private void Start()
 	{
 		// Register to the CloudInitialized event
@@ -17,7 +22,10 @@ public class SampleScript : MonoBehaviour
 		CloudFeatures.Handling_InitializeCloud();
 	}
 
-	// What to do once the CotcSdk's Cloud is initialized
+	/// <summary>
+	/// What to do once the CotcSdk's Cloud instance is initialized. (here we call an AutoLogin)
+	/// </summary>
+	/// <param name="cloud">The initialized Cloud instance.</param>
 	private void OnCloudInitialized(Cloud cloud)
 	{
 		// Register to the GamerLoggedIn and GamerLoggedOut events
@@ -28,13 +36,18 @@ public class SampleScript : MonoBehaviour
 		LoginFeatures.Handling_AutoLogin();
 	}
 
-	// What to do once a gamer has logged in
+	/// <summary>
+	/// What to do once a gamer has logged in.
+	/// </summary>
+	/// <param name="gamer">The logged in Gamer instance.</param>
 	private void OnGamerLoggedIn(Gamer gamer)
 	{
 		// Do whatever...
 	}
 
-	// What to do once a gamer has logged out
+	/// <summary>
+	/// What to do once a gamer has logged out.
+	/// </summary>
 	private void OnGamerLoggedOut()
 	{
 		// Do whatever...
@@ -42,7 +55,9 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Achievement
-	// When the corresponding button is clicked, display all game's achievements
+	/// <summary>
+	/// When the corresponding button is clicked, get and display logged in gamer's progress on all game's achievements.
+	/// </summary>
 	public void Button_DisplayAchievements()
 	{
 		// Call the template method
@@ -51,7 +66,9 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Game VFS
-	// When the corresponding button is clicked, read and display the value of all keys associated to the current game
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the value of all keys associated to the current game.
+	/// </summary>
 	public void Button_DisplayAllGameKeys()
 	{
 		// Call the template method
@@ -61,7 +78,9 @@ public class SampleScript : MonoBehaviour
 	// References to the game VFS UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField displayGameKey_Key = null;
 
-	// When the corresponding button is clicked, read and display the value of the given key associated to the current game
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the value of the given key associated to the current game.
+	/// </summary>
 	public void Button_DisplayGameKey()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
@@ -79,7 +98,9 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Gamer VFS
-	// When the corresponding button is clicked, read and display the value of all keys associated to the current logged in gamer
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the value of all keys associated to the current logged in gamer.
+	/// </summary>
 	public void Button_DisplayAllGamerKeys()
 	{
 		// Call the template method
@@ -89,7 +110,9 @@ public class SampleScript : MonoBehaviour
 	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField displayGamerKey_Key = null;
 
-	// When the corresponding button is clicked, read and display the value of the given key associated to the current logged in gamer
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the value of the given key associated to the current logged in gamer.
+	/// </summary>
 	public void Button_DisplayGamerKey()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
@@ -110,7 +133,9 @@ public class SampleScript : MonoBehaviour
 	[SerializeField] private InputField setGamerKey_Value = null;
 	[SerializeField] private ToggleGroup setGamerKey_Type = null;
 
-	// When the corresponding button is clicked, create / update the value of the given key associated to the current logged in gamer
+	/// <summary>
+	/// When the corresponding button is clicked, create / update the value of the given key associated to the current logged in gamer.
+	/// </summary>
 	public void Button_SetGamerKey()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
@@ -165,7 +190,9 @@ public class SampleScript : MonoBehaviour
 	// References to the gamer VFS UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField deleteGamerKey_Key = null;
 
-	// When the corresponding button is clicked, delete the given key associated to the current logged in gamer
+	/// <summary>
+	/// When the corresponding button is clicked, delete the given key associated to the current logged in gamer.
+	/// </summary>
 	public void Button_DeleteGamerKey()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
@@ -188,7 +215,9 @@ public class SampleScript : MonoBehaviour
 	[SerializeField] private InputField displayAllHighScores_ScoresPerPage = null;
 	[SerializeField] private Toggle displayAllHighScores_CenteredBoard = null;
 
-	// When the corresponding button is clicked, display all high scores from the given leaderboard
+	/// <summary>
+	/// When the corresponding button is clicked, get and display all gamers' high scores from the given leaderboard.
+	/// </summary>
 	public void Button_DisplayAllHighScores()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
@@ -218,7 +247,9 @@ public class SampleScript : MonoBehaviour
 		LeaderboardFeatures.Handling_DisplayAllHighScores(boardName, scoresPerPage, centeredBoard);
 	}
 
-	// When the corresponding button is clicked, display logged in gamer's high scores from all leaderboards in which he scored
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the current logged in gamer's best scores from all leaderboards in which he scored at least once.
+	/// </summary>
 	public void Button_DisplayGamerHighScores()
 	{
 		// Call the template method
@@ -230,7 +261,9 @@ public class SampleScript : MonoBehaviour
 	[SerializeField] private InputField postScore_ScoreValue = null;
 	[SerializeField] private InputField postScore_ScoreDescription = null;
 
-	// When the corresponding button is clicked, post a new score to the given leaderboard
+	/// <summary>
+	/// When the corresponding button is clicked, post a new score on the given leaderboard for the current logged in gamer.
+	/// </summary>
 	public void Button_PostScore()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
@@ -262,7 +295,9 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Login
-	// When the corresponding button is clicked, login with a new anonymous account
+	/// <summary>
+	/// When the corresponding button is clicked, login the gamer with a new anonymous account.
+	/// </summary>
 	public void Button_LoginAsAnonymous()
 	{
 		// Call the template method
@@ -273,7 +308,9 @@ public class SampleScript : MonoBehaviour
 	[SerializeField] private InputField loginWithCredentials_GamerID = null;
 	[SerializeField] private InputField loginWithCredentials_GamerSecret = null;
 
-	// When the corresponding button is clicked, login with a previously created account
+	/// <summary>
+	/// When the corresponding button is clicked, login the gamer with a previously created account.
+	/// </summary>
 	public void Button_LoginWithCredentials()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
@@ -296,7 +333,9 @@ public class SampleScript : MonoBehaviour
 		LoginFeatures.Handling_LoginWithCredentials(gamerID, gamerSecret);
 	}
 
-	// When the corresponding button is clicked, logout the current logged in gamer
+	/// <summary>
+	/// When the corresponding button is clicked, logout the current logged in gamer.
+	/// </summary>
 	public void Button_LogoutGamer()
 	{
 		// Call the template method
@@ -305,7 +344,9 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Transaction
-	// When the corresponding button is clicked, display the current currencies balance
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the current logged in gamer currencies balance.
+	/// </summary>
 	public void Button_DisplayBalance()
 	{
 		// Call the template method
@@ -313,34 +354,38 @@ public class SampleScript : MonoBehaviour
 	}
 
 	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
-	[SerializeField] private InputField displayAllCurrenciesHistory_CurrenciesPerPage = null;
+	[SerializeField] private InputField displayAllCurrenciesHistory_TransactionsPerPage = null;
 
-	// When the corresponding button is clicked, display the gamer's history of all currencies
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the current logged in gamer's history of all currencies.
+	/// </summary>
 	public void Button_DisplayAllCurrenciesHistory()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
-		int currenciesPerPage = 20;
+		int transactionsPerPage = 20;
 
 		// Check the currenciesPerPage value
-		if (displayAllCurrenciesHistory_CurrenciesPerPage == null)
-			Debug.LogWarning("[SampleScript:Transaction] displayAllCurrenciesHistory_CurrenciesPerPage InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
-		else if (!string.IsNullOrEmpty(displayAllCurrenciesHistory_CurrenciesPerPage.text))
-			currenciesPerPage = int.Parse(displayAllCurrenciesHistory_CurrenciesPerPage.text);
+		if (displayAllCurrenciesHistory_TransactionsPerPage == null)
+			Debug.LogWarning("[SampleScript:Transaction] displayAllCurrenciesHistory_TransactionsPerPage InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(displayAllCurrenciesHistory_TransactionsPerPage.text))
+			transactionsPerPage = int.Parse(displayAllCurrenciesHistory_TransactionsPerPage.text);
 		
 		// Call the template method
-		TransactionFeatures.Handling_DisplayCurrencyHistory(null, currenciesPerPage);
+		TransactionFeatures.Handling_DisplayCurrencyHistory(null, transactionsPerPage);
 	}
 
 	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField displayCurrencyHistory_CurrencyName = null;
-	[SerializeField] private InputField displayCurrencyHistory_CurrenciesPerPage = null;
+	[SerializeField] private InputField displayCurrencyHistory_TransactionsPerPage = null;
 
-	// When the corresponding button is clicked, display the gamer's history of the given currency
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the current logged in gamer's history of the given currency.
+	/// </summary>
 	public void Button_DisplayCurrencyHistory()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned
 		string currencyName = "TestCurrency";
-		int currenciesPerPage = 20;
+		int transactionsPerPage = 20;
 
 		// Check the currencyName value
 		if (displayCurrencyHistory_CurrencyName == null)
@@ -349,13 +394,13 @@ public class SampleScript : MonoBehaviour
 			currencyName = displayCurrencyHistory_CurrencyName.text;
 		
 		// Check the currenciesPerPage value
-		if (displayCurrencyHistory_CurrenciesPerPage == null)
-			Debug.LogWarning("[SampleScript:Transaction] displayCurrencyHistory_CurrenciesPerPage InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
-		else if (!string.IsNullOrEmpty(displayCurrencyHistory_CurrenciesPerPage.text))
-			currenciesPerPage = int.Parse(displayCurrencyHistory_CurrenciesPerPage.text);
+		if (displayCurrencyHistory_TransactionsPerPage == null)
+			Debug.LogWarning("[SampleScript:Transaction] displayCurrencyHistory_TransactionsPerPage InputField reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values");
+		else if (!string.IsNullOrEmpty(displayCurrencyHistory_TransactionsPerPage.text))
+			transactionsPerPage = int.Parse(displayCurrencyHistory_TransactionsPerPage.text);
 		
 		// Call the template method
-		TransactionFeatures.Handling_DisplayCurrencyHistory(currencyName, currenciesPerPage);
+		TransactionFeatures.Handling_DisplayCurrencyHistory(currencyName, transactionsPerPage);
 	}
 
 	// References to the transaction UI elements (their serialized references are directly assigned in the scene)
@@ -363,7 +408,9 @@ public class SampleScript : MonoBehaviour
 	[SerializeField] private InputField postTransaction_CurrencyAmount = null;
 	[SerializeField] private InputField postTransaction_TransactionDescription = null;
 
-	// When the corresponding button is clicked, post a new transaction of the given currency
+	/// <summary>
+	/// When the corresponding button is clicked, post a new transaction of the given currency for the current logged in gamer.
+	/// </summary>
 	public void Button_PostTransaction()
 	{
 		// Default hardcoded values to use if no InputField elements references are assigned

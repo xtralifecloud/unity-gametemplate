@@ -6,6 +6,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to display the CotcSdk's leaderboard features' results.
+	/// </summary>
 	public class LeaderboardHandler : MonoSingleton<LeaderboardHandler>
 	{
 		#region Display
@@ -31,20 +34,29 @@ namespace CotcSdkTemplate
 		// The last PagedList<Score> used to fill the leaderboard panel
 		private PagedList<Score> currentScoresList = null;
 
-		// Hide the leaderboard panel at Start
+		/// <summary>
+		/// Hide the leaderboard panel at Start.
+		/// </summary>
 		private void Start()
 		{
 			ShowLeaderboardPanel(false);
 		}
 
-		// Show or hide the leaderboard panel
+		/// <summary>
+		/// Show or hide the leaderboard panel.
+		/// </summary>
+		/// <param name="show">If the panel should be shown.</param>
 		public void ShowLeaderboardPanel(bool show = true)
 		{
 			outClickMask.SetActive(show);
 			leaderboardPanel.SetActive(show);
 		}
 
-		// Fill the leaderboard panel with nonpaged scores then show it
+		/// <summary>
+		/// Fill the leaderboard panel with nonpaged scores then show it.
+		/// </summary>
+		/// <param name="scoresList">List of the scores to display.</param>
+		/// <param name="panelTitle">Title of the panel.</param>
 		public void FillAndShowNonpagedLeaderboardPanel(NonpagedList<Score> scoresList, string panelTitle = "Leaderboard Scores")
 		{
 			// Hide the "no score in board" (for paged list) and "no score posted" (for multiple boards) texts and hide the previous page and next page buttons
@@ -90,7 +102,11 @@ namespace CotcSdkTemplate
 			ShowLeaderboardPanel(true);
 		}
 
-		// Fill the leaderboard panel with paged scores then show it
+		/// <summary>
+		/// Fill the leaderboard panel with paged scores then show it.
+		/// </summary>
+		/// <param name="scoresList">List of the scores to display.</param>
+		/// <param name="panelTitle">Title of the panel.</param>
 		public void FillAndShowPagedLeaderboardPanel(PagedList<Score> scoresList, string panelTitle = "Leaderboard Scores")
 		{
 			// Hide the "no score posted in board" (for nonpaged list) and "no score posted" (for multiple boards) texts
@@ -145,7 +161,11 @@ namespace CotcSdkTemplate
 			ShowLeaderboardPanel(true);
 		}
 
-		// Fill the leaderboard panel with scores from multiple boards then show it
+		/// <summary>
+		/// Fill the leaderboard panel with scores from multiple boards then show it.
+		/// </summary>
+		/// <param name="scoresList">List of the scores to display.</param>
+		/// <param name="panelTitle">Title of the panel.</param>
 		public void FillAndShowMultipleLeaderboardPanel(Dictionary<string, Score> scoresList, string panelTitle = "Gamer Best Scores")
 		{
 			// Hide the "no score posted in board" (for nonpaged list) and the "no score in board" (for paged list) texts and hide the previous page and next page buttons
@@ -193,7 +213,9 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Buttons Actions
-		// Ask for the previous page on the current leaderboard panel
+		/// <summary>
+		/// Ask for the previous page on the current leaderboard panel.
+		/// </summary>
 		public void Button_PreviousPage()
 		{
 			// Disable buttons to avoid concurrent calls
@@ -205,7 +227,9 @@ namespace CotcSdkTemplate
 				LeaderboardFeatures.Handling_FetchPreviousLeaderboardPage(currentScoresList);
 		}
 
-		// Ask for the next page on the current leaderboard panel
+		/// <summary>
+		/// Ask for the next page on the current leaderboard panel.
+		/// </summary>
 		public void Button_NextPage()
 		{
 			// Disable buttons to avoid concurrent calls
@@ -219,7 +243,9 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Screen Orientation
-		// Adapt the layout display when the current screen orientation changes
+		/// <summary>
+		/// Adapt the layout display when the current screen orientation changes.
+		/// </summary>
 		public void OnRectTransformDimensionsChange()
 		{
 			// If on landscape orientation use 2 columns, else (portrait) use 1 column

@@ -362,7 +362,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Currencies Per Page
+  m_Text: 'Transactions Per Page
 
     Default: 20'
 --- !u!222 &39607934
@@ -2432,7 +2432,7 @@ GameObject:
   - component: {fileID: 410000421}
   - component: {fileID: 410000420}
   m_Layer: 5
-  m_Name: InputField-CurrenciesPerPage
+  m_Name: InputField-TransactionsPerPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3369,7 +3369,7 @@ GameObject:
   - component: {fileID: 569497073}
   - component: {fileID: 569497072}
   m_Layer: 5
-  m_Name: InputField-CurrenciesPerPage
+  m_Name: InputField-TransactionsPerPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5806,7 +5806,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Currencies Per Page
+  m_Text: 'Transactions Per Page
 
     Default: 20'
 --- !u!222 &858582048
@@ -15336,9 +15336,9 @@ MonoBehaviour:
   postScore_ScoreDescription: {fileID: 720388897}
   loginWithCredentials_GamerID: {fileID: 677811395}
   loginWithCredentials_GamerSecret: {fileID: 1395569369}
-  displayAllCurrenciesHistory_CurrenciesPerPage: {fileID: 569497072}
+  displayAllCurrenciesHistory_TransactionsPerPage: {fileID: 569497072}
   displayCurrencyHistory_CurrencyName: {fileID: 1602611491}
-  displayCurrencyHistory_CurrenciesPerPage: {fileID: 410000420}
+  displayCurrencyHistory_TransactionsPerPage: {fileID: 410000420}
   postTransaction_CurrencyName: {fileID: 1385602200}
   postTransaction_CurrencyAmount: {fileID: 446769455}
   postTransaction_TransactionDescription: {fileID: 585069667}

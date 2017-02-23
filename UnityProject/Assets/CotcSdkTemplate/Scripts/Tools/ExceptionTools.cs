@@ -5,10 +5,16 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to handle exception errors.
+	/// </summary>
 	public static class ExceptionTools
 	{
 		#region Exceptions Handling
-		// Return an ExceptionError object from an Exception
+		/// <summary>
+		/// Return an exception (expected to be a CotcException) under the ExceptionError format.
+		/// </summary>
+		/// <param name="exception">The original Exception.</param>
 		public static ExceptionError GetExceptionError(Exception exception)
 		{
 			// The exception should always be of the CotcException type
@@ -20,7 +26,12 @@ namespace CotcSdkTemplate
 				return new ExceptionError("UnknownException", exception.ToString());
 		}
 
-		// Log an exception into the console
+		/// <summary>
+		/// Log an exception (expected to be a CotcException) into the console.
+		/// </summary>
+		/// <param name="className">Name of the involved class.</param>
+		/// <param name="methodName">Name of the involved method.</param>
+		/// <param name="exception">The original Exception.</param>
 		public static void LogCotcException(string className, string methodName, Exception exception)
 		{
 			// The exception should always be of the CotcException type

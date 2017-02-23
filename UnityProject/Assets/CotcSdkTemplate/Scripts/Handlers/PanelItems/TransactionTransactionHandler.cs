@@ -7,6 +7,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to fill a displayed transaction transaction.
+	/// </summary>
 	public class TransactionTransactionHandler : MonoBehaviour
 	{
 		#region Handling
@@ -15,10 +18,14 @@ namespace CotcSdkTemplate
 		[SerializeField] private Text transactionCurrencies = null;
 		[SerializeField] private Text transactionDescription = null;
 
-		// Fill the transaction currency with new data
-		// TODO: You may want to display culture dependent date formats
+		/// <summary>
+		/// Fill the transaction transaction with new data.
+		/// </summary>
+		/// <param name="transaction">Transaction currencies data under the Bundle format.</param>
+		/// <param name="displayTransactionDescription">If the transaction description should be shown.</param>
 		public void FillData(Transaction transaction, bool displayTransactionDescription = true)
 		{
+			// TODO: You may want to display culture dependent date formats
 			// Update fields
 			transactionDate.text = transaction.RunDate.ToString();
 			transactionCurrencies.text = CurrenciesToString(transaction.TxData);
@@ -33,7 +40,10 @@ namespace CotcSdkTemplate
 		// Text to format a currency data
 		private const string currencyFormat = "{0}: {1}";
 
-		// Format a string from a currencies list Bundle
+		/// <summary>
+		/// Format a string from a currencies list Bundle.
+		/// </summary>
+		/// <param name="currenciesBundle">List of currencies under the Bundle format.</param>
 		private string CurrenciesToString(Bundle currenciesBundle)
 		{
 			// Get currencies as a Dictionary and instantiate a StringBuilder

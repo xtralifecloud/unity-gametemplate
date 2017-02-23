@@ -6,6 +6,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to display the CotcSdk's achievement features' results.
+	/// </summary>
 	public class AchievementHandler : MonoSingleton<AchievementHandler>
 	{
 		#region Display
@@ -22,20 +25,29 @@ namespace CotcSdkTemplate
 		// List of the achievement GameObjects created on the achievement panel
 		private List<GameObject> achievementItems = new List<GameObject>();
 
-		// Hide the achievement panel at Start
+		/// <summary>
+		/// Hide the achievement panel at Start.
+		/// </summary>
 		private void Start()
 		{
 			ShowAchievementPanel(false);
 		}
 
-		// Show or hide the achievement panel
+		/// <summary>
+		/// Show or hide the achievement panel.
+		/// </summary>
+		/// <param name="show">If the panel should be shown.</param>
 		public void ShowAchievementPanel(bool show = true)
 		{
 			outClickMask.SetActive(show);
 			achievementPanel.SetActive(show);
 		}
 
-		// Fill the achievement panel with achievements then show it
+		/// <summary>
+		/// Fill the achievement panel with achievements then show it.
+		/// </summary>
+		/// <param name="achievementsList">List of the achievements to display.</param>
+		/// <param name="panelTitle">Title of the panel.</param>
 		public void FillAndShowAchievementPanel(Dictionary<string, AchievementDefinition> achievementsList, string panelTitle = "Achievements Progress")
 		{
 			// Destroy the previously created achievement GameObjects if any exist and clear the list
@@ -78,7 +90,9 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Screen Orientation
-		// Adapt the layout display when the current screen orientation changes
+		/// <summary>
+		/// Adapt the layout display when the current screen orientation changes.
+		/// </summary>
 		public void OnRectTransformDimensionsChange()
 		{
 			// If on landscape orientation use 2 columns, else (portrait) use 1 column

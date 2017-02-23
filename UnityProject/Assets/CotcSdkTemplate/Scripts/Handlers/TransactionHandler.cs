@@ -6,6 +6,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to display the CotcSdk's transaction features' results.
+	/// </summary>
 	public class TransactionHandler : MonoSingleton<TransactionHandler>
 	{
 		#region Display
@@ -34,20 +37,29 @@ namespace CotcSdkTemplate
 		// The last PagedList<Transaction> used to fill the transaction panel
 		private PagedList<Transaction> currentTransactionsList = null;
 
-		// Hide the transaction panel at Start
+		/// <summary>
+		/// Hide the transaction panel at Start.
+		/// </summary>
 		private void Start()
 		{
 			ShowTransactionPanel(false);
 		}
 
-		// Show or hide the transaction panel
+		/// <summary>
+		/// Show or hide the transaction panel.
+		/// </summary>
+		/// <param name="show">If the panel should be shown.</param>
 		public void ShowTransactionPanel(bool show = true)
 		{
 			outClickMask.SetActive(show);
 			transactionPanel.SetActive(show);
 		}
 
-		// Fill the transaction panel with currencies then show it
+		/// <summary>
+		/// Fill the transaction panel with currencies then show it.
+		/// </summary>
+		/// <param name="currenciesList">List of the currencies to display.</param>
+		/// <param name="panelTitle">Title of the panel.</param>
 		public void FillAndShowTransactionPanel(Dictionary<string, Bundle> currenciesList, string panelTitle = "Currencies Balance")
 		{
 			// Hide the "no transaction" text and hide the previous page and next page buttons
@@ -96,7 +108,11 @@ namespace CotcSdkTemplate
 			ShowTransactionPanel(true);
 		}
 
-		// Fill the transaction panel with transactions history then show it
+		/// <summary>
+		/// Fill the transaction panel with transactions then show it.
+		/// </summary>
+		/// <param name="transactionsList">List of the transactions to display.</param>
+		/// <param name="panelTitle">Title of the panel.</param>
 		public void FillAndShowPagedTransactionPanel(PagedList<Transaction> transactionsList, string panelTitle = "Transactions History")
 		{
 			// Hide the "no currency" text
@@ -155,7 +171,9 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Buttons Actions
-		// Ask for the previous page on the current transaction panel
+		/// <summary>
+		/// Ask for the previous page on the current transaction panel.
+		/// </summary>
 		public void Button_PreviousPage()
 		{
 			// Disable buttons to avoid concurrent calls
@@ -167,7 +185,9 @@ namespace CotcSdkTemplate
 				TransactionFeatures.Handling_FetchPreviousTransactionPage(currentTransactionsList);
 		}
 
-		// Ask for the next page on the current transaction panel
+		/// <summary>
+		/// Ask for the next page on the current transaction panel.
+		/// </summary>
 		public void Button_NextPage()
 		{
 			// Disable buttons to avoid concurrent calls
@@ -181,7 +201,9 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Screen Orientation
-		// Adapt the layout display when the current screen orientation changes
+		/// <summary>
+		/// Adapt the layout display when the current screen orientation changes.
+		/// </summary>
 		public void OnRectTransformDimensionsChange()
 		{
 			// If on landscape orientation use 2 columns, else (portrait) use 1 column

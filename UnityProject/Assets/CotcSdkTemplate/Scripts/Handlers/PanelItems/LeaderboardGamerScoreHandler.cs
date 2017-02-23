@@ -6,6 +6,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to fill a displayed leaderboard gamer score.
+	/// </summary>
 	public class LeaderboardGamerScoreHandler : MonoBehaviour
 	{
 		#region Handling
@@ -19,7 +22,12 @@ namespace CotcSdkTemplate
 		// Text to display to show the score rank
 		private const string rankText = "# {0}";
 
-		// Fill the leaderboard score with new data
+		/// <summary>
+		/// Fill the leaderboard score with new data.
+		/// </summary>
+		/// <param name="score">The score details.</param>
+		/// <param name="scoreBoardName">Name of the score board.</param>
+		/// <param name="displayScoreInfo">If the score description should be shown.</param>
 		public void FillData(Score score, string scoreBoardName = null, bool displayScoreInfo = true)
 		{
 			// Display the board name only if there is one

@@ -5,10 +5,16 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to use the CotcSdk's gamer VFS (Virtual File System) features.
+	/// </summary>
 	public static class GamerVFSFeatures
 	{
 		#region Handling
-		// Check variables to read and display the value of the given key associated to the current logged in gamer (or all keys if null or empty)
+		/// <summary>
+		/// Get and display the value of the given key (or all keys if null or empty) associated to the current logged in gamer.
+		/// </summary>
+		/// <param name="key">Name of the key to get.</param>
 		public static void Handling_DisplayGamerKey(string key)
 		{
 			// A VFSHandler instance should be attached to an active object of the scene to display the result
@@ -18,7 +24,12 @@ namespace CotcSdkTemplate
 				Backend_GetValue(key, DisplayGamerKey_OnSuccess, DisplayGamerKey_OnError);
 		}
 
-		// Check variables to create / update the value of the given key associated to the current logged in gamer
+		/// <summary>
+		/// Create / update the value of the given key associated to the current logged in gamer.
+		/// </summary>
+		/// <param name="valueType">Type of the value to set.</param>
+		/// <param name="key">Name of the key to set.</param>
+		/// <param name="value">Value of the key to set.</param>
 		public static void Handling_SetGamerKey(Bundle.DataType valueType, string key, string value)
 		{
 			// The key name should not be empty
@@ -28,7 +39,7 @@ namespace CotcSdkTemplate
 			{
 				Bundle setValue;
 
-				// Create a Bundle from the given value string (a Bundle is an Json-like object to represent fields data)
+				// Create a Bundle from the given value string (a Bundle is an json-like object to represent fields data)
 				switch (valueType)
 				{
 					case Bundle.DataType.Object:
@@ -51,7 +62,7 @@ namespace CotcSdkTemplate
 					setValue = new Bundle(bool.Parse(value));
 					break;
 
-					// TODO: You may want to add more types handled by Bundle
+					// TODO: You may want to add the Array (list) type handling
 					default:
 					Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] The {0} type is unhandled >> Please handle it or use a handled type", valueType));
 					return;
@@ -61,61 +72,79 @@ namespace CotcSdkTemplate
 			}
 		}
 
-		// Delete the given key associated to the current logged in gamer (or all keys if null or empty)
+		/// <summary>
+		/// Delete the given key associated to the current logged in gamer.
+		/// </summary>
+		/// <param name="key">Name of the key to delete.</param>
 		public static void Handling_DeleteGamerKey(string key)
 		{
-			Backend_DeleteValue(key, DeleteGamerKey_OnSuccess, DeleteGamerKey_OnError);
+			// The key name should not be empty
+			if (string.IsNullOrEmpty(key))
+				Debug.LogError("[CotcSdkTemplate:GamerVFSFeatures] The key name is empty >> Please enter a valid key name");
+			else
+				Backend_DeleteValue(key, DeleteGamerKey_OnSuccess, DeleteGamerKey_OnError);
 		}
 		#endregion
 
 		#region Features
-		// Read the value of the given key associated to the current logged in gamer (or all keys if null or empty)
-		// We use the "private" domain by default (each game has its own data, not shared with the other games)
+		/// <summary>
+		/// Get the value of the given key (or all keys if null or empty) associated to the current logged in gamer.
+		/// </summary>
+		/// <param name="key">Name of the key to get.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
 		public static void Backend_GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
 			
-			// Call the API method which returns a Promise<Bundle> (promising a Bundle result)
+			// Call the API method which returns a Bundle result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).GetValue(key)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
 				{
 					// The exception should always be of the CotcException type
 					ExceptionTools.LogCotcException("GamerVFSFeatures", "GetValue", exception);
-
+					
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
 						OnError(ExceptionTools.GetExceptionError(exception));
 				})
 				// The result if everything went well
-				.Done(delegate (Bundle keyValue)
+				.Done(delegate (Bundle keyValues)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success >> Key Value: {0}", keyValue));
-
+					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success >> Keys Values: {0}", keyValues));
+					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
-						OnSuccess(keyValue);
+						OnSuccess(keyValues);
 				});
 		}
 
-		// Create / update the value of the given key associated to the current logged in gamer
-		// We use the "private" domain by default (each game has its own data, not shared with the other games)
+		/// <summary>
+		/// Create / update the value of the given key associated to the current logged in gamer.
+		/// </summary>
+		/// <param name="key">Name of the key to set.</param>
+		/// <param name="value">Value of the key to set under the Bundle format.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
 		public static void Backend_SetValue(string key, Bundle value, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
 			
-			// Call the API method which returns a Promise<Done> (promising a Done result)
+			// Call the API method which returns a Done result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).SetValue(key, value)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
 				{
 					// The exception should always be of the CotcException type
 					ExceptionTools.LogCotcException("GamerVFSFeatures", "SetValue", exception);
-
+					
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
 						OnError(ExceptionTools.GetExceptionError(exception));
@@ -124,29 +153,34 @@ namespace CotcSdkTemplate
 				.Done(delegate (Done setDone)
 				{
 					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] SetValue success >> Successful: {0}", setDone.Successful));
-
+					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(setDone);
 				});
 		}
 
-		// Delete the given key associated to the current logged in gamer (or all keys if null or empty)
-		// We use the "private" domain by default (each game has its own data, not shared with the other games)
+		/// <summary>
+		/// Delete the given key (or all keys if null or empty) associated to the current logged in gamer.
+		/// </summary>
+		/// <param name="key">Name of the key to delete.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
 		public static void Backend_DeleteValue(string key, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
 			
-			// Call the API method which returns a Promise<Done> (promising a Done result)
+			// Call the API method which returns a Done result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).DeleteValue(key)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
 				{
 					// The exception should always be of the CotcException type
 					ExceptionTools.LogCotcException("GamerVFSFeatures", "DeleteValue", exception);
-
+					
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
 						OnError(ExceptionTools.GetExceptionError(exception));
@@ -155,7 +189,7 @@ namespace CotcSdkTemplate
 				.Done(delegate (Done deleteDone)
 				{
 					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success >> Successful: {0}", deleteDone.Successful));
-
+					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(deleteDone);
@@ -164,19 +198,25 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Delegate Callbacks
-		// What to do if any DisplayGamerKey request succeeded
-		private static void DisplayGamerKey_OnSuccess(Bundle keyValue)
+		/// <summary>
+		/// What to do if any DisplayGamerKey request succeeded.
+		/// </summary>
+		/// <param name="keysValues">List of keys and their values under the Bundle format.</param>
+		private static void DisplayGamerKey_OnSuccess(Bundle keysValues)
 		{
 			string resultField = "result";
 
 			// TODO: You may want to parse the result Bundle fields (e.g.: if (keyValue["result"]["TestString"].Type == Bundle.DataType.String) { string testString = keyValue["result"]["TestString"].AsString(); })
-			if (keyValue.Has(resultField))
-				VFSHandler.Instance.FillAndShowVFSPanel(keyValue[resultField].AsDictionary(), "Gamer VFS Keys");
+			if (keysValues.Has(resultField))
+				VFSHandler.Instance.FillAndShowVFSPanel(keysValues[resultField].AsDictionary(), "Gamer VFS Keys");
 			else
 				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] No {0} field found in the key value result", resultField));
 		}
 
-		// What to do if any DisplayGamerKey request failed
+		/// <summary>
+		/// What to do if any DisplayGamerKey request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
 		private static void DisplayGamerKey_OnError(ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)
@@ -193,13 +233,19 @@ namespace CotcSdkTemplate
 			}
 		}
 
-		// What to do if any SetGamerKey request succeeded
+		/// <summary>
+		/// What to do if any SetGamerKey request succeeded.
+		/// </summary>
+		/// <param name="setDone">Request result details.</param>
 		private static void SetGamerKey_OnSuccess(Done setDone)
 		{
 			// Do whatever...
 		}
 
-		// What to do if any SetGamerKey request failed
+		/// <summary>
+		/// What to do if any SetGamerKey request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
 		private static void SetGamerKey_OnError(ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)
@@ -211,13 +257,19 @@ namespace CotcSdkTemplate
 			}
 		}
 
-		// What to do if any DeleteGamerKey request succeeded
+		/// <summary>
+		/// What to do if any DeleteGamerKey request succeeded.
+		/// </summary>
+		/// <param name="deleteDone">Request result details.</param>
 		private static void DeleteGamerKey_OnSuccess(Done deleteDone)
 		{
 			// Do whatever...
 		}
 
-		// What to do if any DeleteGamerKey request failed
+		/// <summary>
+		/// What to do if any DeleteGamerKey request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
 		private static void DeleteGamerKey_OnError(ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)

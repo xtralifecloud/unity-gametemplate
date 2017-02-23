@@ -5,6 +5,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to use the CotcSdk's login features.
+	/// </summary>
 	public static class LoginFeatures
 	{
 		#region Handling
@@ -12,7 +15,9 @@ namespace CotcSdkTemplate
 		private const string gamerIDPrefKey = "GamerID";
 		private const string gamerSecretPrefKey = "GamerSecret";
 
-		// Login with the last used account if any exist or login anonymously
+		/// <summary>
+		/// Login the gamer with the last used account if any exist, or login him anonymously.
+		/// </summary>
 		public static void Handling_AutoLogin()
 		{
 			// Retrieve the last stored credentials if any
@@ -27,13 +32,19 @@ namespace CotcSdkTemplate
 				Backend_LoginAnonymously(Login_OnSuccess, Login_OnError);
 		}
 
-		// Login with a new anonymous account
+		/// <summary>
+		/// Login the gamer with a new anonymous account.
+		/// </summary>
 		public static void Handling_LoginAsAnonymous()
 		{
 			Backend_LoginAnonymously(Login_OnSuccess, Login_OnError);
 		}
 
-		// Login with a previously created account
+		/// <summary>
+		/// Login the gamer with a previously created account.
+		/// </summary>
+		/// <param name="gamerID">Identifier of the gamer's account.</param>
+		/// <param name="gamerSecret">Secret of the gamer's account.</param>
 		public static void Handling_LoginWithCredentials(string gamerID, string gamerSecret)
 		{
 			// The gamer ID should not be empty
@@ -46,7 +57,9 @@ namespace CotcSdkTemplate
 				Backend_ResumeSession(gamerID, gamerSecret, Login_OnSuccess, Login_OnError);
 		}
 
-		// Logout the current logged in gamer
+		/// <summary>
+		/// Logout the current logged in gamer.
+		/// </summary>
 		public static void Handling_LogoutGamer()
 		{
 			Backend_Logout(Logout_OnSuccess, Logout_OnError);
@@ -54,21 +67,25 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Features
-		// Login with an anonymous account
+		/// <summary>
+		/// Login the gamer with a new anonymous account.
+		/// </summary>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
 		public static void Backend_LoginAnonymously(Action<Gamer> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 				return;
 			
-			// Call the API method which returns a Promise<Gamer> (promising a Gamer result)
+			// Call the API method which returns a Gamer result
 			CloudFeatures.cloud.LoginAnonymously()
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
 				{
 					// The exception should always be of the CotcException type
 					ExceptionTools.LogCotcException("LoginFeatures", "LoginAnonymously", exception);
-
+					
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
 						OnError(ExceptionTools.GetExceptionError(exception));
@@ -77,10 +94,10 @@ namespace CotcSdkTemplate
 				.Done(delegate (Gamer loggedInGamer)
 				{
 					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success >> Logged In Gamer: {0}", loggedInGamer));
-
+					
 					// Keep the Gamer's reference
 					CloudFeatures.gamer = loggedInGamer;
-
+					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(loggedInGamer);
@@ -91,21 +108,27 @@ namespace CotcSdkTemplate
 				});
 		}
 
-		// Login with the last used account
+		/// <summary>
+		/// Login the gamer with a previously created account.
+		/// </summary>
+		/// <param name="gamerID">Identifier of the gamer's account.</param>
+		/// <param name="gamerSecret">Secret of the gamer's account.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
 		public static void Backend_ResumeSession(string gamerID, string gamerSecret, Action<Gamer> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 				return;
 			
-			// Call the API method which returns a Promise<Gamer> (promising a Gamer result)
+			// Call the API method which returns a Gamer result
 			CloudFeatures.cloud.ResumeSession(gamerID, gamerSecret)
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
 				{
 					// The exception should always be of the CotcException type
 					ExceptionTools.LogCotcException("LoginFeatures", "ResumeSession", exception);
-
+					
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
 						OnError(ExceptionTools.GetExceptionError(exception));
@@ -114,10 +137,10 @@ namespace CotcSdkTemplate
 				.Done(delegate (Gamer loggedInGamer)
 				{
 					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success >> Logged In Gamer: {0}", loggedInGamer));
-
+					
 					// Keep the Gamer's reference
 					CloudFeatures.gamer = loggedInGamer;
-
+					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(loggedInGamer);
@@ -128,21 +151,25 @@ namespace CotcSdkTemplate
 				});
 		}
 
-		// Logout the current logged in gamer
+		/// <summary>
+		/// Logout the current logged in gamer.
+		/// </summary>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
 		public static void Backend_Logout(Action OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
 			
-			// Call the API method which returns a Promise<Done> (promising a Done result)
+			// Call the API method which returns a Done result
 			CloudFeatures.cloud.Logout()
 				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
 				.Catch(delegate (Exception exception)
 				{
 					// The exception should always be of the CotcException type
 					ExceptionTools.LogCotcException("LoginFeatures", "Logout", exception);
-
+					
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
 						OnError(ExceptionTools.GetExceptionError(exception));
@@ -151,10 +178,10 @@ namespace CotcSdkTemplate
 				.Done(delegate (Done logoutDone)
 				{
 					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success >> Successful: {0}", logoutDone.Successful));
-
+					
 					// Discard the Gamer's reference
 					CloudFeatures.gamer = null;
-
+					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess();
@@ -167,7 +194,10 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Delegate Callbacks
-		// What to do if any Login request succeeded
+		/// <summary>
+		/// What to do if any Login request succeeded.
+		/// </summary>
+		/// <param name="loggedInGamer">The logged in Gamer instance.</param>
 		private static void Login_OnSuccess(Gamer loggedInGamer)
 		{
 			// Update the login status text with the newly connected gamer infos
@@ -175,7 +205,10 @@ namespace CotcSdkTemplate
 				LoginHandler.Instance.UpdateText_LoginStatus(loggedInGamer);
 		}
 
-		// What to do if any Login request failed
+		/// <summary>
+		/// What to do if any Login request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
 		private static void Login_OnError(ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)
@@ -187,7 +220,9 @@ namespace CotcSdkTemplate
 			}
 		}
 
-		// What to do if any Logout request succeeded
+		/// <summary>
+		/// What to do if any Logout request succeeded.
+		/// </summary>
 		private static void Logout_OnSuccess()
 		{
 			// Update the login status text with no gamer infos
@@ -195,7 +230,10 @@ namespace CotcSdkTemplate
 				LoginHandler.Instance.UpdateText_LoginStatus();
 		}
 
-		// What to do if any Logout request failed
+		/// <summary>
+		/// What to do if any Logout request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
 		private static void Logout_OnError(ExceptionError exceptionError)
 		{
 			switch (exceptionError.type)
@@ -215,16 +253,21 @@ namespace CotcSdkTemplate
 		// Allow the registration of callbacks for when a gamer has logged out
 		public static event Action Event_GamerLoggedOut = OnGamerLoggedOut;
 
-		// What to do once a gamer has logged in
-		private static void OnGamerLoggedIn(Gamer gamer)
+		/// <summary>
+		/// Once a gamer has logged in, store his account ID and secret to PlayerPrefs.
+		/// </summary>
+		/// <param name="loggedInGamer">The logged in Gamer instance.</param>
+		private static void OnGamerLoggedIn(Gamer loggedInGamer)
 		{
 			// Keep the gamerID and gamerSecret credentials in PlayerPrefs to allow to use them later to login with this same account again
 			// TODO: You may want to encrypt those credentials for obvious security reasons!
-			PlayerPrefs.SetString(gamerIDPrefKey, gamer.GamerId);
-			PlayerPrefs.SetString(gamerSecretPrefKey, gamer.GamerSecret);
+			PlayerPrefs.SetString(gamerIDPrefKey, loggedInGamer.GamerId);
+			PlayerPrefs.SetString(gamerSecretPrefKey, loggedInGamer.GamerSecret);
 		}
 
-		// What to do once a gamer has logged out
+		/// <summary>
+		/// Once a gamer has logged out, discard his account ID and secret from PlayerPrefs.
+		/// </summary>
 		private static void OnGamerLoggedOut()
 		{
 			// Discard the gamerID and gamerSecret credentials in PlayerPrefs to prevent to use them later to login with this same account again

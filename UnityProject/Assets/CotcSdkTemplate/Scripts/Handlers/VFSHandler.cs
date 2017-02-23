@@ -6,6 +6,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to display the CotcSdk's game and gamer VFS (Virtual File System) features' results.
+	/// </summary>
 	public class VFSHandler : MonoSingleton<VFSHandler>
 	{
 		#region Display
@@ -22,20 +25,29 @@ namespace CotcSdkTemplate
 		// List of the key GameObjects created on the VFS panel
 		private List<GameObject> VFSKeys = new List<GameObject>();
 
-		// Hide the VFS panel at Start
+		/// <summary>
+		/// Hide the VFS panel at Start.
+		/// </summary>
 		private void Start()
 		{
 			ShowVFSPanel(false);
 		}
 
-		// Show or hide the VFS panel
+		/// <summary>
+		/// Show or hide the VFS panel.
+		/// </summary>
+		/// <param name="show">If the panel should be shown.</param>
 		public void ShowVFSPanel(bool show = true)
 		{
 			outClickMask.SetActive(show);
 			VFSPanel.SetActive(show);
 		}
 
-		// Fill the VFS panel with keys then show it
+		/// <summary>
+		/// Fill the VFS panel with keys then show it.
+		/// </summary>
+		/// <param name="keysList">List of the keys to display.</param>
+		/// <param name="panelTitle">Title of the panel.</param>
 		public void FillAndShowVFSPanel(Dictionary<string, Bundle> keysList, string panelTitle = "VFS Keys")
 		{
 			// Destroy the previously created key GameObjects if any exist and clear the list

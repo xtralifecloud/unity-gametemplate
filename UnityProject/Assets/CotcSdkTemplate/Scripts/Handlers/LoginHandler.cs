@@ -5,6 +5,9 @@ using CotcSdk;
 
 namespace CotcSdkTemplate
 {
+	/// <summary>
+	/// Methods to display the CotcSdk's login features' results.
+	/// </summary>
 	public class LoginHandler : MonoSingleton<LoginHandler>
 	{
 		#region Display
@@ -18,13 +21,18 @@ namespace CotcSdkTemplate
 		[SerializeField] private string loggedOutText = "Logged out";
 		[SerializeField] private string loggedInText = "Logged in as {0}\n({1})";
 
-		// Display a logged out gamer login status at Start
+		/// <summary>
+		/// Display a logged out gamer login status at Start.
+		/// </summary>
 		private void Start()
 		{
 			UpdateText_LoginStatus();
 		}
 
-		// Update the login status text UI element's text (if a gamer is logged in, format the logged in text with gamer's infos)
+		/// <summary>
+		/// Update the login status text UI element's text (if a gamer is logged in, format the logged in text with gamer's data).
+		/// </summary>
+		/// <param name="loggedInGamer">Logged in gamer.</param>
 		public void UpdateText_LoginStatus(Gamer loggedInGamer = null)
 		{
 			// Update the login status text
