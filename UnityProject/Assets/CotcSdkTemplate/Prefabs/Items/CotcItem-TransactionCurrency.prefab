@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 114545554997860238}
   - component: {fileID: 114114545998583548}
   m_Layer: 5
-  m_Name: Text-CurrencyName
+  m_Name: Text-Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 114694043172735556}
   - component: {fileID: 114982921014250882}
   m_Layer: 5
-  m_Name: Text-CurrencyValue
+  m_Name: Text-Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

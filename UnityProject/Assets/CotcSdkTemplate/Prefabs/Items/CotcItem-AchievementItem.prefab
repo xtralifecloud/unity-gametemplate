@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114000012091798458}
   - component: {fileID: 114000011398974346}
   m_Layer: 5
-  m_Name: Text-AchievementName
+  m_Name: Text-Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 114000013596127494}
   - component: {fileID: 114000012250875202}
   m_Layer: 5
-  m_Name: Text-AchievementProgress
+  m_Name: Text-Progress
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -570,8 +570,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   achievementItemBackground: {fileID: 114000012593056620}
-  achievementName: {fileID: 114000011398974346}
-  achievementProgress: {fileID: 114000012250875202}
+  nameText: {fileID: 114000011398974346}
+  progressText: {fileID: 114000012250875202}
   achievementProgressBarLine: {fileID: 1000012513664464}
   progressBarCurrent: {fileID: 114000010914336086}
   progressBarMax: {fileID: 114000011177351790}

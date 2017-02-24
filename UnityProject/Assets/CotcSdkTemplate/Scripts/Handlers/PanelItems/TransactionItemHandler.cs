@@ -8,18 +8,18 @@ using CotcSdk;
 namespace CotcSdkTemplate
 {
 	/// <summary>
-	/// Methods to fill a displayed transaction transaction.
+	/// Methods to fill a displayed transaction item.
 	/// </summary>
-	public class TransactionTransactionHandler : MonoBehaviour
+	public class TransactionItemHandler : MonoBehaviour
 	{
 		#region Handling
-		// Reference to the transaction transaction GameObject UI elements
-		[SerializeField] private Text transactionDate = null;
-		[SerializeField] private Text transactionCurrencies = null;
-		[SerializeField] private Text transactionDescription = null;
+		// Reference to the transaction item GameObject UI elements
+		[SerializeField] private Text dateText = null;
+		[SerializeField] private Text currenciesText = null;
+		[SerializeField] private Text descriptionText = null;
 
 		/// <summary>
-		/// Fill the transaction transaction with new data.
+		/// Fill the transaction item with new data.
 		/// </summary>
 		/// <param name="transaction">Transaction currencies data under the Bundle format.</param>
 		/// <param name="displayTransactionDescription">If the transaction description should be shown.</param>
@@ -27,12 +27,12 @@ namespace CotcSdkTemplate
 		{
 			// TODO: You may want to display culture dependent date formats
 			// Update fields
-			transactionDate.text = transaction.RunDate.ToString();
-			transactionCurrencies.text = CurrenciesToString(transaction.TxData);
-			transactionDescription.text = transaction.Description;
+			dateText.text = transaction.RunDate.ToString();
+			currenciesText.text = CurrenciesToString(transaction.TxData);
+			descriptionText.text = transaction.Description;
 
 			// Display the transaction description only if there is one
-			transactionDescription.gameObject.SetActive(displayTransactionDescription && !string.IsNullOrEmpty(transaction.Description));
+			descriptionText.gameObject.SetActive(displayTransactionDescription && !string.IsNullOrEmpty(transaction.Description));
 		}
 		#endregion
 

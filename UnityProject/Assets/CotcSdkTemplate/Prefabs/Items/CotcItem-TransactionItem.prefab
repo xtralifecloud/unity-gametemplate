@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 114068204545511150}
   - component: {fileID: 114564800167755904}
   m_Layer: 5
-  m_Name: CotcItem-TransactionTransaction
+  m_Name: CotcItem-TransactionItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 114570645323517186}
   - component: {fileID: 114525774475451748}
   m_Layer: 5
-  m_Name: Text-TransactionCurrencies
+  m_Name: Text-Currencies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 114225000685270988}
   - component: {fileID: 114290831799546340}
   m_Layer: 5
-  m_Name: Text-TransactionDate
+  m_Name: Text-Date
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 114597261871619676}
   - component: {fileID: 114386602753230056}
   m_Layer: 5
-  m_Name: Text-TransactionDescription
+  m_Name: Text-Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -278,9 +278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbfb526a377153b4aa571cfb1b5e7b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transactionDate: {fileID: 114290831799546340}
-  transactionCurrencies: {fileID: 114525774475451748}
-  transactionDescription: {fileID: 114386602753230056}
+  dateText: {fileID: 114290831799546340}
+  currenciesText: {fileID: 114525774475451748}
+  descriptionText: {fileID: 114386602753230056}
 --- !u!114 &114570645323517186
 MonoBehaviour:
   m_ObjectHideFlags: 1

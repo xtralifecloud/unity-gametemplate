@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 114000011428549008}
   - component: {fileID: 114000011920506242}
   m_Layer: 5
-  m_Name: Text-ScoreInfo
+  m_Name: Text-Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 114000013596127494}
   - component: {fileID: 114000012250875202}
   m_Layer: 5
-  m_Name: Text-ScoreValue
+  m_Name: Text-Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 114090309494202476}
   - component: {fileID: 114233747850755120}
   m_Layer: 5
-  m_Name: Text-ScoreRank
+  m_Name: Text-Rank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -291,11 +291,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leaderboardScoreBackground: {fileID: 114000012593056620}
-  scoreRank: {fileID: 114233747850755120}
+  rankText: {fileID: 114233747850755120}
   gamerAvatar: {fileID: 114587817521836696}
-  gamerNickname: {fileID: 114000011398974346}
-  scoreValue: {fileID: 114000012250875202}
-  scoreInfo: {fileID: 114000011920506242}
+  gamerNicknameText: {fileID: 114000011398974346}
+  valueText: {fileID: 114000012250875202}
+  infoText: {fileID: 114000011920506242}
   scoreInfoLine: {fileID: 1000012137719126}
   gamerScoreBackgroundColor: {r: 1, g: 1, b: 0.9, a: 1}
 --- !u!114 &114000011764254140

@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf490cb45192d64681b5b3b9acf87fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: {fileID: 114439303233343728}
-  value: {fileID: 114242302341667986}
+  keyText: {fileID: 114439303233343728}
+  valueText: {fileID: 114242302341667986}
 --- !u!114 &114428512304657954
 MonoBehaviour:
   m_ObjectHideFlags: 1

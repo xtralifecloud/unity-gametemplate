@@ -12,8 +12,8 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// Reference to the gamer VFS key GameObject UI elements
-		[SerializeField] private Text key = null;
-		[SerializeField] private Text value = null;
+		[SerializeField] private Text keyText = null;
+		[SerializeField] private Text valueText = null;
 
 		// Text to display to show the key type and name
 		private const string keyNameText = "({0}) {1}";
@@ -26,8 +26,8 @@ namespace CotcSdkTemplate
 		public void FillData(string keyName, Bundle keyValue)
 		{
 			// Update fields
-			key.text = string.Format(keyNameText, keyValue.Type, keyName);
-			value.text = keyValue.ToString();
+			keyText.text = string.Format(keyNameText, keyValue.Type, keyName);
+			valueText.text = keyValue.ToString();
 		}
 		#endregion
 	}

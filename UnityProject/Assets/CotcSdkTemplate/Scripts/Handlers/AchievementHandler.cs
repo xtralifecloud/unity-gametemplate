@@ -18,8 +18,8 @@ namespace CotcSdkTemplate
 		[SerializeField] private Text achievementPanelTitle = null;
 		[SerializeField] private GameObject noAchievementText = null;
 
-		// Reference to the achievement GameObject prefab and the achievements list scroll view
-		[SerializeField] private GameObject achievementPrefab = null;
+		// Reference to the achievement GameObject prefab and the achievement items layout
+		[SerializeField] private GameObject achievementItemPrefab = null;
 		[SerializeField] private GridLayoutGroup achievementItemsLayout = null;
 
 		// List of the achievement GameObjects created on the achievement panel
@@ -68,8 +68,8 @@ namespace CotcSdkTemplate
 
 				foreach (KeyValuePair<string, AchievementDefinition> achievement in achievementsList)
 				{
-					// Create an achievement item GameObject and hook it at the achievements scroll view
-					GameObject prefabInstance = Instantiate<GameObject>(achievementPrefab);
+					// Create an achievement item GameObject and hook it at the achievement items layout
+					GameObject prefabInstance = Instantiate<GameObject>(achievementItemPrefab);
 					prefabInstance.transform.SetParent(achievementItemsLayout.transform, false);
 
 					// Fill the newly created GameObject with achievement data

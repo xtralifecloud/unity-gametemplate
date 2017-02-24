@@ -672,11 +672,11 @@ MonoBehaviour:
   pageButtons: {fileID: 1647197072702616}
   previousPageButton: {fileID: 114000011413028966}
   nextPageButton: {fileID: 114000013761406890}
-  scorePrefab: {fileID: 1000010803891944, guid: 15b107d81f8fb9d4192e010a40382371,
+  leaderboardScorePrefab: {fileID: 1000010803891944, guid: 15b107d81f8fb9d4192e010a40382371,
     type: 2}
-  gamerScorePrefab: {fileID: 1324568898631870, guid: ef0d844f6b2b5f442900ca5b9d43740a,
+  leaderboardGamerScorePrefab: {fileID: 1324568898631870, guid: ef0d844f6b2b5f442900ca5b9d43740a,
     type: 2}
-  leaderboardScoresLayout: {fileID: 114483988401440014}
+  leaderboardItemsLayout: {fileID: 114483988401440014}
 --- !u!114 &114000012222714344
 MonoBehaviour:
   m_ObjectHideFlags: 1

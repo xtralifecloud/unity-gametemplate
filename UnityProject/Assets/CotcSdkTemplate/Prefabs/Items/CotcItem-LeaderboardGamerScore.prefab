@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114728635033638724}
   - component: {fileID: 114549665748943058}
   m_Layer: 5
-  m_Name: Text-ScoreValue
+  m_Name: Text-Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 114468972776289242}
   - component: {fileID: 114822580659241506}
   m_Layer: 5
-  m_Name: Text-ScoreRank
+  m_Name: Text-Rank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 114051074718340022}
   - component: {fileID: 114804384563712038}
   m_Layer: 5
-  m_Name: Text-ScoreInfo
+  m_Name: Text-Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -305,10 +305,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardNameLine: {fileID: 1312986896973440}
-  boardName: {fileID: 114014503965823814}
-  scoreRank: {fileID: 114822580659241506}
-  scoreValue: {fileID: 114549665748943058}
-  scoreInfo: {fileID: 114804384563712038}
+  boardNameText: {fileID: 114014503965823814}
+  rankText: {fileID: 114822580659241506}
+  valueText: {fileID: 114549665748943058}
+  infoText: {fileID: 114804384563712038}
 --- !u!114 &114547382135474898
 MonoBehaviour:
   m_ObjectHideFlags: 1

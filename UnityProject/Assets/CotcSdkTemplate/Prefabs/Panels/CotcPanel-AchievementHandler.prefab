@@ -418,7 +418,7 @@ MonoBehaviour:
   achievementPanel: {fileID: 1000012672701730}
   achievementPanelTitle: {fileID: 114000010919913218}
   noAchievementText: {fileID: 1000012083768996}
-  achievementPrefab: {fileID: 1000010803891944, guid: 9b401c64f6c59674eab2f0a4659d9cd3,
+  achievementItemPrefab: {fileID: 1000010803891944, guid: 9b401c64f6c59674eab2f0a4659d9cd3,
     type: 2}
   achievementItemsLayout: {fileID: 114337293348644042}
 --- !u!114 &114000012403177038

@@ -215,8 +215,9 @@ MonoBehaviour:
   VFSPanel: {fileID: 1788472891682856}
   VFSPanelTitle: {fileID: 114646246579841950}
   noKeyText: {fileID: 1172695159172896}
-  keyPrefab: {fileID: 1175323338644906, guid: ed47a8b519acc1345af3211d4cd87c05, type: 2}
-  VFSKeysLayout: {fileID: 114970407527041576}
+  VFSKeyPrefab: {fileID: 1175323338644906, guid: ed47a8b519acc1345af3211d4cd87c05,
+    type: 2}
+  VFSItemsLayout: {fileID: 114970407527041576}
 --- !u!114 &114189181028245064
 MonoBehaviour:
   m_ObjectHideFlags: 1

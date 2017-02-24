@@ -14,18 +14,18 @@ namespace CotcSdkTemplate
 		#region Handling
 		// Reference to the leaderboard score GameObject UI elements
 		[SerializeField] private Image leaderboardScoreBackground = null;
-		[SerializeField] private Text scoreRank = null;
+		[SerializeField] private Text rankText = null;
 		[SerializeField] private Image gamerAvatar = null;
-		[SerializeField] private Text gamerNickname = null;
-		[SerializeField] private Text scoreValue = null;
-		[SerializeField] private Text scoreInfo = null;
+		[SerializeField] private Text gamerNicknameText = null;
+		[SerializeField] private Text valueText = null;
+		[SerializeField] private Text infoText = null;
 		[SerializeField] private GameObject scoreInfoLine = null;
 
 		// The current gamer score background color
 		[SerializeField] private Color gamerScoreBackgroundColor = new Color(1f, 1f, 0.9f, 1f);
 
 		// Text to display to show the score rank
-		private const string rankText = "# {0}";
+		private const string rankFormat = "# {0}";
 
 		/// <summary>
 		/// Fill the leaderboard score with new data.
@@ -38,11 +38,11 @@ namespace CotcSdkTemplate
 			Bundle gamerInfo = Bundle.FromJson(score.GamerInfo.ToJson());
 
 			// Update fields
-			scoreRank.text = string.Format(rankText, score.Rank);
-			gamerNickname.text = gamerInfo["profile"]["displayName"].AsString();
+			rankText.text = string.Format(rankFormat, score.Rank);
+			gamerNicknameText.text = gamerInfo["profile"]["displayName"].AsString();
 			avatarUrlToDownload = gamerInfo["profile"]["avatar"].AsString();
-			scoreValue.text = score.Value.ToString();
-			scoreInfo.text = score.Info;
+			valueText.text = score.Value.ToString();
+			infoText.text = score.Info;
 
 			// Display the score info only if there is one
 			scoreInfoLine.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));

@@ -12,18 +12,18 @@ namespace CotcSdkTemplate
 	public class LeaderboardGamerScoreHandler : MonoBehaviour
 	{
 		#region Handling
-		// Reference to the leaderboard score GameObject UI elements
+		// Reference to the leaderboard gamer score GameObject UI elements
 		[SerializeField] private GameObject boardNameLine = null;
-		[SerializeField] private Text boardName = null;
-		[SerializeField] private Text scoreRank = null;
-		[SerializeField] private Text scoreValue = null;
-		[SerializeField] private Text scoreInfo = null;
+		[SerializeField] private Text boardNameText = null;
+		[SerializeField] private Text rankText = null;
+		[SerializeField] private Text valueText = null;
+		[SerializeField] private Text infoText = null;
 
 		// Text to display to show the score rank
-		private const string rankText = "# {0}";
+		private const string rankFormat = "# {0}";
 
 		/// <summary>
-		/// Fill the leaderboard score with new data.
+		/// Fill the leaderboard gamer score with new data.
 		/// </summary>
 		/// <param name="score">The score details.</param>
 		/// <param name="scoreBoardName">Name of the score board.</param>
@@ -34,18 +34,18 @@ namespace CotcSdkTemplate
 			if (!string.IsNullOrEmpty(scoreBoardName))
 			{
 				boardNameLine.SetActive(true);
-				boardName.text = scoreBoardName;
+				boardNameText.text = scoreBoardName;
 			}
 			else
 				boardNameLine.SetActive(false);
 
 			// Update fields
-			scoreRank.text = string.Format(rankText, score.Rank);
-			scoreValue.text = score.Value.ToString();
-			scoreInfo.text = score.Info;
+			rankText.text = string.Format(rankFormat, score.Rank);
+			valueText.text = score.Value.ToString();
+			infoText.text = score.Info;
 
 			// Display the score info only if there is one
-			scoreInfo.gameObject.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));
+			infoText.gameObject.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));
 		}
 		#endregion
 	}

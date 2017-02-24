@@ -22,16 +22,16 @@ namespace CotcSdkTemplate
 		[SerializeField] private Button previousPageButton = null;
 		[SerializeField] private Button nextPageButton = null;
 
-		// Reference to the currency GameObject prefab and the currencies list scroll view
-		[SerializeField] private GameObject currencyPrefab = null;
-		[SerializeField] private GameObject transactionPrefab = null;
+		// Reference to the transaction GameObject prefabs and the transaction items layout
+		[SerializeField] private GameObject transactionCurrencyPrefab = null;
+		[SerializeField] private GameObject transactionItemPrefab = null;
 		[SerializeField] private GridLayoutGroup transactionItemsLayout = null;
 
 		// GridLayout cells Y size for the according to the type of items to display
 		[SerializeField] private float currencyGridCellSizeY = 125f;
 		[SerializeField] private float transactionGridCellSizeY = 175f;
 
-		// List of the currency/transaction GameObjects created on the transaction panel
+		// List of the transaction GameObjects created on the transaction panel
 		private List<GameObject> transactionItems = new List<GameObject>();
 
 		// The last PagedList<Transaction> used to fill the transaction panel
@@ -66,13 +66,13 @@ namespace CotcSdkTemplate
 			noTransactionText.SetActive(false);
 			pageButtons.SetActive(false);
 
-			// Destroy the previously created currency/transaction GameObjects if any exist and clear the list
-			foreach (GameObject transactionCurrency in transactionItems)
-				DestroyObject(transactionCurrency);
+			// Destroy the previously created transaction GameObjects if any exist and clear the list
+			foreach (GameObject transactionItem in transactionItems)
+				DestroyObject(transactionItem);
 			
 			transactionItems.Clear();
 
-			// Adapt the GridLayout cells Y size for currencies
+			// Adapt the GridLayout cells Y size
 			transactionItemsLayout.cellSize = new Vector2(transactionItemsLayout.cellSize.x, currencyGridCellSizeY);
 
 			// Set the transaction panel's title only if not null or empty
@@ -88,8 +88,8 @@ namespace CotcSdkTemplate
 				// TODO: You may want to display only currencies which are not achievement-progression-type currencies
 				foreach (KeyValuePair<string, Bundle> currency in currenciesList)
 				{
-					// Create a transaction currency GameObject and hook it at the items scroll view
-					GameObject prefabInstance = Instantiate<GameObject>(currencyPrefab);
+					// Create a transaction currency GameObject and hook it at the transaction items layout
+					GameObject prefabInstance = Instantiate<GameObject>(transactionCurrencyPrefab);
 					prefabInstance.transform.SetParent(transactionItemsLayout.transform, false);
 
 					// Fill the newly created GameObject with currency data
@@ -118,7 +118,7 @@ namespace CotcSdkTemplate
 			// Hide the "no currency" text
 			noCurrencyText.SetActive(false);
 
-			// Destroy the previously created currency/transaction GameObjects if any exist and clear the list
+			// Destroy the previously created transaction GameObjects if any exist and clear the list
 			foreach (GameObject transactionItem in transactionItems)
 				DestroyObject(transactionItem);
 
@@ -140,13 +140,13 @@ namespace CotcSdkTemplate
 
 				foreach (Transaction transaction in transactionsList)
 				{
-					// Create a transaction transaction GameObject and hook it at the items scroll view
-					GameObject prefabInstance = Instantiate<GameObject>(transactionPrefab);
+					// Create a transaction item GameObject and hook it at the transaction items layout
+					GameObject prefabInstance = Instantiate<GameObject>(transactionItemPrefab);
 					prefabInstance.transform.SetParent(transactionItemsLayout.transform, false);
 
 					// Fill the newly created GameObject with transaction data
-					TransactionTransactionHandler transactionTransactionHandler = prefabInstance.GetComponent<TransactionTransactionHandler>();
-					transactionTransactionHandler.FillData(transaction);
+					TransactionItemHandler transactionItemHandler = prefabInstance.GetComponent<TransactionItemHandler>();
+					transactionItemHandler.FillData(transaction);
 
 					// Add the newly created GameObject to the list
 					transactionItems.Add(prefabInstance);

@@ -18,12 +18,12 @@ namespace CotcSdkTemplate
 		[SerializeField] private Text VFSPanelTitle = null;
 		[SerializeField] private GameObject noKeyText = null;
 
-		// Reference to the key GameObject prefab and the keys list scroll view
-		[SerializeField] private GameObject keyPrefab = null;
-		[SerializeField] private VerticalLayoutGroup VFSKeysLayout = null;
+		// Reference to the VFS GameObject prefab and the VFS items layout
+		[SerializeField] private GameObject VFSKeyPrefab = null;
+		[SerializeField] private VerticalLayoutGroup VFSItemsLayout = null;
 
-		// List of the key GameObjects created on the VFS panel
-		private List<GameObject> VFSKeys = new List<GameObject>();
+		// List of the VFS GameObjects created on the VFS panel
+		private List<GameObject> VFSItems = new List<GameObject>();
 
 		/// <summary>
 		/// Hide the VFS panel at Start.
@@ -50,11 +50,11 @@ namespace CotcSdkTemplate
 		/// <param name="panelTitle">Title of the panel.</param>
 		public void FillAndShowVFSPanel(Dictionary<string, Bundle> keysList, string panelTitle = "VFS Keys")
 		{
-			// Destroy the previously created key GameObjects if any exist and clear the list
-			foreach (GameObject VFSKey in VFSKeys)
-				DestroyObject(VFSKey);
+			// Destroy the previously created VFS GameObjects if any exist and clear the list
+			foreach (GameObject VFSItem in VFSItems)
+				DestroyObject(VFSItem);
 			
-			VFSKeys.Clear();
+			VFSItems.Clear();
 
 			// Set the VFS panel's title only if not null or empty
 			if (!string.IsNullOrEmpty(panelTitle))
@@ -68,16 +68,16 @@ namespace CotcSdkTemplate
 
 				foreach (KeyValuePair<string, Bundle> keyValuePair in keysList)
 				{
-					// Create a VFS key GameObject and hook it at the VFS keys scroll view
-					GameObject prefabInstance = Instantiate<GameObject>(keyPrefab);
-					prefabInstance.transform.SetParent(VFSKeysLayout.transform, false);
+					// Create a VFS key GameObject and hook it at the VFS items layout
+					GameObject prefabInstance = Instantiate<GameObject>(VFSKeyPrefab);
+					prefabInstance.transform.SetParent(VFSItemsLayout.transform, false);
 
 					// Fill the newly created GameObject with key data
 					VFSKeyHandler VFSKeyHandler = prefabInstance.GetComponent<VFSKeyHandler>();
 					VFSKeyHandler.FillData(keyValuePair.Key, keyValuePair.Value);
 
 					// Add the newly created GameObject to the list
-					VFSKeys.Add(prefabInstance);
+					VFSItems.Add(prefabInstance);
 				}
 			}
 			// Else, show the "no key" text

@@ -23,13 +23,13 @@ namespace CotcSdkTemplate
 		[SerializeField] private Button previousPageButton = null;
 		[SerializeField] private Button nextPageButton = null;
 
-		// Reference to the score GameObject prefabs and the scores list scroll view
-		[SerializeField] private GameObject scorePrefab = null;
-		[SerializeField] private GameObject gamerScorePrefab = null;
-		[SerializeField] private GridLayoutGroup leaderboardScoresLayout = null;
+		// Reference to the leaderboard GameObject prefabs and the leaderboard items layout
+		[SerializeField] private GameObject leaderboardScorePrefab = null;
+		[SerializeField] private GameObject leaderboardGamerScorePrefab = null;
+		[SerializeField] private GridLayoutGroup leaderboardItemsLayout = null;
 
-		// List of the score GameObjects created on the leaderboard panel
-		private List<GameObject> leaderboardScores = new List<GameObject>();
+		// List of the leaderboard GameObjects created on the leaderboard panel
+		private List<GameObject> leaderboardItems = new List<GameObject>();
 
 		// The last PagedList<Score> used to fill the leaderboard panel
 		private PagedList<Score> currentScoresList = null;
@@ -64,11 +64,11 @@ namespace CotcSdkTemplate
 			noScorePostedText.SetActive(false);
 			pageButtons.SetActive(false);
 
-			// Destroy the previously created score GameObjects if any exist and clear the list
-			foreach (GameObject leaderboardScore in leaderboardScores)
-				DestroyObject(leaderboardScore);
+			// Destroy the previously created leaderboard GameObjects if any exist and clear the list
+			foreach (GameObject leaderboardItem in leaderboardItems)
+				DestroyObject(leaderboardItem);
 			
-			leaderboardScores.Clear();
+			leaderboardItems.Clear();
 
 			// Set the leaderboard panel's title only if not null or empty
 			if (!string.IsNullOrEmpty(panelTitle))
@@ -82,16 +82,16 @@ namespace CotcSdkTemplate
 
 				foreach (Score score in scoresList)
 				{
-					// Create a leaderboard score GameObject and hook it at the leaderboard scores scroll view
-					GameObject prefabInstance = Instantiate<GameObject>(scorePrefab);
-					prefabInstance.transform.SetParent(leaderboardScoresLayout.transform, false);
+					// Create a leaderboard score GameObject and hook it at the leaderboard items layout
+					GameObject prefabInstance = Instantiate<GameObject>(leaderboardScorePrefab);
+					prefabInstance.transform.SetParent(leaderboardItemsLayout.transform, false);
 
 					// Fill the newly created GameObject with score data
 					LeaderboardScoreHandler leaderboardScoreHandler = prefabInstance.GetComponent<LeaderboardScoreHandler>();
 					leaderboardScoreHandler.FillData(score);
 
 					// Add the newly created GameObject to the list
-					leaderboardScores.Add(prefabInstance);
+					leaderboardItems.Add(prefabInstance);
 				}
 			}
 			// Else, show the "no score posted in board" text
@@ -113,11 +113,11 @@ namespace CotcSdkTemplate
 			noScorePostedInBoardText.SetActive(false);
 			noScorePostedText.SetActive(false);
 
-			// Destroy the previously created score GameObjects if any exist and clear the list
-			foreach (GameObject leaderboardScore in leaderboardScores)
-				DestroyObject(leaderboardScore);
+			// Destroy the previously created leaderboard GameObjects if any exist and clear the list
+			foreach (GameObject leaderboardItem in leaderboardItems)
+				DestroyObject(leaderboardItem);
 			
-			leaderboardScores.Clear();
+			leaderboardItems.Clear();
 
 			// Set the leaderboard panel's title only if not null or empty
 			if (!string.IsNullOrEmpty(panelTitle))
@@ -132,16 +132,16 @@ namespace CotcSdkTemplate
 
 				foreach (Score score in scoresList)
 				{
-					// Create a leaderboard score GameObject and hook it at the leaderboard scores scroll view
-					GameObject prefabInstance = Instantiate<GameObject>(scorePrefab);
-					prefabInstance.transform.SetParent(leaderboardScoresLayout.transform, false);
+					// Create a leaderboard score GameObject and hook it at the leaderboard items layout
+					GameObject prefabInstance = Instantiate<GameObject>(leaderboardScorePrefab);
+					prefabInstance.transform.SetParent(leaderboardItemsLayout.transform, false);
 
 					// Fill the newly created GameObject with score data
 					LeaderboardScoreHandler leaderboardScoreHandler = prefabInstance.GetComponent<LeaderboardScoreHandler>();
 					leaderboardScoreHandler.FillData(score);
 
 					// Add the newly created GameObject to the list
-					leaderboardScores.Add(prefabInstance);
+					leaderboardItems.Add(prefabInstance);
 				}
 
 				// Keep the last PagedList<Score> to allow usage of previous and next leaderboard page
@@ -173,17 +173,17 @@ namespace CotcSdkTemplate
 			noScoreInBoardText.SetActive(false);
 			pageButtons.SetActive(false);
 
-			// Destroy the previously created score GameObjects if any exist and clear the list
-			foreach (GameObject leaderboardScore in leaderboardScores)
-				DestroyObject(leaderboardScore);
+			// Destroy the previously created leaderboard GameObjects if any exist and clear the list
+			foreach (GameObject leaderboardItem in leaderboardItems)
+				DestroyObject(leaderboardItem);
 			
-			leaderboardScores.Clear();
+			leaderboardItems.Clear();
 
 			// Set the leaderboard panel's title only if not null or empty
 			if (!string.IsNullOrEmpty(panelTitle))
 				leaderboardPanelTitle.text = panelTitle;
 
-			// If there are scores to display, fill the leaderboard panel with score prefabs
+			// If there are scores to display, fill the leaderboard panel with gamer score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
 			{
 				// Hide the "no score posted" text
@@ -191,16 +191,16 @@ namespace CotcSdkTemplate
 
 				foreach (KeyValuePair<string, Score> score in scoresList)
 				{
-					// Create a leaderboard gamer score GameObject and hook it at the leaderboard scores scroll view
-					GameObject prefabInstance = Instantiate<GameObject>(gamerScorePrefab);
-					prefabInstance.transform.SetParent(leaderboardScoresLayout.transform, false);
+					// Create a leaderboard gamer score GameObject and hook it at the leaderboard items layout
+					GameObject prefabInstance = Instantiate<GameObject>(leaderboardGamerScorePrefab);
+					prefabInstance.transform.SetParent(leaderboardItemsLayout.transform, false);
 
 					// Fill the newly created GameObject with score data
 					LeaderboardGamerScoreHandler leaderboardGamerScoreHandler = prefabInstance.GetComponent<LeaderboardGamerScoreHandler>();
 					leaderboardGamerScoreHandler.FillData(score.Value, score.Key);
 
 					// Add the newly created GameObject to the list
-					leaderboardScores.Add(prefabInstance);
+					leaderboardItems.Add(prefabInstance);
 				}
 			}
 			// Else, show the "no score posted" text
@@ -249,7 +249,7 @@ namespace CotcSdkTemplate
 		public void OnRectTransformDimensionsChange()
 		{
 			// If on landscape orientation use 2 columns, else (portrait) use 1 column
-			leaderboardScoresLayout.constraintCount = Screen.width > Screen.height ? 2 : 1;
+			leaderboardItemsLayout.constraintCount = Screen.width > Screen.height ? 2 : 1;
 		}
 		#endregion
 	}
