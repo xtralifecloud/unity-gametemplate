@@ -19,7 +19,7 @@ namespace CotcSdkTemplate
 		{
 			// A VFSHandler instance should be attached to an active object of the scene to display the result
 			if (!VFSHandler.HasInstance)
-				Debug.LogError("[CotcSdkTemplate:GamerVFSFeatures] No VFSHandler instance found >> Please attach a VFSHandler script on an active object of the scene");
+				DebugLogs.LogError("[CotcSdkTemplate:GamerVFSFeatures] No VFSHandler instance found ›› Please attach a VFSHandler script on an active object of the scene");
 			else
 				Backend_GetValue(key, DisplayGamerKey_OnSuccess, DisplayGamerKey_OnError);
 		}
@@ -34,7 +34,7 @@ namespace CotcSdkTemplate
 		{
 			// The key name should not be empty
 			if (string.IsNullOrEmpty(key))
-				Debug.LogError("[CotcSdkTemplate:GamerVFSFeatures] The key name is empty >> Please enter a valid key name");
+				DebugLogs.LogError("[CotcSdkTemplate:GamerVFSFeatures] The key name is empty ›› Please enter a valid key name");
 			else
 			{
 				Bundle setValue;
@@ -64,7 +64,7 @@ namespace CotcSdkTemplate
 
 					// TODO: You may want to add the Array (list) type handling
 					default:
-					Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] The {0} type is unhandled >> Please handle it or use a handled type", valueType));
+					DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] The {0} type is unhandled ›› Please handle it or use a handled type", valueType));
 					return;
 				}
 
@@ -80,7 +80,7 @@ namespace CotcSdkTemplate
 		{
 			// The key name should not be empty
 			if (string.IsNullOrEmpty(key))
-				Debug.LogError("[CotcSdkTemplate:GamerVFSFeatures] The key name is empty >> Please enter a valid key name");
+				DebugLogs.LogError("[CotcSdkTemplate:GamerVFSFeatures] The key name is empty ›› Please enter a valid key name");
 			else
 				Backend_DeleteValue(key, DeleteGamerKey_OnSuccess, DeleteGamerKey_OnError);
 		}
@@ -115,7 +115,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Bundle keyValues)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success >> Keys Values: {0}", keyValues));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success ›› Keys Values: {0}", keyValues));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -152,7 +152,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Done setDone)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] SetValue success >> Successful: {0}", setDone.Successful));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:GamerVFSFeatures] SetValue success ›› Successful: {0}", setDone.Successful));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -188,7 +188,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Done deleteDone)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success >> Successful: {0}", deleteDone.Successful));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success ›› Successful: {0}", deleteDone.Successful));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -210,7 +210,7 @@ namespace CotcSdkTemplate
 			if (keysValues.Has(resultField))
 				VFSHandler.Instance.FillAndShowVFSPanel(keysValues[resultField].AsDictionary(), "Gamer VFS Keys");
 			else
-				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] No {0} field found in the key value result", resultField));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] No {0} field found in the key value result", resultField));
 		}
 
 		/// <summary>
@@ -228,7 +228,7 @@ namespace CotcSdkTemplate
 
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -252,7 +252,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -276,7 +276,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}

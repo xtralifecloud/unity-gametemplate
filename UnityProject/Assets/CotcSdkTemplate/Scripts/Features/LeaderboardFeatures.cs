@@ -22,13 +22,13 @@ namespace CotcSdkTemplate
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
 			if (!LeaderboardHandler.HasInstance)
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found >> Please attach a LeaderboardHandler script on an active object of the scene");
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found ›› Please attach a LeaderboardHandler script on an active object of the scene");
 			// The board name should not be empty
 			else if (string.IsNullOrEmpty(boardName))
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty >> Please enter a valid board name");
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty ›› Please enter a valid board name");
 			// The scores per page amount should be positive
 			else if (scoresPerPage <= 0)
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The scores per page amount is invalid >> Please enter a number superior to 0");
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The scores per page amount is invalid ›› Please enter a number superior to 0");
 			else
 			{
 				// Display only the page in which the logged in gamer's score is on the given leaderboard
@@ -47,7 +47,7 @@ namespace CotcSdkTemplate
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
 			if (!LeaderboardHandler.HasInstance)
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found >> Please attach a LeaderboardHandler script on an active object of the scene");
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found ›› Please attach a LeaderboardHandler script on an active object of the scene");
 			else
 				Backend_ListUserBestScores(DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
 		}
@@ -80,10 +80,10 @@ namespace CotcSdkTemplate
 		{
 			// The board name should not be empty
 			if (string.IsNullOrEmpty(boardName))
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty >> Please enter a valid board name");
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty ›› Please enter a valid board name");
 			// The score value should be positive
 			else if (scoreValue <= 0)
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] The score value is invalid >> Please enter a number superior to 0");
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The score value is invalid ›› Please enter a number superior to 0");
 			else
 				Backend_Post(scoreValue, boardName, ScoreOrder.HighToLow, scoreDescription, PostScore_OnSuccess, PostScore_OnError);
 		}
@@ -120,7 +120,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (PagedList<Score> scoresList)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] BestHighScores success >> {0} score(s)", scoresList.Count));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LeaderboardFeatures] BestHighScores success ›› {0} score(s)", scoresList.Count));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -157,7 +157,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (NonpagedList<Score> scoresList)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] CenteredScore success >> {0} score(s)", scoresList.Count));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LeaderboardFeatures] CenteredScore success ›› {0} score(s)", scoresList.Count));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -192,7 +192,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Dictionary<string, Score> scoresList)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] ListUserBestScores success >> {0} score(s)", scoresList.Count));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LeaderboardFeatures] ListUserBestScores success ›› {0} score(s)", scoresList.Count));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -225,7 +225,7 @@ namespace CotcSdkTemplate
 					// The result if everything went well
 					.Done(delegate (PagedList<Score> scoresList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchPrevious success >> {0} score(s)", scoresList.Count));
+						DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchPrevious success ›› {0} score(s)", scoresList.Count));
 						
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
@@ -233,7 +233,7 @@ namespace CotcSdkTemplate
 					});
 			}
 			else
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] There is no previous page");
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] There is no previous page");
 		}
 
 		/// <summary>
@@ -261,7 +261,7 @@ namespace CotcSdkTemplate
 					// The result if everything went well
 					.Done(delegate (PagedList<Score> scoresList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchNext success >> {0} score(s)", scoresList.Count));
+						DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LeaderboardFeatures] FetchNext success ›› {0} score(s)", scoresList.Count));
 						
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
@@ -269,7 +269,7 @@ namespace CotcSdkTemplate
 					});
 			}
 			else
-				Debug.LogError("[CotcSdkTemplate:LeaderboardFeatures] There is no next page");
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] There is no next page");
 		}
 
 		/// <summary>
@@ -303,7 +303,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (PostedGameScore postedScore)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:LeaderboardFeatures] Post success >> Has Been Saved: {0}, Score Rank: {1}", postedScore.HasBeenSaved, postedScore.Rank));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LeaderboardFeatures] Post success ›› Has Been Saved: {0}, Score Rank: {1}", postedScore.HasBeenSaved, postedScore.Rank));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -339,7 +339,7 @@ namespace CotcSdkTemplate
 
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -370,7 +370,7 @@ namespace CotcSdkTemplate
 
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -394,7 +394,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -418,7 +418,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}

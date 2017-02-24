@@ -20,7 +20,7 @@ namespace CotcSdkTemplate
 				instance = this;
 			else
 			{
-				Debug.LogError("[MonoSingleton:Awake] Found more than one instance of " + this.GetType().Name + " >> Destroying the last one");
+				DebugLogs.LogError("[MonoSingleton:Awake] Found more than one instance of " + this.GetType().Name + " ›› Destroying the last one");
 				Destroy(this);
 			}
 		}
@@ -36,7 +36,7 @@ namespace CotcSdkTemplate
 					return instance as T;
 				else
 				{
-					Debug.LogError("[MonoSingleton:InstanceGet] Not found any instance of " + typeof(T).Name + " >> Returning null");
+					DebugLogs.LogError("[MonoSingleton:InstanceGet] Not found any instance of " + typeof(T).Name + " ›› Returning null");
 					return null;
 				}
 			}

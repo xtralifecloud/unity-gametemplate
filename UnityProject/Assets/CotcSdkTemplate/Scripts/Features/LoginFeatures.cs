@@ -49,10 +49,10 @@ namespace CotcSdkTemplate
 		{
 			// The gamer ID should not be empty
 			if (string.IsNullOrEmpty(gamerID))
-				Debug.LogError("[CotcSdkTemplate:LoginFeatures] The gamer ID is empty >> Please enter a valid gamer ID");
+				DebugLogs.LogError("[CotcSdkTemplate:LoginFeatures] The gamer ID is empty ›› Please enter a valid gamer ID");
 			// The gamer secret should not be empty
 			else if (string.IsNullOrEmpty(gamerSecret))
-				Debug.LogError("[CotcSdkTemplate:LoginFeatures] The gamer secret is empty >> Please enter a valid gamer secret");
+				DebugLogs.LogError("[CotcSdkTemplate:LoginFeatures] The gamer secret is empty ›› Please enter a valid gamer secret");
 			else
 				Backend_ResumeSession(gamerID, gamerSecret, Login_OnSuccess, Login_OnError);
 		}
@@ -93,7 +93,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success >> Logged In Gamer: {0}", loggedInGamer));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success ›› Logged In Gamer: {0}", loggedInGamer));
 					
 					// Keep the Gamer's reference
 					CloudFeatures.gamer = loggedInGamer;
@@ -136,7 +136,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success >> Logged In Gamer: {0}", loggedInGamer));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success ›› Logged In Gamer: {0}", loggedInGamer));
 					
 					// Keep the Gamer's reference
 					CloudFeatures.gamer = loggedInGamer;
@@ -177,7 +177,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Done logoutDone)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success >> Successful: {0}", logoutDone.Successful));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success ›› Successful: {0}", logoutDone.Successful));
 					
 					// Discard the Gamer's reference
 					CloudFeatures.gamer = null;
@@ -215,7 +215,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -240,7 +240,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}

@@ -18,7 +18,7 @@ namespace CotcSdkTemplate
 		{
 			// A TransactionHandler instance should be attached to an active object of the scene to display the result
 			if (!TransactionHandler.HasInstance)
-				Debug.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found >> Please attach a TransactionHandler script on an active object of the scene");
+				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found ›› Please attach a TransactionHandler script on an active object of the scene");
 			else
 				Backend_Balance(DisplayBalance_OnSuccess, DisplayBalance_OnError);
 		}
@@ -32,7 +32,7 @@ namespace CotcSdkTemplate
 		{
 			// A TransactionHandler instance should be attached to an active object of the scene to display the result
 			if (!TransactionHandler.HasInstance)
-				Debug.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found >> Please attach a TransactionHandler script on an active object of the scene");
+				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found ›› Please attach a TransactionHandler script on an active object of the scene");
 			else
 				Backend_History(currencyName, transactionsPerPage, 0, DisplayCurrencyHistory_OnSuccess, DisplayCurrencyHistory_OnError);
 		}
@@ -65,10 +65,10 @@ namespace CotcSdkTemplate
 		{
 			// The currency name should not be empty
 			if (string.IsNullOrEmpty(currencyName))
-				Debug.LogError("[CotcSdkTemplate:TransactionFeatures] The currency name is empty >> Please enter a valid currency name");
+				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] The currency name is empty ›› Please enter a valid currency name");
 			// The currency amount should be different from 0
 			else if (currencyAmount == 0)
-				Debug.LogError("[CotcSdkTemplate:TransactionFeatures] The currency amount is invalid >> Please enter a number different from 0");
+				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] The currency amount is invalid ›› Please enter a number different from 0");
 			else
 			{
 				Bundle transaction = Bundle.CreateObject(currencyName, currencyAmount);
@@ -105,7 +105,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Bundle currentBalance)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:TransactionFeatures] Balance success >> Current Balance: {0}", currentBalance));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] Balance success ›› Current Balance: {0}", currentBalance));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -143,7 +143,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (PagedList<Transaction> transactionsList)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:TransactionFeatures] History success >> {0} transaction(s)", transactionsList.Count));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] History success ›› {0} transaction(s)", transactionsList.Count));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -176,7 +176,7 @@ namespace CotcSdkTemplate
 					// The result if everything went well
 					.Done(delegate (PagedList<Transaction> transactionsList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:TransactionFeatures] FetchPrevious success >> {0} transaction(s)", transactionsList.Count));
+						DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] FetchPrevious success ›› {0} transaction(s)", transactionsList.Count));
 						
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
@@ -184,7 +184,7 @@ namespace CotcSdkTemplate
 					});
 			}
 			else
-				Debug.LogError("[CotcSdkTemplate:TransactionFeatures] There is no previous page");
+				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] There is no previous page");
 		}
 
 		/// <summary>
@@ -212,7 +212,7 @@ namespace CotcSdkTemplate
 					// The result if everything went well
 					.Done(delegate (PagedList<Transaction> transactionsList)
 					{
-						Debug.Log(string.Format("[CotcSdkTemplate:TransactionFeatures] FetchNext success >> {0} transaction(s)", transactionsList.Count));
+						DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] FetchNext success ›› {0} transaction(s)", transactionsList.Count));
 						
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
@@ -220,7 +220,7 @@ namespace CotcSdkTemplate
 					});
 			}
 			else
-				Debug.LogError("[CotcSdkTemplate:TransactionFeatures] There is no next page");
+				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] There is no next page");
 		}
 
 		/// <summary>
@@ -252,7 +252,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (TransactionResult postedTransaction)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:TransactionFeatures] Post success >> New Balance: {0}, Triggered Achievements Count: {1}", postedTransaction.Balance, postedTransaction.TriggeredAchievements.Count));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] Post success ›› New Balance: {0}, Triggered Achievements Count: {1}", postedTransaction.Balance, postedTransaction.TriggeredAchievements.Count));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -281,7 +281,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -305,7 +305,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -329,7 +329,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}

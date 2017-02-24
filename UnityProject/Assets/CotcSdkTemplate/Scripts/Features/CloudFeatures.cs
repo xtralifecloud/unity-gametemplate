@@ -26,7 +26,7 @@ namespace CotcSdkTemplate
 
 			if (cotcGameObject == null)
 			{
-				Debug.LogError("[CotcSdkTemplate:CloudFeatures] Please attach a CotcGameObject script on an active object of your scene! (CotcSdk features are not available otherwise)");
+				DebugLogs.LogError("[CotcSdkTemplate:CloudFeatures] Please attach a CotcGameObject script on an active object of your scene! (CotcSdk features are not available otherwise)");
 				return;
 			}
 
@@ -46,7 +46,7 @@ namespace CotcSdkTemplate
 			if (cloud == null)
 			{
 				if (verbose)
-					Debug.LogError("[CotcSdkTemplate:CloudFeatures] Cloud is not initialized >> Please call CloudFeatures.InitializeCloud() first (CotcSdk features are not available otherwise)");
+					DebugLogs.LogError("[CotcSdkTemplate:CloudFeatures] Cloud is not initialized ›› Please call CloudFeatures.InitializeCloud() first (CotcSdk features are not available otherwise)");
 				
 				return false;
 			}
@@ -66,7 +66,7 @@ namespace CotcSdkTemplate
 			if (gamer == null)
 			{
 				if (verbose)
-					Debug.LogError("[CotcSdkTemplate:CloudFeatures] No Gamer is logged in >> Please call a login method first (some of the CotcSdk features are not available otherwise)");
+					DebugLogs.LogError("[CotcSdkTemplate:CloudFeatures] No Gamer is logged in ›› Please call a login method first (some of the CotcSdk features are not available otherwise)");
 				
 				return false;
 			}
@@ -99,7 +99,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Cloud cloudInstance)
 				{
-					Debug.Log("[CotcSdkTemplate:CloudFeatures] GetCloud success");
+					DebugLogs.LogVerbose("[CotcSdkTemplate:CloudFeatures] GetCloud success");
 					
 					// Keep the Cloud instance reference
 					cloud = cloudInstance;
@@ -138,7 +138,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
@@ -170,13 +170,13 @@ namespace CotcSdkTemplate
 		{
 			if (httpRequestFailedEventArgs.UserData == null)
 			{
-				Debug.LogWarning(string.Format("[CotcSdkTemplate:CloudFeatures] HTTP request failed >> Retry in {0}ms ({1})", httpRequestRetryDelay, httpRequestFailedEventArgs.Url));
+				DebugLogs.LogWarning(string.Format("[CotcSdkTemplate:CloudFeatures] HTTP request failed ›› Retry in {0}ms ({1})", httpRequestRetryDelay, httpRequestFailedEventArgs.Url));
 				httpRequestFailedEventArgs.UserData = new object();
 				httpRequestFailedEventArgs.RetryIn(httpRequestRetryDelay);
 			}
 			else
 			{
-				Debug.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] HTTP request failed >> Abort ({0})", httpRequestFailedEventArgs.Url));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] HTTP request failed ›› Abort ({0})", httpRequestFailedEventArgs.Url));
 				httpRequestFailedEventArgs.Abort();
 			}
 		}

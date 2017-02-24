@@ -15322,6 +15322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 973a5c342769aac4caba0c1d793ba4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cotcSdkTemplateLogLevel: 3
   displayGameKey_Key: {fileID: 1471705383}
   displayGamerKey_Key: {fileID: 1607399490}
   setGamerKey_Key: {fileID: 347836567}

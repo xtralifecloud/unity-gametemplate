@@ -10,11 +10,17 @@ using CotcSdkTemplate;
 public class SampleScript : MonoBehaviour
 {
 	#region Cloud + Login
+	// CotcSdkTemplate's messages logging level
+	[SerializeField] private CotcSdkTemplate.LogLevel cotcSdkTemplateLogLevel = CotcSdkTemplate.LogLevel.Verbose;
+
 	/// <summary>
-	/// Initialize the CotcSdk's Cloud instance at Start.
+	/// Set CotcSdkTemplate's messages logging level and initialize the CotcSdk's Cloud instance at Start.
 	/// </summary>
 	private void Start()
 	{
+		// Set the logging level for CotcSdkTemplate's messages
+		DebugLogs.logLevel = cotcSdkTemplateLogLevel;
+
 		// Register to the CloudInitialized event
 		CloudFeatures.Event_CloudInitialized += OnCloudInitialized;
 

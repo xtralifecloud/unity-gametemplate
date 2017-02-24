@@ -12,6 +12,9 @@ public class SampleScriptEditor : Editor
 	// The project's MonoScript reference
 	MonoScript script = null;
 
+	// CotcSdkTemplate's messages logging level
+	private SerializedProperty cotcSdkTemplateLogLevel;
+
 	#region Gamer VFS References
 	// DisplayGameKey properties references
 	private SerializedProperty displayGameKey_Key;
@@ -69,6 +72,9 @@ public class SampleScriptEditor : Editor
 	{
 		// Get the project's MonoScript reference
 		script = MonoScript.FromMonoBehaviour((SampleScript)target);
+
+		// Find cotcSdkTemplateLogLevel property references on the serialized object
+		cotcSdkTemplateLogLevel = serializedObject.FindProperty("cotcSdkTemplateLogLevel");
 
 		#region Game VFS Find
 		// Find DisplayGameKey properties references on the serialized object
@@ -153,6 +159,9 @@ public class SampleScriptEditor : Editor
 
 		// Display the SampleScript script field
 		script = EditorGUILayout.ObjectField("Script", script, typeof(MonoScript), false) as MonoScript;
+
+		// Display the CotcSdkTemplate's messages logging level
+		EditorGUILayout.PropertyField(cotcSdkTemplateLogLevel, new GUIContent("CotcSdkTemplate Logging Level"));
 
 		#region Game VFS Foldout
 		// Open / Close the Game VFS foldout

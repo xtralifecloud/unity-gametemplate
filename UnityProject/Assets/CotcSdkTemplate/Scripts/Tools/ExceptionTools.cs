@@ -38,9 +38,14 @@ namespace CotcSdkTemplate
 			CotcException cotcException = exception as CotcException;
 
 			if (cotcException != null)
-				Debug.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception >> ({2}) {3}: {4} >> {5}", className, methodName, cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
+			{
+				if ((cotcException.ServerData != null) && !string.IsNullOrEmpty(cotcException.ServerData.ToString()))
+					DebugLogs.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception ›› ({2}) {3}: {4} ›› {5}", className, methodName, cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
+				else
+					DebugLogs.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception ›› ({2}) {3}: {4}", className, methodName, cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation));
+			}
 			else
-				Debug.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception >> {2}", className, methodName, exception));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception ›› {2}", className, methodName, exception));
 		}
 		#endregion
 	}

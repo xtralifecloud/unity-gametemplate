@@ -19,7 +19,7 @@ namespace CotcSdkTemplate
 		{
 			// A VFSHandler instance should be attached to an active object of the scene to display the result
 			if (!VFSHandler.HasInstance)
-				Debug.LogError("[CotcSdkTemplate:GameVFSFeatures] No VFSHandler instance found >> Please attach a VFSHandler script on an active object of the scene");
+				DebugLogs.LogError("[CotcSdkTemplate:GameVFSFeatures] No VFSHandler instance found ›› Please attach a VFSHandler script on an active object of the scene");
 			else
 				Backend_GetValue(key, DisplayGameKey_OnSuccess, DisplayGameKey_OnError);
 		}
@@ -54,7 +54,7 @@ namespace CotcSdkTemplate
 				// The result if everything went well
 				.Done(delegate (Bundle keysValues)
 				{
-					Debug.Log(string.Format("[CotcSdkTemplate:GameVFSFeatures] GetValue success >> Keys Values: {0}", keysValues));
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:GameVFSFeatures] GetValue success ›› Keys Values: {0}", keysValues));
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -75,7 +75,7 @@ namespace CotcSdkTemplate
 			if (keysValues.Has(resultField))
 				VFSHandler.Instance.FillAndShowVFSPanel(keysValues[resultField].AsDictionary(), "Game VFS Keys");
 			else
-				Debug.LogError(string.Format("[CotcSdkTemplate:GameVFSFeatures] No {0} field found in the key value result", resultField));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GameVFSFeatures] No {0} field found in the key value result", resultField));
 			
 			// TODO: You may want to parse the result Bundle fields (e.g.: if (keyValue["result"]["TestString"].Type == Bundle.DataType.String) { string testString = keyValue["result"]["TestString"].AsString(); })
 		}
@@ -95,7 +95,7 @@ namespace CotcSdkTemplate
 
 				// Unhandled error types
 				default:
-				Debug.LogError(string.Format("[CotcSdkTemplate:GameVFSFeatures] An unhandled error occured >> {0}", exceptionError));
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GameVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
 				break;
 			}
 		}
