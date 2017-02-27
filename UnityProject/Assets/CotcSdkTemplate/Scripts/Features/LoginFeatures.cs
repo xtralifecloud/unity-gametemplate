@@ -80,17 +80,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a Gamer result
 			CloudFeatures.cloud.LoginAnonymously()
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("LoginFeatures", "LoginAnonymously", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success ›› Logged In Gamer: {0}", loggedInGamer));
@@ -105,6 +95,16 @@ namespace CotcSdkTemplate
 					// Call the GamerLoggedIn event if any callback registered to it
 					if (Event_GamerLoggedIn != null)
 						Event_GamerLoggedIn(CloudFeatures.gamer);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("LoginFeatures", "LoginAnonymously", exception);
 				});
 		}
 
@@ -123,17 +123,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a Gamer result
 			CloudFeatures.cloud.ResumeSession(gamerID, gamerSecret)
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("LoginFeatures", "ResumeSession", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (Gamer loggedInGamer)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success ›› Logged In Gamer: {0}", loggedInGamer));
@@ -148,6 +138,16 @@ namespace CotcSdkTemplate
 					// Call the GamerLoggedIn event if any callback registered to it
 					if (Event_GamerLoggedIn != null)
 						Event_GamerLoggedIn(CloudFeatures.gamer);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("LoginFeatures", "ResumeSession", exception);
 				});
 		}
 
@@ -164,17 +164,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a Done result
 			CloudFeatures.cloud.Logout()
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("LoginFeatures", "Logout", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (Done logoutDone)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success ›› Successful: {0}", logoutDone.Successful));
@@ -189,6 +179,16 @@ namespace CotcSdkTemplate
 					// Call the GamerLoggedOut event if any callback registered to it
 					if (Event_GamerLoggedOut != null)
 						Event_GamerLoggedOut();
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("LoginFeatures", "Logout", exception);
 				});
 		}
 		#endregion

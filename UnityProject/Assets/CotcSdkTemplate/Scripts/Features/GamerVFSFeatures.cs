@@ -102,17 +102,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a Bundle result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).GetValue(key)
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("GamerVFSFeatures", "GetValue", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (Bundle keyValues)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:GamerVFSFeatures] GetValue success ›› Keys Values: {0}", keyValues));
@@ -120,6 +110,16 @@ namespace CotcSdkTemplate
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(keyValues);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("GamerVFSFeatures", "GetValue", exception);
 				});
 		}
 
@@ -139,17 +139,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a Done result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).SetValue(key, value)
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("GamerVFSFeatures", "SetValue", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (Done setDone)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:GamerVFSFeatures] SetValue success ›› Successful: {0}", setDone.Successful));
@@ -157,6 +147,16 @@ namespace CotcSdkTemplate
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(setDone);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("GamerVFSFeatures", "SetValue", exception);
 				});
 		}
 
@@ -175,17 +175,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a Done result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).DeleteValue(key)
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("GamerVFSFeatures", "DeleteValue", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (Done deleteDone)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:GamerVFSFeatures] DeleteValue success ›› Successful: {0}", deleteDone.Successful));
@@ -193,6 +183,16 @@ namespace CotcSdkTemplate
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(deleteDone);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("GamerVFSFeatures", "DeleteValue", exception);
 				});
 		}
 		#endregion

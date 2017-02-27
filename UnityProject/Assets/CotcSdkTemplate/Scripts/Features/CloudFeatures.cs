@@ -86,17 +86,7 @@ namespace CotcSdkTemplate
 		{
 			// Call the API method which returns a Cloud result
 			cotcGameObject.GetCloud()
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("CloudFeatures", "GetCloud", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (Cloud cloudInstance)
 				{
 					DebugLogs.LogVerbose("[CotcSdkTemplate:CloudFeatures] GetCloud success");
@@ -114,6 +104,16 @@ namespace CotcSdkTemplate
 					// Call the CloudInitialized event if any callback registered to it
 					if (Event_CloudInitialized != null)
 						Event_CloudInitialized(cloud);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("CloudFeatures", "GetCloud", exception);
 				});
 		}
 		#endregion

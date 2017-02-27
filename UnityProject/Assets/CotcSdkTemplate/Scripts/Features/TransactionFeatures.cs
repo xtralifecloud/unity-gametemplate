@@ -92,17 +92,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a Bundle result
 			CloudFeatures.gamer.Transactions.Domain(domain).Balance()
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("TransactionFeatures", "Balance", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (Bundle currentBalance)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] Balance success ›› Current Balance: {0}", currentBalance));
@@ -110,6 +100,16 @@ namespace CotcSdkTemplate
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(currentBalance);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("TransactionFeatures", "Balance", exception);
 				});
 		}
 
@@ -130,17 +130,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a PagedList<Transaction> result
 			CloudFeatures.gamer.Transactions.Domain(domain).History(currencyName, transactionsPerPage, transactionsOffset)
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("TransactionFeatures", "History", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (PagedList<Transaction> transactionsList)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] History success ›› {0} transaction(s)", transactionsList.Count));
@@ -148,6 +138,16 @@ namespace CotcSdkTemplate
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(transactionsList);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("TransactionFeatures", "History", exception);
 				});
 		}
 
@@ -163,17 +163,7 @@ namespace CotcSdkTemplate
 			{
 				// Call the API method which returns a PagedList<Transaction> result
 				transactions.FetchPrevious()
-					// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-					.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("TransactionFeatures", "FetchPrevious", exception);
-						
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
-					// The result if everything went well
+					// Result if everything went well
 					.Done(delegate (PagedList<Transaction> transactionsList)
 					{
 						DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] FetchPrevious success ›› {0} transaction(s)", transactionsList.Count));
@@ -181,6 +171,16 @@ namespace CotcSdkTemplate
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
 							OnSuccess(transactionsList);
+					},
+					// Result if an error occured
+					delegate (Exception exception)
+					{
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(ExceptionTools.GetExceptionError(exception));
+						// Else, log the error (expected to be a CotcException)
+						else
+							ExceptionTools.LogCotcException("TransactionFeatures", "FetchPrevious", exception);
 					});
 			}
 			else
@@ -199,17 +199,7 @@ namespace CotcSdkTemplate
 			{
 				// Call the API method which returns a PagedList<Transaction> result
 				transactions.FetchNext()
-					// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-					.Catch(delegate (Exception exception)
-					{
-						// The exception should always be of the CotcException type
-						ExceptionTools.LogCotcException("TransactionFeatures", "FetchNext", exception);
-						
-						// Call the OnError action if any callback registered to it
-						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception));
-					})
-					// The result if everything went well
+					// Result if everything went well
 					.Done(delegate (PagedList<Transaction> transactionsList)
 					{
 						DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] FetchNext success ›› {0} transaction(s)", transactionsList.Count));
@@ -217,6 +207,16 @@ namespace CotcSdkTemplate
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
 							OnSuccess(transactionsList);
+					},
+					// Result if an error occured
+					delegate (Exception exception)
+					{
+						// Call the OnError action if any callback registered to it
+						if (OnError != null)
+							OnError(ExceptionTools.GetExceptionError(exception));
+						// Else, log the error (expected to be a CotcException)
+						else
+							ExceptionTools.LogCotcException("TransactionFeatures", "FetchNext", exception);
 					});
 			}
 			else
@@ -239,17 +239,7 @@ namespace CotcSdkTemplate
 			
 			// Call the API method which returns a TransactionResult result
 			CloudFeatures.gamer.Transactions.Domain(domain).Post(transaction, transactionDescription)
-				// May fail, in which case the .Then or .Done handlers are not called, so you should provide a .Catch handler
-				.Catch(delegate (Exception exception)
-				{
-					// The exception should always be of the CotcException type
-					ExceptionTools.LogCotcException("TransactionFeatures", "Post", exception);
-					
-					// Call the OnError action if any callback registered to it
-					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
-				})
-				// The result if everything went well
+				// Result if everything went well
 				.Done(delegate (TransactionResult postedTransaction)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:TransactionFeatures] Post success ›› New Balance: {0}, Triggered Achievements Count: {1}", postedTransaction.Balance, postedTransaction.TriggeredAchievements.Count));
@@ -257,6 +247,16 @@ namespace CotcSdkTemplate
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
 						OnSuccess(postedTransaction);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("TransactionFeatures", "Post", exception);
 				});
 		}
 		#endregion
