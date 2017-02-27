@@ -9,7 +9,7 @@ using CotcSdkTemplate;
 /// </summary>
 public class SampleScript : MonoBehaviour
 {
-	#region Cloud + Login
+	#region Initialization (Cloud + Event + Login)
 	// CotcSdkTemplate's messages logging level
 	[SerializeField] private CotcSdkTemplate.LogLevel cotcSdkTemplateLogLevel = CotcSdkTemplate.LogLevel.Verbose;
 
@@ -43,20 +43,22 @@ public class SampleScript : MonoBehaviour
 	}
 
 	/// <summary>
-	/// What to do once a gamer has logged in.
+	/// What to do once a gamer has logged in. (here we start to listen for server's events)
 	/// </summary>
 	/// <param name="gamer">The logged in Gamer instance.</param>
 	private void OnGamerLoggedIn(Gamer gamer)
 	{
-		// Do whatever...
+		// Register to gamer's events loop to start retrieving events messages from the server
+		EventFeatures.Handling_StartEventsListening(gamer);
 	}
 
 	/// <summary>
-	/// What to do once a gamer has logged out.
+	/// What to do once a gamer has logged out. (here we stop to listen for server's events)
 	/// </summary>
 	private void OnGamerLoggedOut()
 	{
-		// Do whatever...
+		// Unregister from gamer's events loop to stop retrieving events messages from the server
+		EventFeatures.Handling_StopEventsListening();
 	}
 	#endregion
 
