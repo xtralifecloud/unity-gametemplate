@@ -18,7 +18,7 @@ namespace CotcSdkTemplate
 		{
 			// An AchievementHandler instance should be attached to an active object of the scene to display the result
 			if (!AchievementHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:AchievementFeatures] No AchievementHandler instance found ›› Please attach a AchievementHandler script on an active object of the scene");
+				DebugLogs.LogError("[CotcSdkTemplate:AchievementFeatures] No AchievementHandler instance found ›› Please attach an AchievementHandler script on an active object of the scene");
 			else
 				Backend_ListAchievements(DisplayAchievements_OnSuccess, DisplayAchievements_OnError);
 		}

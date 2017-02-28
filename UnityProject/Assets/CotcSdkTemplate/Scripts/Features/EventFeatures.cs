@@ -1,4 +1,6 @@
-﻿using CotcSdk;
+﻿using System;
+
+using CotcSdk;
 
 namespace CotcSdkTemplate
 {
@@ -50,6 +52,9 @@ namespace CotcSdkTemplate
 		// If the events loop registering / unregistering and the received events should be logged into the console
 		private static bool verboseEventLoop = true;
 
+		// Allow the registration of callbacks for when a BackOffice message is received
+		public static event Action<Bundle> Event_BackOfficeMessage = OnBackOfficeMessage;
+
 		/// <summary>
 		/// Once an event is retrieved from the server, check its type and call the corresponding callback.
 		/// </summary>
@@ -57,6 +62,7 @@ namespace CotcSdkTemplate
 		/// <param name="eventData">Received event's data.</param>
 		private static void OnEventReceived(DomainEventLoop sender, EventLoopArgs eventData)
 		{
+			// Get the Bundle data from the raised event
 			Bundle eventBundle = eventData.Message;
 
 			if (verboseEventLoop)
@@ -66,7 +72,10 @@ namespace CotcSdkTemplate
 			{
 				// Event type: message sent from the BackOffice
 				case "backoffice":
-				DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:EventFeatures] BackOffice message ›› Event: {0}, Notification: {1}", eventBundle["event"].ToString(), eventBundle["osn"].ToString()));
+				if (Event_BackOfficeMessage == null)
+					DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No callback registered to the Event_BackOfficeMessage event ›› Please ensure an active script registered to it to avoid events loss");
+				else
+					Event_BackOfficeMessage(eventBundle);
 				break;
 
 				// Unhandled event types
@@ -74,6 +83,23 @@ namespace CotcSdkTemplate
 				DebugLogs.LogError(string.Format("[CotcSdkTemplate:EventFeatures] An unhandled event has been received ›› {0}", eventBundle.ToString()));
 				break;
 			}
+		}
+
+		/// <summary>
+		/// When a BackOffice message event is received, display it on the event handler.
+		/// </summary>
+		/// <param name="backOfficeMessage">BackOffice message under the format {"message":"Test message!"}.</param>
+		private static void OnBackOfficeMessage(Bundle backOfficeMessage)
+		{
+			string messageField = "message";
+
+			// An EventHandler instance should be attached to an active object of the scene to display the result
+			if (!EventHandler.HasInstance)
+				DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No EventHandler instance found ›› Please attach an EventHandler script on an active object of the scene");
+			else if (!backOfficeMessage["event"].Has(messageField))
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:EventFeatures] No {0} field found in the BackOffice message event", messageField));
+			else
+				EventHandler.Instance.BuildAndAddEventItem_BackOfficeMessage(backOfficeMessage["event"][messageField]);
 		}
 		#endregion
 	}

@@ -71,12 +71,11 @@ namespace CotcSdkTemplate
 		{
 			string resultField = "result";
 
-			if (keysValues.Has(resultField))
-				VFSHandler.Instance.FillAndShowVFSPanel(keysValues[resultField].AsDictionary(), "Game VFS Keys");
-			else
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GameVFSFeatures] No {0} field found in the key value result", resultField));
-			
 			// TODO: You may want to parse the result Bundle fields (e.g.: if (keyValue["result"]["TestString"].Type == Bundle.DataType.String) { string testString = keyValue["result"]["TestString"].AsString(); })
+			if (!keysValues.Has(resultField))
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GameVFSFeatures] No {0} field found in the key value result", resultField));
+			else
+				VFSHandler.Instance.FillAndShowVFSPanel(keysValues[resultField].AsDictionary(), "Game VFS Keys");
 		}
 
 		/// <summary>
