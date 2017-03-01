@@ -38,7 +38,7 @@ namespace CotcSdkTemplate
 			{
 				Bundle setValue;
 
-				// Create a Bundle from the given value string (a Bundle is an json-like object to represent fields data)
+				// Create a Bundle from the given value string (a Bundle is an json-like object to represent fields data) according to expected value type
 				switch (valueType)
 				{
 					case Bundle.DataType.Object:

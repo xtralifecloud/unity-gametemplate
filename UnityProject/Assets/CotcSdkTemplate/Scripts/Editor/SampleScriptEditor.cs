@@ -15,8 +15,15 @@ public class SampleScriptEditor : Editor
 	// CotcSdkTemplate's messages logging level
 	private SerializedProperty cotcSdkTemplateLogLevel;
 
-	// No InputField reference debug message format
-	private SerializedProperty noInputFieldReferenceDebug;
+	// No reference debug message format
+	private SerializedProperty noReferenceDebug;
+
+	#region Community References
+	// SetRelationshipWithGamer properties references
+	private SerializedProperty setRelationshipWithGamer_GamerID;
+	private SerializedProperty setRelationshipWithGamer_Notification;
+	private SerializedProperty setRelationshipWithGamer_Relationship;
+	#endregion
 
 	#region Gamer VFS References
 	// DisplayGameKey properties references
@@ -79,8 +86,15 @@ public class SampleScriptEditor : Editor
 		// Find cotcSdkTemplateLogLevel property references on the serialized object
 		cotcSdkTemplateLogLevel = serializedObject.FindProperty("cotcSdkTemplateLogLevel");
 
-		// Find noInputFieldReferenceDebug property references on the serialized object
-		noInputFieldReferenceDebug = serializedObject.FindProperty("noInputFieldReferenceDebug");
+		// Find noReferenceDebug property references on the serialized object
+		noReferenceDebug = serializedObject.FindProperty("noReferenceDebug");
+
+		#region Community Find
+		// Find SetRelationshipWithGamer properties references on the serialized object
+		setRelationshipWithGamer_GamerID = serializedObject.FindProperty("setRelationshipWithGamer_GamerID");
+		setRelationshipWithGamer_Notification = serializedObject.FindProperty("setRelationshipWithGamer_Notification");
+		setRelationshipWithGamer_Relationship = serializedObject.FindProperty("setRelationshipWithGamer_Relationship");
+		#endregion
 
 		#region Game VFS Find
 		// Find DisplayGameKey properties references on the serialized object
@@ -141,6 +155,7 @@ public class SampleScriptEditor : Editor
 	private const float verticalSpaces = 5f;
 
 	// The foldouts states
+	private bool communityFoldoutState = true;
 	private bool gameVFSFoldoutState = true;
 	private bool gamerVFSFoldoutState = true;
 	private bool leaderboardFoldoutState = true;
@@ -169,8 +184,24 @@ public class SampleScriptEditor : Editor
 		// Display the CotcSdkTemplate's messages logging level
 		EditorGUILayout.PropertyField(cotcSdkTemplateLogLevel, new GUIContent("CotcSdkTemplate Logging Level"));
 
-		// Display the no InputField reference debug message format
-		EditorGUILayout.PropertyField(noInputFieldReferenceDebug, new GUIContent("No InputField Reference Debug"));
+		// Display the no reference debug message format
+		EditorGUILayout.PropertyField(noReferenceDebug, new GUIContent("No Reference Debug"));
+
+		#region Community Foldout
+		// Open / Close the Community foldout
+		GUILayout.Space(verticalSpaces);
+		communityFoldoutState = EditorGUILayout.Foldout(communityFoldoutState, "Community", foldoutLabelToggle, foldoutStyle);
+
+		if (communityFoldoutState)
+		{
+			// Show SetRelationshipWithGamer properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Set Relationship With Gamer", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(setRelationshipWithGamer_GamerID, new GUIContent("  > Gamer ID"));
+			EditorGUILayout.PropertyField(setRelationshipWithGamer_Notification, new GUIContent("  > Notification"));
+			EditorGUILayout.PropertyField(setRelationshipWithGamer_Relationship, new GUIContent("  > Relationship"));
+		}
+		#endregion
 
 		#region Game VFS Foldout
 		// Open / Close the Game VFS foldout
