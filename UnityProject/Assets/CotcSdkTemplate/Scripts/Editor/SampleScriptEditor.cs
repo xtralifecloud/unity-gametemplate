@@ -15,6 +15,9 @@ public class SampleScriptEditor : Editor
 	// CotcSdkTemplate's messages logging level
 	private SerializedProperty cotcSdkTemplateLogLevel;
 
+	// No InputField reference debug message format
+	private SerializedProperty noInputFieldReferenceDebug;
+
 	#region Gamer VFS References
 	// DisplayGameKey properties references
 	private SerializedProperty displayGameKey_Key;
@@ -75,6 +78,9 @@ public class SampleScriptEditor : Editor
 
 		// Find cotcSdkTemplateLogLevel property references on the serialized object
 		cotcSdkTemplateLogLevel = serializedObject.FindProperty("cotcSdkTemplateLogLevel");
+
+		// Find noInputFieldReferenceDebug property references on the serialized object
+		noInputFieldReferenceDebug = serializedObject.FindProperty("noInputFieldReferenceDebug");
 
 		#region Game VFS Find
 		// Find DisplayGameKey properties references on the serialized object
@@ -162,6 +168,9 @@ public class SampleScriptEditor : Editor
 
 		// Display the CotcSdkTemplate's messages logging level
 		EditorGUILayout.PropertyField(cotcSdkTemplateLogLevel, new GUIContent("CotcSdkTemplate Logging Level"));
+
+		// Display the no InputField reference debug message format
+		EditorGUILayout.PropertyField(noInputFieldReferenceDebug, new GUIContent("No InputField Reference Debug"));
 
 		#region Game VFS Foldout
 		// Open / Close the Game VFS foldout

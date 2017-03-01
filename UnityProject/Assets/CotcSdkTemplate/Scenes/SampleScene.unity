@@ -15429,6 +15429,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cotcSdkTemplateLogLevel: 3
+  noInputFieldReferenceDebug: '[SampleScript:{0}] {1} InputField reference is null
+    >> Please assign it on the SampleScript script''s instance attached to an object
+    in the scene if you wish to replace the default hardcoded values'
   displayGameKey_Key: {fileID: 1471705383}
   displayGamerKey_Key: {fileID: 1607399490}
   setGamerKey_Key: {fileID: 347836567}
