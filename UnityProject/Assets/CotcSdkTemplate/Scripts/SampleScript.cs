@@ -324,6 +324,7 @@ public class SampleScript : MonoBehaviour
 	[SerializeField] private InputField postScore_BoardName = null;
 	[SerializeField] private InputField postScore_ScoreValue = null;
 	[SerializeField] private InputField postScore_ScoreDescription = null;
+	[SerializeField] private Toggle postScore_ForceSave = null;
 
 	/// <summary>
 	/// When the corresponding button is clicked, post a new score on the given leaderboard for the current logged in gamer.
@@ -334,6 +335,7 @@ public class SampleScript : MonoBehaviour
 		string boardName = "TestBoard";
 		long scoreValue = 42L;
 		string scoreDescription = "This is a test score";
+		bool forceSave = false;
 
 		// Check the boardName value
 		if (postScore_BoardName == null)
@@ -353,8 +355,14 @@ public class SampleScript : MonoBehaviour
 		else
 			scoreDescription = postScore_ScoreDescription.text;
 		
+		// Check the forceSave value
+		if (postScore_ForceSave == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "postScore_ForceSave"));
+		else
+			forceSave = postScore_ForceSave.isOn;
+
 		// Call the template method
-		LeaderboardFeatures.Handling_PostScore(boardName, scoreValue, scoreDescription);
+		LeaderboardFeatures.Handling_PostScore(boardName, scoreValue, scoreDescription, forceSave);
 	}
 	#endregion
 

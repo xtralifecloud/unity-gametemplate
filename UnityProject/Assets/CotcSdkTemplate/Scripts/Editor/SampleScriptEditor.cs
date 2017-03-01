@@ -53,6 +53,7 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty postScore_BoardName;
 	private SerializedProperty postScore_ScoreValue;
 	private SerializedProperty postScore_ScoreDescription;
+	private SerializedProperty postScore_ForceSave;
 	#endregion
 
 	#region Login References
@@ -124,6 +125,7 @@ public class SampleScriptEditor : Editor
 		postScore_BoardName = serializedObject.FindProperty("postScore_BoardName");
 		postScore_ScoreValue = serializedObject.FindProperty("postScore_ScoreValue");
 		postScore_ScoreDescription = serializedObject.FindProperty("postScore_ScoreDescription");
+		postScore_ForceSave = serializedObject.FindProperty("postScore_ForceSave");
 		#endregion
 
 		#region Login Find
@@ -263,6 +265,7 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.PropertyField(postScore_BoardName, new GUIContent("  > Board Name"));
 			EditorGUILayout.PropertyField(postScore_ScoreValue, new GUIContent("  > Score Value"));
 			EditorGUILayout.PropertyField(postScore_ScoreDescription, new GUIContent("  > Score Description"));
+			EditorGUILayout.PropertyField(postScore_ForceSave, new GUIContent("  > Force Save"));
 		}
 		#endregion
 

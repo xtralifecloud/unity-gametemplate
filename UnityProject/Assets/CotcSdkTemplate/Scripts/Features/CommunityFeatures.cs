@@ -16,6 +16,7 @@ namespace CotcSdkTemplate
 		/// </summary>
 		/// <param name="gamerID">Identifier of the gamer with who to change the relationship.</param>
 		/// <param name="notificationJson">Message to send as notification if the targeted gamer is offline under {"languageCode1":"correspondingText1", "languageCode2":"correspondingText2", ...} format.</param>
+		/// <param name="relationship">Type of relationship to set.</param>
 		public static void Handling_SetGamerRelationship(string gamerID, string notificationJson, FriendRelationshipStatus relationship)
 		{
 			// The gamer ID should not be empty
@@ -46,8 +47,8 @@ namespace CotcSdkTemplate
 		/// Set the relationship between the current logged in gamer and the given other gamer.
 		/// </summary>
 		/// <param name="gamerID">Identifier of the gamer with who to change the relationship.</param>
-		/// <param name="pushNotification">Message to send as notification if the targeted gamer is offline.</param>
 		/// <param name="relationship">Type of relationship to set.</param>
+		/// <param name="pushNotification">Message to send as notification if the targeted gamer is offline.</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>

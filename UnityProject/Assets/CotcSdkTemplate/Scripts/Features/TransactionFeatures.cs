@@ -60,7 +60,7 @@ namespace CotcSdkTemplate
 		/// <param name="currencyName">Name of the currency to set.</param>
 		/// <param name="currencyAmount">Amount (positive or negative) of the currency to set.</param>
 		/// <param name="transactionDescription">Description of the transaction. (optional)</param>
-		public static void Handling_PostTransaction(string currencyName, float currencyAmount, string transactionDescription)
+		public static void Handling_PostTransaction(string currencyName, float currencyAmount, string transactionDescription = null)
 		{
 			// The currency name should not be empty
 			if (string.IsNullOrEmpty(currencyName))
