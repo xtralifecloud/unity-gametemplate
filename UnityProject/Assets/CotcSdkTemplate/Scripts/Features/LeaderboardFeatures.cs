@@ -85,7 +85,7 @@ namespace CotcSdkTemplate
 			else if (scoreValue <= 0)
 				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The score value is invalid ›› Please enter a number superior to 0");
 			else
-				Backend_Post(scoreValue, boardName, ScoreOrder.HighToLow, scoreDescription, forceSave, PostScore_OnSuccess, PostScore_OnError);
+				Backend_Post(scoreValue, boardName, ScoreOrder.HighToLow, PostScore_OnSuccess, PostScore_OnError, scoreDescription, forceSave);
 		}
 		#endregion
 
@@ -278,12 +278,12 @@ namespace CotcSdkTemplate
 		/// <param name="scoreValue">Value of the score to set.</param>
 		/// <param name="boardName">Name of the board to wich to set the score.</param>
 		/// <param name="scoreOrder">Determines if the higher or the lower scores are the best ones.</param>
-		/// <param name="scoreDescription">Description of the score to set. (optional)</param>
-		/// <param name="forceSave">If the score has to be saved even if it's not a better one. (optional)</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
+		/// <param name="scoreDescription">Description of the score to set. (optional)</param>
+		/// <param name="forceSave">If the score has to be saved even if it's not a better one. (optional)</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
-		public static void Backend_Post(long scoreValue, string boardName, ScoreOrder scoreOrder, string scoreDescription, bool forceSave, Action<PostedGameScore> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_Post(long scoreValue, string boardName, ScoreOrder scoreOrder, Action<PostedGameScore> OnSuccess = null, Action<ExceptionError> OnError = null, string scoreDescription = null, bool forceSave = false, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())

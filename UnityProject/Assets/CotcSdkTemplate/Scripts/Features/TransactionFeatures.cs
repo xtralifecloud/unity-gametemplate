@@ -71,7 +71,7 @@ namespace CotcSdkTemplate
 			else
 			{
 				Bundle transaction = Bundle.CreateObject(currencyName, currencyAmount);
-				Backend_Post(transaction, transactionDescription, PostTransaction_OnSuccess, PostTransaction_OnError);
+				Backend_Post(transaction, PostTransaction_OnSuccess, PostTransaction_OnError, transactionDescription);
 			}
 		}
 		#endregion
@@ -226,11 +226,11 @@ namespace CotcSdkTemplate
 		/// Post a new transaction of the given currency for the current logged in gamer.
 		/// </summary>
 		/// <param name="transaction">Transaction currencies data under the Bundle format.</param>
-		/// <param name="transactionDescription">Description of the transaction. (optional)</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
+		/// <param name="transactionDescription">Description of the transaction. (optional)</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
-		public static void Backend_Post(Bundle transaction, string transactionDescription, Action<TransactionResult> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_Post(Bundle transaction, Action<TransactionResult> OnSuccess = null, Action<ExceptionError> OnError = null, string transactionDescription = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())

@@ -19,6 +19,11 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty noReferenceDebug;
 
 	#region Community References
+	// SendEventToGamer properties references
+	private SerializedProperty sendEventToGamer_GamerID;
+	private SerializedProperty sendEventToGamer_EventData;
+	private SerializedProperty sendEventToGamer_Notification;
+
 	// SetRelationshipWithGamer properties references
 	private SerializedProperty setRelationshipWithGamer_GamerID;
 	private SerializedProperty setRelationshipWithGamer_Notification;
@@ -91,6 +96,11 @@ public class SampleScriptEditor : Editor
 		noReferenceDebug = serializedObject.FindProperty("noReferenceDebug");
 
 		#region Community Find
+		// Find SendEventToGamer properties references on the serialized object
+		sendEventToGamer_GamerID = serializedObject.FindProperty("sendEventToGamer_GamerID");
+		sendEventToGamer_EventData = serializedObject.FindProperty("sendEventToGamer_EventData");
+		sendEventToGamer_Notification = serializedObject.FindProperty("sendEventToGamer_Notification");
+
 		// Find SetRelationshipWithGamer properties references on the serialized object
 		setRelationshipWithGamer_GamerID = serializedObject.FindProperty("setRelationshipWithGamer_GamerID");
 		setRelationshipWithGamer_Notification = serializedObject.FindProperty("setRelationshipWithGamer_Notification");
@@ -196,6 +206,13 @@ public class SampleScriptEditor : Editor
 
 		if (communityFoldoutState)
 		{
+			// Show SendEventToGamer properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Send Event To Gamer", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(sendEventToGamer_GamerID, new GUIContent("  > Gamer ID"));
+			EditorGUILayout.PropertyField(sendEventToGamer_EventData, new GUIContent("  > Event Data"));
+			EditorGUILayout.PropertyField(sendEventToGamer_Notification, new GUIContent("  > Notification"));
+
 			// Show SetRelationshipWithGamer properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Set Relationship With Gamer", EditorStyles.boldLabel);

@@ -78,6 +78,43 @@ public class SampleScript : MonoBehaviour
 
 	#region Community
 	// References to the community UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField sendEventToGamer_GamerID = null;
+	[SerializeField] private InputField sendEventToGamer_EventData = null;
+	[SerializeField] private InputField sendEventToGamer_Notification = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, send an event from the current logged in gamer to the given other gamer.
+	/// </summary>
+	public void Button_SendEventToGamer()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string gamerID = null;
+		string eventData = "{\"type\":\"message\", \"data\":\"Hi!\"}";
+		string notification = "{\"en\":\"Received message!\"}";
+
+		// Check the gamerID value
+		if (sendEventToGamer_GamerID == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendEventToGamer_GamerID"));
+		else if (!string.IsNullOrEmpty(sendEventToGamer_GamerID.text))
+			gamerID = sendEventToGamer_GamerID.text;
+
+		// Check the eventData value
+		if (sendEventToGamer_EventData == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendEventToGamer_EventData"));
+		else if (!string.IsNullOrEmpty(sendEventToGamer_EventData.text))
+			eventData = sendEventToGamer_EventData.text;
+
+		// Check the notification value
+		if (sendEventToGamer_Notification == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendEventToGamer_Notification"));
+		else
+			notification = sendEventToGamer_Notification.text;
+
+		// Call the template method
+		CommunityFeatures.Handling_SendEventToGamer(gamerID, eventData, notification);
+	}
+
+	// References to the community UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField setRelationshipWithGamer_GamerID = null;
 	[SerializeField] private InputField setRelationshipWithGamer_Notification = null;
 	[SerializeField] private ToggleGroup setRelationshipWithGamer_Relationship = null;
@@ -125,7 +162,7 @@ public class SampleScript : MonoBehaviour
 			}
 
 		// Call the template method
-		CommunityFeatures.Handling_SetGamerRelationship(gamerID, notification, relationship);
+		CommunityFeatures.Handling_SetGamerRelationship(gamerID, relationship, notification);
 	}
 	#endregion
 

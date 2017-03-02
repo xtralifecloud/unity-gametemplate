@@ -11,7 +11,7 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		// The object handling the events loop to retrieve server pending events
-		private static DomainEventLoop eventLoop = null;
+		public static DomainEventLoop eventLoop = null;
 
 		/// <summary>
 		/// Start the events loop to retrieve server pending events as soon as possible.
