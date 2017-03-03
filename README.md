@@ -6,6 +6,8 @@ XlGameTemplate is a simple C# SDK integration sample on Unity; Its goal is to de
 
 This template is made to be quickly plugged into your game (only a few minutes for most basic features) and allow you to enhance the social aspect of your game in no efforts! Obviously, you can freely use it and customize it to match your desires.
 
+For details about SDK features, please refer to our [online backend documentation](http://doc.xtralife.cloud/backend/).
+
 ### **How to?**
 
 A few very simple steps are required to use the game template within your Unity project:
