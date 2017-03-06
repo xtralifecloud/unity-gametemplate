@@ -11,6 +11,12 @@ namespace CotcSdkTemplate
 	public static class LeaderboardFeatures
 	{
 		#region Handling
+		// Error messages corresponding to different cases
+		private const string emptyLeaderboardErrorMessage = "\nThe selected leaderboard\nis currently empty.\n\nPlease post new\nscores and try again.\n";
+		private const string neverScoredErrorMessage = "\nYou never scored on\nany leaderboard yet.\n\nPlease post new\nscores and try again.\n";
+		private const string neverScoredOnLeaderboardErrorMessage = "\nYou never scored on the\ngiven leaderboard yet.\n\nPlease post new\nscores and try again.\n";
+		private const string neverScoredWithFriendsErrorMessage = "\nYou and your friend(s)\nnever scored on the\nselected leaderboard yet.\n\nPlease post new\nscores and try again.\n";
+
 		/// <summary>
 		/// Get and display all gamers' high scores from the given leaderboard.
 		/// </summary>
@@ -32,10 +38,10 @@ namespace CotcSdkTemplate
 			{
 				// Display only the page in which the logged in gamer's score is on the given leaderboard
 				if (centeredBoard)
-					Backend_CenteredScore(boardName, scoresPerPage, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
+					Backend_CenteredScore(boardName, scoresPerPage, neverScoredOnLeaderboardErrorMessage, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 				// Display the first page of the given leaderboard
 				else
-					Backend_BestHighScores(boardName, scoresPerPage, 1, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
+					Backend_BestHighScores(boardName, scoresPerPage, 1, emptyLeaderboardErrorMessage, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 			}
 		}
 
@@ -52,7 +58,7 @@ namespace CotcSdkTemplate
 			else if (string.IsNullOrEmpty(boardName))
 				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty ›› Please enter a valid board name");
 			else
-				Backend_ListFriendScores(boardName, DisplayNonpagedScores_OnSuccess, DisplayNonpagedScores_OnError);
+				Backend_ListFriendScores(boardName, neverScoredWithFriendsErrorMessage, DisplayNonpagedScores_OnSuccess, DisplayNonpagedScores_OnError);
 		}
 
 		/// <summary>
@@ -64,7 +70,7 @@ namespace CotcSdkTemplate
 			if (!LeaderboardHandler.HasInstance)
 				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found ›› Please attach a LeaderboardHandler script on an active object of the scene");
 			else
-				Backend_ListUserBestScores(DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
+				Backend_ListUserBestScores(neverScoredErrorMessage, DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
 		}
 
 		/// <summary>
@@ -112,10 +118,11 @@ namespace CotcSdkTemplate
 		/// <param name="boardName">Name of the board from wich to get the scores.</param>
 		/// <param name="scoresPerPage">Number of scores to get per page.</param>
 		/// <param name="pageNumber">Number of the page from wich to get the scores.</param>
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
-		public static void Backend_BestHighScores(string boardName, int scoresPerPage, int pageNumber, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
+		public static void Backend_BestHighScores(string boardName, int scoresPerPage, int pageNumber, string noScoreErrorMessage, Action<PagedList<Score>, string, string> OnSuccess = null, Action<ExceptionError, string, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -130,14 +137,14 @@ namespace CotcSdkTemplate
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
-						OnSuccess(scoresList, boardName);
+						OnSuccess(scoresList, boardName, noScoreErrorMessage);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
 				{
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception), boardName);
+						OnError(ExceptionTools.GetExceptionError(exception), boardName, noScoreErrorMessage);
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("LeaderboardFeatures", "BestHighScores", exception);
@@ -149,10 +156,11 @@ namespace CotcSdkTemplate
 		/// </summary>
 		/// <param name="boardName">Name of the board from wich to get the scores.</param>
 		/// <param name="scoresPerPage">Number of scores to get per page.</param>
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
-		public static void Backend_CenteredScore(string boardName, int scoresPerPage, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
+		public static void Backend_CenteredScore(string boardName, int scoresPerPage, string noScoreErrorMessage, Action<PagedList<Score>, string, string> OnSuccess = null, Action<ExceptionError, string, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -167,14 +175,14 @@ namespace CotcSdkTemplate
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
-						OnSuccess(scoresList, boardName);
+						OnSuccess(scoresList, boardName, noScoreErrorMessage);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
 				{
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception), boardName);
+						OnError(ExceptionTools.GetExceptionError(exception), boardName, noScoreErrorMessage);
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("LeaderboardFeatures", "CenteredScore", exception);
@@ -185,10 +193,11 @@ namespace CotcSdkTemplate
 		/// Get all current logged in gamer's friends' high scores from the given leaderboard.
 		/// </summary>
 		/// <param name="boardName">Name of the board from wich to get the scores.</param>
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
-		public static void Backend_ListFriendScores(string boardName, Action<NonpagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
+		public static void Backend_ListFriendScores(string boardName, string noScoreErrorMessage, Action<NonpagedList<Score>, string, string> OnSuccess = null, Action<ExceptionError, string, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -203,14 +212,14 @@ namespace CotcSdkTemplate
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
-						OnSuccess(scoresList, boardName);
+						OnSuccess(scoresList, boardName, noScoreErrorMessage);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
 				{
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception), boardName);
+						OnError(ExceptionTools.GetExceptionError(exception), boardName, noScoreErrorMessage);
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("LeaderboardFeatures", "ListFriendScores", exception);
@@ -220,10 +229,11 @@ namespace CotcSdkTemplate
 		/// <summary>
 		/// Get the current logged in gamer's best scores from all leaderboards in which he scored at least once.
 		/// </summary>
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
-		public static void Backend_ListUserBestScores(Action<Dictionary<string, Score>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
+		public static void Backend_ListUserBestScores(string noScoreErrorMessage, Action<Dictionary<string, Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -238,14 +248,14 @@ namespace CotcSdkTemplate
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
-						OnSuccess(scoresList);
+						OnSuccess(scoresList, noScoreErrorMessage);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
 				{
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
+						OnError(ExceptionTools.GetExceptionError(exception), noScoreErrorMessage);
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("LeaderboardFeatures", "ListUserBestScores", exception);
@@ -258,7 +268,7 @@ namespace CotcSdkTemplate
 		/// <param name="scores">Paged list of scores.</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
-		public static void Backend_FetchPrevious(PagedList<Score> scores, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null)
+		public static void Backend_FetchPrevious(PagedList<Score> scores, Action<PagedList<Score>, string, string> OnSuccess = null, Action<ExceptionError, string, string> OnError = null)
 		{
 			if (scores.HasPrevious)
 			{
@@ -271,14 +281,14 @@ namespace CotcSdkTemplate
 						
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
-							OnSuccess(scoresList, null);
+							OnSuccess(scoresList, null, null);
 					},
 					// Result if an error occured
 					delegate (Exception exception)
 					{
 						// Call the OnError action if any callback registered to it
 						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception), null);
+							OnError(ExceptionTools.GetExceptionError(exception), null, null);
 						// Else, log the error (expected to be a CotcException)
 						else
 							ExceptionTools.LogCotcException("LeaderboardFeatures", "FetchPrevious", exception);
@@ -294,7 +304,7 @@ namespace CotcSdkTemplate
 		/// <param name="scores">Paged list of scores.</param>
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
-		public static void Backend_FetchNext(PagedList<Score> scores, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null)
+		public static void Backend_FetchNext(PagedList<Score> scores, Action<PagedList<Score>, string, string> OnSuccess = null, Action<ExceptionError, string, string> OnError = null)
 		{
 			if (scores.HasNext)
 			{
@@ -307,14 +317,14 @@ namespace CotcSdkTemplate
 						
 						// Call the OnSuccess action if any callback registered to it
 						if (OnSuccess != null)
-							OnSuccess(scoresList, null);
+							OnSuccess(scoresList, null, null);
 					},
 					// Result if an error occured
 					delegate (Exception exception)
 					{
 						// Call the OnError action if any callback registered to it
 						if (OnError != null)
-							OnError(ExceptionTools.GetExceptionError(exception), null);
+							OnError(ExceptionTools.GetExceptionError(exception), null, null);
 						// Else, log the error (expected to be a CotcException)
 						else
 							ExceptionTools.LogCotcException("LeaderboardFeatures", "FetchNext", exception);
@@ -371,9 +381,10 @@ namespace CotcSdkTemplate
 		/// </summary>
 		/// <param name="scoresList">List of all gamers' high scores from the given leaderboard.</param>
 		/// <param name="boardName">Name of the board from wich to get the scores.</param>
-		private static void DisplayNonpagedScores_OnSuccess(NonpagedList<Score> scoresList, string boardName)
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
+		private static void DisplayNonpagedScores_OnSuccess(NonpagedList<Score> scoresList, string boardName, string noScoreErrorMessage)
 		{
-			LeaderboardHandler.Instance.FillAndShowNonpagedLeaderboardPanel(scoresList, boardName);
+			LeaderboardHandler.Instance.FillAndShowNonpagedLeaderboardPanel(scoresList, boardName, noScoreErrorMessage);
 		}
 
 		/// <summary>
@@ -381,13 +392,14 @@ namespace CotcSdkTemplate
 		/// </summary>
 		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
 		/// <param name="boardName">Name of the board from wich to get the scores.</param>
-		private static void DisplayNonpagedScores_OnError(ExceptionError exceptionError, string boardName)
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
+		private static void DisplayNonpagedScores_OnError(ExceptionError exceptionError, string boardName, string noScoreErrorMessage)
 		{
 			switch (exceptionError.type)
 			{
 				// Error type: no gamer ever scored on this leaderboard (board doesn't exist yet)
 				case "MissingScore":
-				LeaderboardHandler.Instance.FillAndShowNonpagedLeaderboardPanel(null, boardName);
+				LeaderboardHandler.Instance.FillAndShowNonpagedLeaderboardPanel(null, boardName, noScoreErrorMessage);
 				break;
 
 				// Unhandled error types
@@ -402,9 +414,10 @@ namespace CotcSdkTemplate
 		/// </summary>
 		/// <param name="scoresList">List of all gamers' high scores from the given leaderboard.</param>
 		/// <param name="boardName">Name of the board from wich to get the scores.</param>
-		private static void DisplayPagedScores_OnSuccess(PagedList<Score> scoresList, string boardName)
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
+		private static void DisplayPagedScores_OnSuccess(PagedList<Score> scoresList, string boardName, string noScoreErrorMessage)
 		{
-			LeaderboardHandler.Instance.FillAndShowPagedLeaderboardPanel(scoresList, boardName);
+			LeaderboardHandler.Instance.FillAndShowPagedLeaderboardPanel(scoresList, boardName, noScoreErrorMessage);
 		}
 
 		/// <summary>
@@ -412,13 +425,14 @@ namespace CotcSdkTemplate
 		/// </summary>
 		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
 		/// <param name="boardName">Name of the board from wich to get the scores.</param>
-		private static void DisplayPagedScores_OnError(ExceptionError exceptionError, string boardName)
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
+		private static void DisplayPagedScores_OnError(ExceptionError exceptionError, string boardName, string noScoreErrorMessage)
 		{
 			switch (exceptionError.type)
 			{
 				// Error type: no gamer ever scored on this leaderboard (board doesn't exist yet)
 				case "MissingScore":
-				LeaderboardHandler.Instance.FillAndShowPagedLeaderboardPanel(null, boardName);
+				LeaderboardHandler.Instance.FillAndShowPagedLeaderboardPanel(null, boardName, noScoreErrorMessage);
 				break;
 
 				// Unhandled error types
@@ -432,16 +446,18 @@ namespace CotcSdkTemplate
 		/// What to do if any DisplayGamerHighScores request succeeded.
 		/// </summary>
 		/// <param name="scoresList">List of logged in gamer's best scores from all leaderboards in which he scored at least once.</param>
-		private static void DisplayGamerHighScores_OnSuccess(Dictionary<string, Score> scoresList)
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
+		private static void DisplayGamerHighScores_OnSuccess(Dictionary<string, Score> scoresList, string noScoreErrorMessage)
 		{
-			LeaderboardHandler.Instance.FillAndShowMultipleLeaderboardPanel(scoresList, CloudFeatures.gamer["profile"]["displayName"].AsString());
+			LeaderboardHandler.Instance.FillAndShowMultipleLeaderboardPanel(scoresList, CloudFeatures.gamer["profile"]["displayName"].AsString(), noScoreErrorMessage);
 		}
 
 		/// <summary>
 		/// What to do if any DisplayGamerHighScores request failed.
 		/// </summary>
 		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
-		private static void DisplayGamerHighScores_OnError(ExceptionError exceptionError)
+		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
+		private static void DisplayGamerHighScores_OnError(ExceptionError exceptionError, string noScoreErrorMessage)
 		{
 			switch (exceptionError.type)
 			{
