@@ -32,7 +32,7 @@ namespace CotcSdkTemplate
 			{
 				// Display only the page in which the logged in gamer's score is on the given leaderboard
 				if (centeredBoard)
-					Backend_CenteredScore(boardName, scoresPerPage, DisplayNonpagedScores_OnSuccess, DisplayNonpagedScores_OnError);
+					Backend_CenteredScore(boardName, scoresPerPage, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
 				// Display the first page of the given leaderboard
 				else
 					Backend_BestHighScores(boardName, scoresPerPage, 1, DisplayPagedScores_OnSuccess, DisplayPagedScores_OnError);
@@ -152,16 +152,16 @@ namespace CotcSdkTemplate
 		/// <param name="OnSuccess">The callback in case of request success.</param>
 		/// <param name="OnError">The callback in case of request error.</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
-		public static void Backend_CenteredScore(string boardName, int scoresPerPage, Action<NonpagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
+		public static void Backend_CenteredScore(string boardName, int scoresPerPage, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 				return;
 			
-			// Call the API method which returns a NonpagedList<Score> result
-			CloudFeatures.gamer.Scores.Domain(domain).CenteredScore(boardName, scoresPerPage)
+			// Call the API method which returns a PagedList<Score> result
+			CloudFeatures.gamer.Scores.Domain(domain).PagedCenteredScore(boardName, scoresPerPage)
 				// Result if everything went well
-				.Done(delegate (NonpagedList<Score> scoresList)
+				.Done(delegate (PagedList<Score> scoresList)
 				{
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LeaderboardFeatures] CenteredScore success ›› {0} score(s)", scoresList.Count));
 					

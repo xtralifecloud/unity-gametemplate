@@ -8749,7 +8749,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Display logged in gamer's page only
+  m_Text: Display logged in gamer's page first
 --- !u!222 &942355847
 CanvasRenderer:
   m_ObjectHideFlags: 0
