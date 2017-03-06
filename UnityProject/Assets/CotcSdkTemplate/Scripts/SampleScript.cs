@@ -348,6 +348,27 @@ public class SampleScript : MonoBehaviour
 		LeaderboardFeatures.Handling_DisplayAllHighScores(boardName, scoresPerPage, centeredBoard);
 	}
 
+	// References to the leaderboard UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField displayFriendsHighScores_BoardName = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, get and display all current logged in gamer's friends' high scores from the given leaderboard.
+	/// </summary>
+	public void Button_DisplayFriendsHighScores()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string boardName = "TestBoard";
+
+		// Check the boardName value
+		if (displayFriendsHighScores_BoardName == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "displayFriendsHighScores_BoardName"));
+		else if (!string.IsNullOrEmpty(displayFriendsHighScores_BoardName.text))
+			boardName = displayFriendsHighScores_BoardName.text;
+
+		// Call the template method
+		LeaderboardFeatures.Handling_DisplayFriendsHighScores(boardName);
+	}
+
 	/// <summary>
 	/// When the corresponding button is clicked, get and display the current logged in gamer's best scores from all leaderboards in which he scored at least once.
 	/// </summary>

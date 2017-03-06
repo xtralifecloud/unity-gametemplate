@@ -54,6 +54,9 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty displayAllHighScores_ScoresPerPage;
 	private SerializedProperty displayAllHighScores_CenteredBoard;
 
+	// DisplayFriendsHighScores properties references
+	private SerializedProperty displayFriendsHighScores_BoardName;
+
 	// PostScore properties references
 	private SerializedProperty postScore_BoardName;
 	private SerializedProperty postScore_ScoreValue;
@@ -130,6 +133,9 @@ public class SampleScriptEditor : Editor
 		displayAllHighScores_BoardName = serializedObject.FindProperty("displayAllHighScores_BoardName");
 		displayAllHighScores_ScoresPerPage = serializedObject.FindProperty("displayAllHighScores_ScoresPerPage");
 		displayAllHighScores_CenteredBoard = serializedObject.FindProperty("displayAllHighScores_CenteredBoard");
+
+		// Find DisplayFriendsHighScores properties references on the serialized object
+		displayFriendsHighScores_BoardName = serializedObject.FindProperty("displayFriendsHighScores_BoardName");
 
 		// Find PostScore properties references on the serialized object
 		postScore_BoardName = serializedObject.FindProperty("postScore_BoardName");
@@ -275,6 +281,11 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.PropertyField(displayAllHighScores_BoardName, new GUIContent("  > Board Name"));
 			EditorGUILayout.PropertyField(displayAllHighScores_ScoresPerPage, new GUIContent("  > Scores Per Page"));
 			EditorGUILayout.PropertyField(displayAllHighScores_CenteredBoard, new GUIContent("  > Centered Board"));
+
+			// Show DisplayFriendsHighScores properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Display Friends High Scores", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(displayFriendsHighScores_BoardName, new GUIContent("  > Board Name"));
 
 			// Show PostScore properties references on the inspector
 			GUILayout.Space(verticalSpaces);

@@ -40,6 +40,22 @@ namespace CotcSdkTemplate
 		}
 
 		/// <summary>
+		/// Get and display all current logged in gamer's friends' high scores from the given leaderboard.
+		/// </summary>
+		/// <param name="boardName">Name of the board from wich to get the scores.</param>
+		public static void Handling_DisplayFriendsHighScores(string boardName)
+		{
+			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
+			if (!LeaderboardHandler.HasInstance)
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found ›› Please attach a LeaderboardHandler script on an active object of the scene");
+			// The board name should not be empty
+			else if (string.IsNullOrEmpty(boardName))
+				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty ›› Please enter a valid board name");
+			else
+				Backend_ListFriendScores(boardName, DisplayNonpagedScores_OnSuccess, DisplayNonpagedScores_OnError);
+		}
+
+		/// <summary>
 		/// Get and display the current logged in gamer's best scores from all leaderboards in which he scored at least once.
 		/// </summary>
 		public static void Handling_DisplayGamerHighScores()
@@ -162,6 +178,42 @@ namespace CotcSdkTemplate
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("LeaderboardFeatures", "CenteredScore", exception);
+				});
+		}
+
+		/// <summary>
+		/// Get all current logged in gamer's friends' high scores from the given leaderboard.
+		/// </summary>
+		/// <param name="boardName">Name of the board from wich to get the scores.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
+		public static void Backend_ListFriendScores(string boardName, Action<NonpagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
+		{
+			// Need an initialized Cloud and a logged in gamer to proceed
+			if (!CloudFeatures.IsGamerLoggedIn())
+				return;
+
+			// Call the API method which returns a NonpagedList<Score> result
+			CloudFeatures.gamer.Scores.Domain(domain).ListFriendScores(boardName)
+				// Result if everything went well
+				.Done(delegate (NonpagedList<Score> scoresList)
+				{
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LeaderboardFeatures] ListFriendScores success ›› {0} score(s)", scoresList.Count));
+					
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(scoresList, boardName);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception), boardName);
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("LeaderboardFeatures", "ListFriendScores", exception);
 				});
 		}
 
