@@ -100,7 +100,7 @@ namespace CotcSdkTemplate
 		/// <param name="OnError">The callback in case of request error.</param>
 		/// <param name="pushNotification">Message to send as notification if the target gamer is offline. (optional)</param>
 		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
-		public static void Backend_ChangeRelationshipStatus(string gamerID, FriendRelationshipStatus relationship, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, PushNotification pushNotification = null, string domain = "private")
+		public static void Backend_ChangeRelationshipStatus(string gamerID, FriendRelationshipStatus relationship, Action<Done, string, FriendRelationshipStatus> OnSuccess = null, Action<ExceptionError, string, FriendRelationshipStatus> OnError = null, PushNotification pushNotification = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
@@ -115,14 +115,14 @@ namespace CotcSdkTemplate
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
-						OnSuccess(changeDone);
+						OnSuccess(changeDone, gamerID, relationship);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
 				{
 					// Call the OnError action if any callback registered to it
 					if (OnError != null)
-						OnError(ExceptionTools.GetExceptionError(exception));
+						OnError(ExceptionTools.GetExceptionError(exception), gamerID, relationship);
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("CommunityFeatures", "ChangeRelationshipStatus", exception);
@@ -159,16 +159,50 @@ namespace CotcSdkTemplate
 		/// What to do if any SetGamerRelationship request succeeded.
 		/// </summary>
 		/// <param name="changeDone">Request result details.</param>
-		private static void SetGamerRelationship_OnSuccess(Done changeDone)
+		/// <param name="gamerID">Identifier of the gamer with who to change the relationship.</param>
+		/// <param name="relationship">Type of relationship to set.</param>
+		private static void SetGamerRelationship_OnSuccess(Done changeDone, string gamerID, FriendRelationshipStatus relationship)
 		{
-			// Do whatever...
+			Bundle eventData = Bundle.CreateObject();
+			string notificationJson = null;
+
+			// Build a custom event depending on the case
+			switch (relationship)
+			{
+				// Event type: another gamer added the currently logged in one as friend (custom)
+				case FriendRelationshipStatus.Add:
+				eventData["type"] = "friend_add";
+				eventData["message"] = "Someone added you as friend!";
+				eventData["friendProfile"] = CloudFeatures.gamer["profile"].ToString();
+				notificationJson = "{\"en\":\"You have a new friend!\"}";
+				break;
+
+				// Event type: another gamer added the currently logged in one as blacklisted (custom)
+				case FriendRelationshipStatus.Blacklist:
+				eventData["type"] = "friend_blacklist";
+				eventData["message"] = "Someone added you as blacklisted!";
+				eventData["friendProfile"] = CloudFeatures.gamer["profile"].ToString();
+				break;
+
+				// Event type: another gamer removed the currently logged in one from friend/blacklisted (custom)
+				case FriendRelationshipStatus.Forget:
+				eventData["type"] = "friend_forget";
+				eventData["message"] = "Someone forgot about your existence!";
+				eventData["friendProfile"] = CloudFeatures.gamer["profile"].ToString();
+				break;
+			}
+
+			// Send a custom event to avoid to rely on automatic relationship changes events (may be deprecated soon)
+			Handling_SendEventToGamer(gamerID, eventData.ToString(), notificationJson);
 		}
 
 		/// <summary>
 		/// What to do if any SetGamerRelationship request failed.
 		/// </summary>
 		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
-		private static void SetGamerRelationship_OnError(ExceptionError exceptionError)
+		/// <param name="gamerID">Identifier of the gamer with who to change the relationship.</param>
+		/// <param name="relationship">Type of relationship to set.</param>
+		private static void SetGamerRelationship_OnError(ExceptionError exceptionError, string gamerID, FriendRelationshipStatus relationship)
 		{
 			switch (exceptionError.type)
 			{
