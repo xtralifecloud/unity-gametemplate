@@ -42,6 +42,8 @@ MonoBehaviour:
   eventItemPrefab: {fileID: 1175323338644906, guid: 516e68b268cd4d74e922b2b4e961f7ac,
     type: 2}
   eventItemsParent: {fileID: 1842583524143784}
+  achievementItemPrefab: {fileID: 1000010803891944, guid: 9b401c64f6c59674eab2f0a4659d9cd3,
+    type: 2}
   eventFriendItemPrefab: {fileID: 1527987582116430, guid: 82e9304c4c9ba9349843c92ef4277f1f,
     type: 2}
   transitionSpeed: 3

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using CotcSdk;
 
@@ -315,7 +316,17 @@ namespace CotcSdkTemplate
 		/// <param name="postedTransaction">Posted transaction details.</param>
 		private static void PostTransaction_OnSuccess(TransactionResult postedTransaction)
 		{
-			// Do whatever...
+			// An EventHandler instance should be attached to an active object of the scene to display the result
+			if (!EventHandler.HasInstance)
+				DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No EventHandler instance found ›› Please attach an EventHandler script on an active object of the scene");
+			else
+			{
+				string message = "An achievement has been unlocked!";
+
+				// For each achievement unlocked by the transaction post, display it as if it was an event
+				foreach (KeyValuePair<string, AchievementDefinition> triggeredAchievement in postedTransaction.TriggeredAchievements)
+					EventHandler.Instance.BuildAndAddEventItem_AchievementUnlocked(message, triggeredAchievement.Value);
+			}
 		}
 
 		/// <summary>

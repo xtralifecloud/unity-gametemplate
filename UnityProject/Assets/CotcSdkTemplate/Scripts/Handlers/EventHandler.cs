@@ -15,6 +15,7 @@ namespace CotcSdkTemplate
 		// Reference to the event GameObject prefab and the event items parent
 		[SerializeField] private GameObject eventItemPrefab = null;
 		[SerializeField] private GameObject eventItemsParent = null;
+		[SerializeField] private GameObject achievementItemPrefab = null;
 		[SerializeField] private GameObject eventFriendItemPrefab = null;
 
 		// Speed at which the showing / hiding transitions are made
@@ -148,6 +149,31 @@ namespace CotcSdkTemplate
 
 		#region Events Building
 		/// <summary>
+		/// Build an "achievement unlocked" event type then add it to the pending list to display. (events are displayed one by one)
+		/// </summary>
+		/// <param name="eventMessage">Message of the event. (describes an unlocked achievement)</param>
+		/// <param name="achievement">The unlocked achievement under the AchievementDefinition format.</param>
+		public void BuildAndAddEventItem_AchievementUnlocked(string eventMessage, AchievementDefinition achievement)
+		{
+			// Create an event friend item GameObject
+			GameObject achievementItemPrefabInstance = Instantiate<GameObject>(achievementItemPrefab);
+
+			// Fill the newly created GameObject with event friend data
+			AchievementItemHandler achievementItemHandler = achievementItemPrefabInstance.GetComponent<AchievementItemHandler>();
+			achievementItemHandler.FillData(achievement);
+
+			// Create an event item GameObject
+			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
+
+			// Fill the newly created GameObject with event data
+			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
+			eventItemHandler.FillData(eventMessage, achievementItemPrefabInstance);
+
+			// Add the newly created GameObject to the pending list
+			AddNewPendingEvent(eventItemPrefabInstance);
+		}
+
+		/// <summary>
 		/// Build a "BackOffice message" event type then add it to the pending list to display. (events are displayed one by one)
 		/// </summary>
 		/// <param name="eventMessage">Message of the event. (message from the BackOffice)</param>
@@ -173,18 +199,18 @@ namespace CotcSdkTemplate
 		public void BuildAndAddEventItem_FriendMessage(string eventMessage, Bundle friendProfile, string friendMessage)
 		{
 			// Create an event friend item GameObject
-			GameObject eventItemFriendPrefabInstance = Instantiate<GameObject>(eventFriendItemPrefab);
+			GameObject eventFriendItemPrefabInstance = Instantiate<GameObject>(eventFriendItemPrefab);
 
 			// Fill the newly created GameObject with event friend data
-			EventFriendItemHandler eventItemFriendHandler = eventItemFriendPrefabInstance.GetComponent<EventFriendItemHandler>();
-			eventItemFriendHandler.FillData(friendProfile, friendMessage);
+			EventFriendItemHandler eventFriendItemHandler = eventFriendItemPrefabInstance.GetComponent<EventFriendItemHandler>();
+			eventFriendItemHandler.FillData(friendProfile, friendMessage);
 
 			// Create an event item GameObject
 			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
 
 			// Fill the newly created GameObject with event data
 			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(eventMessage, eventItemFriendPrefabInstance);
+			eventItemHandler.FillData(eventMessage, eventFriendItemPrefabInstance);
 
 			// Add the newly created GameObject to the pending list
 			AddNewPendingEvent(eventItemPrefabInstance);
