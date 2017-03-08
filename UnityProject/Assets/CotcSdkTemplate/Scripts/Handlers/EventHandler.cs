@@ -150,15 +150,41 @@ namespace CotcSdkTemplate
 		/// <summary>
 		/// Build a "BackOffice message" event type then add it to the pending list to display. (events are displayed one by one)
 		/// </summary>
-		/// <param name="backOfficeMessage">Message from the BackOffice.</param>
-		public void BuildAndAddEventItem_BackOfficeMessage(string backOfficeMessage)
+		/// <param name="eventMessage">Message of the event. (message from the BackOffice)</param>
+		public void BuildAndAddEventItem_BackOfficeMessage(string eventMessage)
 		{
 			// Create an event item GameObject
 			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
 
 			// Fill the newly created GameObject with event data
 			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(backOfficeMessage);
+			eventItemHandler.FillData(eventMessage);
+
+			// Add the newly created GameObject to the pending list
+			AddNewPendingEvent(eventItemPrefabInstance);
+		}
+
+		/// <summary>
+		/// Build a "friend's message" event type then add it to the pending list to display. (events are displayed one by one)
+		/// </summary>
+		/// <param name="eventMessage">Message of the event. (describes a friend's message is received)</param>
+		/// <param name="friendProfile">Profile of the friend whith who the relationship changed under the Bundle format.</param>
+		/// <param name="friendMessage">The message from friend to display.</param>
+		public void BuildAndAddEventItem_FriendMessage(string eventMessage, Bundle friendProfile, string friendMessage)
+		{
+			// Create an event friend item GameObject
+			GameObject eventItemFriendPrefabInstance = Instantiate<GameObject>(eventFriendItemPrefab);
+
+			// Fill the newly created GameObject with event friend data
+			EventFriendItemHandler eventItemFriendHandler = eventItemFriendPrefabInstance.GetComponent<EventFriendItemHandler>();
+			eventItemFriendHandler.FillData(friendProfile, friendMessage);
+
+			// Create an event item GameObject
+			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
+
+			// Fill the newly created GameObject with event data
+			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
+			eventItemHandler.FillData(eventMessage, eventItemFriendPrefabInstance);
 
 			// Add the newly created GameObject to the pending list
 			AddNewPendingEvent(eventItemPrefabInstance);
@@ -167,10 +193,10 @@ namespace CotcSdkTemplate
 		/// <summary>
 		/// Build a "friend's relationship changed" event type then add it to the pending list to display. (events are displayed one by one)
 		/// </summary>
-		/// <param name="message">Message describing the relationship change.</param>
+		/// <param name="eventMessage">Message of the event. (describes the relationship change)</param>
 		/// <param name="friendProfile">Profile of the friend whith who the relationship changed under the Bundle format.</param>
 		/// <param name="relationship">Type of relationship which has been set.</param>
-		public void BuildAndAddEventItem_FriendRelationshipChanged(string message, Bundle friendProfile, FriendRelationshipStatus relationship)
+		public void BuildAndAddEventItem_FriendRelationshipChanged(string eventMessage, Bundle friendProfile, FriendRelationshipStatus relationship)
 		{
 			// Create an event friend item GameObject
 			GameObject eventItemFriendPrefabInstance = Instantiate<GameObject>(eventFriendItemPrefab);
@@ -184,7 +210,7 @@ namespace CotcSdkTemplate
 
 			// Fill the newly created GameObject with event data
 			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(message, eventItemFriendPrefabInstance);
+			eventItemHandler.FillData(eventMessage, eventItemFriendPrefabInstance);
 
 			// Add the newly created GameObject to the pending list
 			AddNewPendingEvent(eventItemPrefabInstance);

@@ -115,6 +115,35 @@ public class SampleScript : MonoBehaviour
 	}
 
 	// References to the community UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField sendMessageToGamer_GamerID = null;
+	[SerializeField] private InputField sendMessageToGamer_Message = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, send a friend message event from the current logged in gamer to the given other gamer.
+	/// </summary>
+	public void Button_SendMessageToGamer()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string gamerID = null;
+		string message = "Hey buddy! :D";
+
+		// Check the gamerID value
+		if (sendMessageToGamer_GamerID == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendMessageToGamer_GamerID"));
+		else if (!string.IsNullOrEmpty(sendMessageToGamer_GamerID.text))
+			gamerID = sendMessageToGamer_GamerID.text;
+
+		// Check the eventData value
+		if (sendMessageToGamer_Message == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendMessageToGamer_Message"));
+		else if (!string.IsNullOrEmpty(sendMessageToGamer_Message.text))
+			message = sendMessageToGamer_Message.text;
+
+		// Call the template method
+		CommunityFeatures.Handling_SendMessageToGamer(gamerID, message);
+	}
+
+	// References to the community UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField setRelationshipWithGamer_GamerID = null;
 	[SerializeField] private InputField setRelationshipWithGamer_Notification = null;
 	[SerializeField] private ToggleGroup setRelationshipWithGamer_Relationship = null;

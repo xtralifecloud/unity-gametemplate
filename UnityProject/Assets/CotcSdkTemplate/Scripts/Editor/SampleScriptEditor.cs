@@ -24,6 +24,10 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty sendEventToGamer_EventData;
 	private SerializedProperty sendEventToGamer_Notification;
 
+	// SendMessageToGamer properties references
+	private SerializedProperty sendMessageToGamer_GamerID;
+	private SerializedProperty sendMessageToGamer_Message;
+
 	// SetRelationshipWithGamer properties references
 	private SerializedProperty setRelationshipWithGamer_GamerID;
 	private SerializedProperty setRelationshipWithGamer_Notification;
@@ -103,6 +107,10 @@ public class SampleScriptEditor : Editor
 		sendEventToGamer_GamerID = serializedObject.FindProperty("sendEventToGamer_GamerID");
 		sendEventToGamer_EventData = serializedObject.FindProperty("sendEventToGamer_EventData");
 		sendEventToGamer_Notification = serializedObject.FindProperty("sendEventToGamer_Notification");
+
+		// Find SendMessageToGamer properties references on the serialized object
+		sendMessageToGamer_GamerID = serializedObject.FindProperty("sendMessageToGamer_GamerID");
+		sendMessageToGamer_Message = serializedObject.FindProperty("sendMessageToGamer_Message");
 
 		// Find SetRelationshipWithGamer properties references on the serialized object
 		setRelationshipWithGamer_GamerID = serializedObject.FindProperty("setRelationshipWithGamer_GamerID");
@@ -218,6 +226,12 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.PropertyField(sendEventToGamer_GamerID, new GUIContent("  > Gamer ID"));
 			EditorGUILayout.PropertyField(sendEventToGamer_EventData, new GUIContent("  > Event Data"));
 			EditorGUILayout.PropertyField(sendEventToGamer_Notification, new GUIContent("  > Notification"));
+
+			// Show SendMessageToGamer properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Send Message To Gamer", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(sendMessageToGamer_GamerID, new GUIContent("  > Gamer ID"));
+			EditorGUILayout.PropertyField(sendMessageToGamer_Message, new GUIContent("  > Message"));
 
 			// Show SetRelationshipWithGamer properties references on the inspector
 			GUILayout.Space(verticalSpaces);

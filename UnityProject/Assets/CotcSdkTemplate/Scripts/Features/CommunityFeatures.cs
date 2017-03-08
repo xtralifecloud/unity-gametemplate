@@ -34,6 +34,30 @@ namespace CotcSdkTemplate
 		}
 
 		/// <summary>
+		/// Send a friend message event from the current logged in gamer to the given other gamer.
+		/// </summary>
+		/// <param name="gamerID">Identifier of the gamer to who to send the message.</param>
+		/// <param name="message">Message to send.</param>
+		public static void Handling_SendMessageToGamer(string gamerID, string message)
+		{
+			// The gamer ID should not be empty
+			if (string.IsNullOrEmpty(gamerID))
+				DebugLogs.LogError("[CotcSdkTemplate:CommunityFeatures] The gamer ID is empty ›› Please enter a valid gamer ID");
+			// The message should not be empty
+			else if (string.IsNullOrEmpty(message))
+				DebugLogs.LogError("[CotcSdkTemplate:CommunityFeatures] The message is empty ›› Please enter a message");
+			else
+			{
+				Bundle eventData = Bundle.CreateObject();
+				eventData["type"] = "friend_message";
+				eventData["message"] = "You received a message from a friend!";
+				eventData["friendMessage"] = message;
+				eventData["friendProfile"] = CloudFeatures.gamer["profile"].ToString();
+				Handling_SendEventToGamer(gamerID, eventData.ToString(), null);
+			}
+		}
+
+		/// <summary>
 		/// Set the relationship between the current logged in gamer and the given other gamer.
 		/// </summary>
 		/// <param name="gamerID">Identifier of the gamer with who to change the relationship.</param>

@@ -16,7 +16,7 @@ namespace CotcSdkTemplate
 		[SerializeField] private Image eventFriendItemBackground = null;
 		[SerializeField] private Image friendAvatar = null;
 		[SerializeField] private Text friendNicknameText = null;
-		[SerializeField] private Text relationshipStatusText = null;
+		[SerializeField] private Text friendMessageText = null;
 
 		// The current relationship status background color and status texts
 		[SerializeField] private Color friendRelationshipBackgroundColor = new Color(0.9f, 1f, 0.9f, 1f);
@@ -27,31 +27,44 @@ namespace CotcSdkTemplate
 		[SerializeField] private string forgotRelationshipStatusText = "Forgotten";
 
 		/// <summary>
-		/// Fill the event friend item with new data.
+		/// Fill the event friend item with new data. (friend message)
+		/// </summary>
+		/// <param name="friendProfile">Profile of the friend whith who the relationship changed under the Bundle format.</param>
+		/// <param name="friendMessage">The message from friend to display.</param>
+		public void FillData(Bundle friendProfile, string friendMessage)
+		{
+			// Update fields
+			avatarUrlToDownload = friendProfile["avatar"].AsString();
+			friendNicknameText.text = friendProfile["displayName"].AsString();
+			friendMessageText.text = friendMessage;
+		}
+
+		/// <summary>
+		/// Fill the event friend item with new data. (relationship changed)
 		/// </summary>
 		/// <param name="friendProfile">Profile of the friend whith who the relationship changed under the Bundle format.</param>
 		/// <param name="relationship">Type of relationship which has been set.</param>
 		public void FillData(Bundle friendProfile, FriendRelationshipStatus relationship)
 		{
 			// Update fields
-			friendNicknameText.text = friendProfile["displayName"].AsString();
 			avatarUrlToDownload = friendProfile["avatar"].AsString();
+			friendNicknameText.text = friendProfile["displayName"].AsString();
 
 			switch (relationship)
 			{
 				case FriendRelationshipStatus.Add:
+				friendMessageText.text = friendRelationshipStatusText;
 				eventFriendItemBackground.color = friendRelationshipBackgroundColor;
-				relationshipStatusText.text = friendRelationshipStatusText;
 				break;
 
 				case FriendRelationshipStatus.Blacklist:
+				friendMessageText.text = blacklistRelationshipStatusText;
 				eventFriendItemBackground.color = blacklistRelationshipBackgroundColor;
-				relationshipStatusText.text = blacklistRelationshipStatusText;
 				break;
 
 				case FriendRelationshipStatus.Forget:
+				friendMessageText.text = forgotRelationshipStatusText;
 				eventFriendItemBackground.color = forgotRelationshipBackgroundColor;
-				relationshipStatusText.text = forgotRelationshipStatusText;
 				break;
 			}
 		}

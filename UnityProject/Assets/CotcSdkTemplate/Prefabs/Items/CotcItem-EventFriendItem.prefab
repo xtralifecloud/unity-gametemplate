@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 114951883765526836}
   - component: {fileID: 114706269104737298}
   m_Layer: 5
-  m_Name: Text-RelationshipStatus
+  m_Name: Text-FriendMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,7 +319,7 @@ MonoBehaviour:
   eventFriendItemBackground: {fileID: 114536781789416722}
   friendAvatar: {fileID: 114060383383946622}
   friendNicknameText: {fileID: 114258201440614998}
-  relationshipStatusText: {fileID: 114706269104737298}
+  friendMessageText: {fileID: 114706269104737298}
   friendRelationshipBackgroundColor: {r: 0.9, g: 1, b: 0.9, a: 1}
   blacklistRelationshipBackgroundColor: {r: 1, g: 0.9, b: 0.9, a: 1}
   forgotRelationshipBackgroundColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}

@@ -116,6 +116,14 @@ namespace CotcSdkTemplate
 
 			switch (customEvent["type"].AsString())
 			{
+				// Event type: another gamer sent a message to the currently logged in one (custom)
+				case "friend_message":
+				if (Event_FriendMessage == null)
+					DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No callback registered to the Event_FriendMessage event ›› Please ensure an active script registered to it to avoid events loss");
+				else
+					Event_FriendMessage(customEvent);
+				break;
+
 				// Event type: another gamer added the currently logged in one as friend (custom)
 				case "friend_add":
 				if (Event_FriendRelationshipChanged == null)
@@ -151,6 +159,7 @@ namespace CotcSdkTemplate
 		#region Events Callbacks
 		// Allow the registration of callbacks to call for different received events
 		public static event Action<Bundle> Event_BackOfficeMessage = OnBackOfficeMessage;
+		public static event Action<Bundle> Event_FriendMessage = OnFriendMessage;
 		public static event Action<Bundle, FriendRelationshipStatus> Event_FriendRelationshipChanged = OnFriendRelationshipChanged;
 
 		/// <summary>
@@ -166,6 +175,24 @@ namespace CotcSdkTemplate
 			{
 				string backOfficeMessage = eventData["event"]["message"].AsString();
 				EventHandler.Instance.BuildAndAddEventItem_BackOfficeMessage(backOfficeMessage);
+			}
+		}
+
+		/// <summary>
+		/// When a "friend's message" event is received, display it on the event handler.
+		/// </summary>
+		/// <param name="eventData">Event details under the expected format {"type":"...","message":"...","friendMessage":"...","friendProfile":{...}}.</param>
+		private static void OnFriendMessage(Bundle eventData)
+		{
+			// An EventHandler instance should be attached to an active object of the scene to display the result
+			if (!EventHandler.HasInstance)
+				DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No EventHandler instance found ›› Please attach an EventHandler script on an active object of the scene");
+			else
+			{
+				string message = eventData["message"].AsString();
+				string friendMessage = eventData["friendMessage"].AsString();
+				Bundle friendProfile = Bundle.FromJson(eventData["friendProfile"]);
+				EventHandler.Instance.BuildAndAddEventItem_FriendMessage(message, friendProfile, friendMessage);
 			}
 		}
 
