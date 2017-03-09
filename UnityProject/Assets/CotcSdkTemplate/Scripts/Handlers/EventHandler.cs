@@ -64,8 +64,10 @@ namespace CotcSdkTemplate
 
 				// Once we know the final height of the event item, place it juste above its parent (assumed to be the fullscreen-stretched EventHandler)
 				case ShowingTransitionState.InitPosition:
-				currentDisplayedEvent.transform.localPosition = new Vector3(currentDisplayedEvent.transform.localPosition.x, (currentDisplayedEvent.transform.parent.GetComponent<RectTransform>().rect.height / 2f) + currentDisplayedEvent.GetComponent<RectTransform>().rect.height, currentDisplayedEvent.transform.localPosition.z);
-				targetPositionY = currentDisplayedEvent.transform.parent.GetComponent<RectTransform>().rect.height / 2f;
+				RectTransform ip_parentRectTransform = currentDisplayedEvent.transform.parent.GetComponent<RectTransform>();
+				float ip_parentRectOriginY = ip_parentRectTransform.rect.height * (1f - ip_parentRectTransform.pivot.y);
+				currentDisplayedEvent.transform.localPosition = new Vector3(currentDisplayedEvent.transform.localPosition.x, ip_parentRectOriginY + currentDisplayedEvent.GetComponent<RectTransform>().rect.height, currentDisplayedEvent.transform.localPosition.z);
+				targetPositionY = ip_parentRectOriginY;
 				showingTransitionState = ShowingTransitionState.Showing;
 				break;
 
@@ -74,8 +76,10 @@ namespace CotcSdkTemplate
 				// If event item's position is near its target position, snap it, set the target position to above its parent, set the hiding transition triggering time, and go to the next step
 				if (Mathf.Abs(currentDisplayedEvent.transform.localPosition.y - targetPositionY) <= transitionSnap)
 				{
+					RectTransform s_parentRectTransform = currentDisplayedEvent.transform.parent.GetComponent<RectTransform>();
+					float s_parentRectOriginY = s_parentRectTransform.rect.height * (1f - s_parentRectTransform.pivot.y);
 					currentDisplayedEvent.transform.localPosition = new Vector3(currentDisplayedEvent.transform.localPosition.x, targetPositionY, currentDisplayedEvent.transform.localPosition.z);
-					targetPositionY = (currentDisplayedEvent.transform.parent.GetComponent<RectTransform>().rect.height / 2f) + currentDisplayedEvent.GetComponent<RectTransform>().rect.height;
+					targetPositionY = s_parentRectOriginY + currentDisplayedEvent.GetComponent<RectTransform>().rect.height;
 					hidingTransitionTime = Time.time + transitionDelay;
 					showingTransitionState = ShowingTransitionState.Waiting;
 				}
