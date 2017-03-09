@@ -15,6 +15,7 @@ namespace CotcSdkTemplate
 		// Reference to the event friend item GameObject UI elements
 		[SerializeField] private Image eventFriendItemBackground = null;
 		[SerializeField] private Image friendAvatar = null;
+		[SerializeField] private Image loading = null;
 		[SerializeField] private Text friendNicknameText = null;
 		[SerializeField] private Text friendMessageText = null;
 
@@ -37,6 +38,10 @@ namespace CotcSdkTemplate
 			avatarUrlToDownload = friendProfile["avatar"].AsString();
 			friendNicknameText.text = friendProfile["displayName"].AsString();
 			friendMessageText.text = friendMessage;
+
+			// Hide the loading animation and show the friend avatar
+			friendAvatar.gameObject.SetActive(true);
+			loading.gameObject.SetActive(false);
 		}
 
 		/// <summary>
@@ -89,14 +94,22 @@ namespace CotcSdkTemplate
 		/// </summary>
 		private IEnumerator UpdateAvatarFromURL()
 		{
+			// Show the loading animation and hide the friend avatar while it's downloaded from URL
+			friendAvatar.gameObject.SetActive(false);
+			loading.gameObject.SetActive(true);
+
 			// TODO: You may want to cache the downloaded avatars to avoid to download them multiple times!
 			// Create a WWW handler and wait for the download request to complete
 			WWW www = new WWW(avatarUrlToDownload);
 			yield return www;
 
-			// Replace the gamer avatar with the downloaded one if no error occured
+			// Replace the friend avatar with the downloaded one if no error occured and hide the loading animation
 			if (string.IsNullOrEmpty(www.error))
+			{
 				friendAvatar.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+				friendAvatar.gameObject.SetActive(true);
+				loading.gameObject.SetActive(false);
+			}
 		}
 		#endregion
 	}

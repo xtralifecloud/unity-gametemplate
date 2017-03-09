@@ -16,6 +16,7 @@ namespace CotcSdkTemplate
 		[SerializeField] private Image leaderboardScoreBackground = null;
 		[SerializeField] private Text rankText = null;
 		[SerializeField] private Image gamerAvatar = null;
+		[SerializeField] private Image loading = null;
 		[SerializeField] private Text gamerNicknameText = null;
 		[SerializeField] private Text valueText = null;
 		[SerializeField] private Text infoText = null;
@@ -43,6 +44,10 @@ namespace CotcSdkTemplate
 			avatarUrlToDownload = gamerInfo["profile"]["avatar"].AsString();
 			valueText.text = score.Value.ToString();
 			infoText.text = score.Info;
+
+			// Hide the loading animation and show the gamer avatar
+			gamerAvatar.gameObject.SetActive(true);
+			loading.gameObject.SetActive(false);
 
 			// Display the score info only if there is one
 			scoreInfoLine.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));
@@ -72,14 +77,22 @@ namespace CotcSdkTemplate
 		/// </summary>
 		private IEnumerator UpdateAvatarFromURL()
 		{
+			// Show the loading animation and hide the gamer avatar while it's downloaded from URL
+			gamerAvatar.gameObject.SetActive(false);
+			loading.gameObject.SetActive(true);
+
 			// TODO: You may want to cache the downloaded avatars to avoid to download them multiple times!
 			// Create a WWW handler and wait for the download request to complete
 			WWW www = new WWW(avatarUrlToDownload);
 			yield return www;
 
-			// Replace the gamer avatar with the downloaded one if no error occured
+			// Replace the gamer avatar with the downloaded one if no error occured and hide the loading animation
 			if (string.IsNullOrEmpty(www.error))
+			{
 				gamerAvatar.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+				gamerAvatar.gameObject.SetActive(true);
+				loading.gameObject.SetActive(false);
+			}
 		}
 		#endregion
 	}
