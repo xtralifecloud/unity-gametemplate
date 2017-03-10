@@ -18,7 +18,7 @@ namespace CotcSdkTemplate
 		[SerializeField] private Text VFSPanelTitle = null;
 		[SerializeField] private GameObject noKeyText = null;
 
-		// Reference to the VFS GameObject prefab and the VFS items layout
+		// Reference to the VFS GameObject prefabs and the VFS items layout
 		[SerializeField] private GameObject VFSKeyPrefab = null;
 		[SerializeField] private VerticalLayoutGroup VFSItemsLayout = null;
 

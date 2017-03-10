@@ -12,11 +12,11 @@ namespace CotcSdkTemplate
 	public class EventHandler : MonoSingleton<EventHandler>
 	{
 		#region Display
-		// Reference to the event GameObject prefab and the event items parent
+		// Reference to the event GameObject prefabs and the event items parent
 		[SerializeField] private GameObject eventItemPrefab = null;
 		[SerializeField] private GameObject eventItemsParent = null;
 		[SerializeField] private GameObject achievementItemPrefab = null;
-		[SerializeField] private GameObject eventFriendItemPrefab = null;
+		[SerializeField] private GameObject communityFriendPrefab = null;
 
 		// Speed at which the showing / hiding transitions are made
 		[SerializeField][Range(0.1f, 10f)] private float transitionSpeed = 3f;
@@ -159,7 +159,7 @@ namespace CotcSdkTemplate
 		/// <param name="achievement">The unlocked achievement under the AchievementDefinition format.</param>
 		public void BuildAndAddEventItem_AchievementUnlocked(string eventMessage, AchievementDefinition achievement)
 		{
-			// Create an event friend item GameObject
+			// Create an event achievement item GameObject
 			GameObject achievementItemPrefabInstance = Instantiate<GameObject>(achievementItemPrefab);
 
 			// Fill the newly created GameObject with event friend data
@@ -202,19 +202,19 @@ namespace CotcSdkTemplate
 		/// <param name="friendMessage">The message from friend to display.</param>
 		public void BuildAndAddEventItem_FriendMessage(string eventMessage, Bundle friendProfile, string friendMessage)
 		{
-			// Create an event friend item GameObject
-			GameObject eventFriendItemPrefabInstance = Instantiate<GameObject>(eventFriendItemPrefab);
+			// Create a community friend GameObject
+			GameObject communityFriendPrefabInstance = Instantiate<GameObject>(communityFriendPrefab);
 
 			// Fill the newly created GameObject with event friend data
-			EventFriendItemHandler eventFriendItemHandler = eventFriendItemPrefabInstance.GetComponent<EventFriendItemHandler>();
-			eventFriendItemHandler.FillData(friendProfile, friendMessage);
+			CommunityFriendHandler communityFriendHandler = communityFriendPrefabInstance.GetComponent<CommunityFriendHandler>();
+			communityFriendHandler.FillData(friendProfile, friendMessage);
 
 			// Create an event item GameObject
 			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
 
 			// Fill the newly created GameObject with event data
 			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(eventMessage, eventFriendItemPrefabInstance);
+			eventItemHandler.FillData(eventMessage, communityFriendPrefabInstance);
 
 			// Add the newly created GameObject to the pending list
 			AddNewPendingEvent(eventItemPrefabInstance);
@@ -228,19 +228,19 @@ namespace CotcSdkTemplate
 		/// <param name="relationship">Type of relationship which has been set.</param>
 		public void BuildAndAddEventItem_FriendRelationshipChanged(string eventMessage, Bundle friendProfile, FriendRelationshipStatus relationship)
 		{
-			// Create an event friend item GameObject
-			GameObject eventItemFriendPrefabInstance = Instantiate<GameObject>(eventFriendItemPrefab);
+			// Create a community friend GameObject
+			GameObject communityFriendPrefabInstance = Instantiate<GameObject>(communityFriendPrefab);
 
 			// Fill the newly created GameObject with event friend data
-			EventFriendItemHandler eventItemFriendHandler = eventItemFriendPrefabInstance.GetComponent<EventFriendItemHandler>();
-			eventItemFriendHandler.FillData(friendProfile, relationship);
+			CommunityFriendHandler communityFriendHandler = communityFriendPrefabInstance.GetComponent<CommunityFriendHandler>();
+			communityFriendHandler.FillData(friendProfile, relationship);
 
 			// Create an event item GameObject
 			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
 
 			// Fill the newly created GameObject with event data
 			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(eventMessage, eventItemFriendPrefabInstance);
+			eventItemHandler.FillData(eventMessage, communityFriendPrefabInstance);
 
 			// Add the newly created GameObject to the pending list
 			AddNewPendingEvent(eventItemPrefabInstance);

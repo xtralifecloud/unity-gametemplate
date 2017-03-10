@@ -77,6 +77,24 @@ public class SampleScript : MonoBehaviour
 	#endregion
 
 	#region Community
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the list of current logged in gamer's blacklisted gamers.
+	/// </summary>
+	public void Button_DisplayBlacklistedGamers()
+	{
+		// Call the template method
+		CommunityFeatures.Handling_DisplayBlacklistedGamers();
+	}
+
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the list of current logged in gamer's friends.
+	/// </summary>
+	public void Button_DisplayFriends()
+	{
+		// Call the template method
+		CommunityFeatures.Handling_DisplayFriends();
+	}
+
 	// References to the community UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField sendEventToGamer_GamerID = null;
 	[SerializeField] private InputField sendEventToGamer_EventData = null;

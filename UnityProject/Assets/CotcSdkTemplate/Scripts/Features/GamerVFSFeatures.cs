@@ -63,7 +63,7 @@ namespace CotcSdkTemplate
 
 					// TODO: You may want to add the Array (list) type handling
 					default:
-					DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] The {0} type is unhandled ›› Please handle it or use a handled type", valueType));
+					DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] The {0} type is unhandled ›› Please handle it or use an handled type", valueType));
 					return;
 				}
 

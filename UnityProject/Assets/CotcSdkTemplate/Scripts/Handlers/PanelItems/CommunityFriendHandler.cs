@@ -9,7 +9,7 @@ namespace CotcSdkTemplate
 	/// <summary>
 	/// Methods to fill a displayed event friend item.
 	/// </summary>
-	public class EventFriendItemHandler : MonoBehaviour
+	public class CommunityFriendHandler : MonoBehaviour
 	{
 		#region Handling
 		// Reference to the event friend item GameObject UI elements
@@ -32,12 +32,15 @@ namespace CotcSdkTemplate
 		/// </summary>
 		/// <param name="friendProfile">Profile of the friend whith who the relationship changed under the Bundle format.</param>
 		/// <param name="friendMessage">The message from friend to display.</param>
-		public void FillData(Bundle friendProfile, string friendMessage)
+		public void FillData(Bundle friendProfile, string friendMessage = null)
 		{
 			// Update fields
 			avatarUrlToDownload = friendProfile["avatar"].AsString();
 			friendNicknameText.text = friendProfile["displayName"].AsString();
 			friendMessageText.text = friendMessage;
+
+			// Display the friend message only if there is one
+			friendMessageText.gameObject.SetActive(!string.IsNullOrEmpty(friendMessage));
 
 			// Hide the loading animation and show the friend avatar
 			friendAvatar.gameObject.SetActive(true);
@@ -89,7 +92,7 @@ namespace CotcSdkTemplate
 		}
 
 		/// <summary>
-		/// Download the avatar image from an URL. Actually, we need to wait the Start event to download the avatar as coroutines need the GameObject to be started to be launched.
+		/// Download the avatar image from a URL. Actually, we need to wait the Start event to download the avatar as coroutines need the GameObject to be started to be launched.
 		/// As we use FillData() just after the LeaderboardScoreHandler Instantiate in LeaderboardHandler, it hasn't gone through an Update yet and is not considered as active.
 		/// </summary>
 		private IEnumerator UpdateAvatarFromURL()

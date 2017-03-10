@@ -12,6 +12,30 @@ namespace CotcSdkTemplate
 	{
 		#region Handling
 		/// <summary>
+		/// Get and display the list of current logged in gamer's blacklisted gamers.
+		/// </summary>
+		public static void Handling_DisplayBlacklistedGamers()
+		{
+			// A CommunityHandler instance should be attached to an active object of the scene to display the result
+			if (!CommunityHandler.HasInstance)
+				DebugLogs.LogError("[CotcSdkTemplate:CommunityFeatures] No CommunityHandler instance found ›› Please attach a CommunityHandler script on an active object of the scene");
+			else
+				Backend_ListFriends(DisplayFriends_OnSuccess, DisplayFriends_OnError, true);
+		}
+
+		/// <summary>
+		/// Get and display the list of current logged in gamer's friends.
+		/// </summary>
+		public static void Handling_DisplayFriends()
+		{
+			// A CommunityHandler instance should be attached to an active object of the scene to display the result
+			if (!CommunityHandler.HasInstance)
+				DebugLogs.LogError("[CotcSdkTemplate:CommunityFeatures] No CommunityHandler instance found ›› Please attach a CommunityHandler script on an active object of the scene");
+			else
+				Backend_ListFriends(DisplayFriends_OnSuccess, DisplayFriends_OnError, false);
+		}
+
+		/// <summary>
 		/// Send an event from the current logged in gamer to the given other gamer.
 		/// </summary>
 		/// <param name="gamerID">Identifier of the gamer with who to change the relationship.</param>
@@ -77,6 +101,42 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Features
+		/// <summary>
+		/// Get the list of current logged in gamer's friends (or blacklisted gamers).
+		/// </summary>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		/// <param name="blacklisted">Get blacklisted gamers instead of friends. (optional)</param>
+		/// <param name="domain">We use the "private" domain by default (each game holds its own data, not shared with the other games). You may configure shared domains on your FrontOffice.</param>
+		public static void Backend_ListFriends(Action<NonpagedList<GamerInfo>, bool> OnSuccess = null, Action<ExceptionError, bool> OnError = null, bool blacklisted = false, string domain = "private")
+		{
+			// Need an initialized Cloud and a logged in gamer to proceed
+			if (!CloudFeatures.IsGamerLoggedIn())
+				return;
+
+			// Call the API method which returns a NonpagedList<GamerInfo> result
+			CloudFeatures.gamer.Community.Domain(domain).ListFriends(blacklisted)
+				// Result if everything went well
+				.Done(delegate (NonpagedList<GamerInfo> friendsList)
+				{
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:CommunityFeatures] ListFriends success ›› {0} friend(s) (or blacklisted)", friendsList.Count));
+					
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(friendsList, blacklisted);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception), blacklisted);
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("CommunityFeatures", "ListFriends", exception);
+				});
+		}
+
 		/// <summary>
 		/// Send an event from the current logged in gamer to the given other gamer.
 		/// </summary>
@@ -155,6 +215,33 @@ namespace CotcSdkTemplate
 		#endregion
 
 		#region Delegate Callbacks
+		/// <summary>
+		/// What to do if any DisplayFriends request succeeded.
+		/// </summary>
+		/// <param name="friendsList">List of friends (or blacklisted gamers).</param>
+		/// <param name="blacklisted">If blacklisted gamers are obtained instead of friends.</param>
+		private static void DisplayFriends_OnSuccess(NonpagedList<GamerInfo> friendsList, bool blacklisted)
+		{
+			string panelTitle = blacklisted ? "Blacklisted Gamers" : "Friends List";
+			CommunityHandler.Instance.FillAndShowCommunityPanel(friendsList, panelTitle);
+		}
+
+		/// <summary>
+		/// What to do if any DisplayFriends request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
+		/// <param name="blacklisted">If blacklisted gamers are obtained instead of friends.</param>
+		private static void DisplayFriends_OnError(ExceptionError exceptionError, bool blacklisted)
+		{
+			switch (exceptionError.type)
+			{
+				// Unhandled error types
+				default:
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:CommunityFeatures] An unhandled error occured ›› {0}", exceptionError));
+				break;
+			}
+		}
+
 		/// <summary>
 		/// What to do if any SendEvent request succeeded.
 		/// </summary>

@@ -72,7 +72,7 @@ namespace CotcSdkTemplate
 		}
 
 		/// <summary>
-		/// Download the avatar image from an URL. Actually, we need to wait the Start event to download the avatar as coroutines need the GameObject to be started to be launched.
+		/// Download the avatar image from a URL. Actually, we need to wait the Start event to download the avatar as coroutines need the GameObject to be started to be launched.
 		/// As we use FillData() just after the LeaderboardScoreHandler Instantiate in LeaderboardHandler, it hasn't gone through an Update yet and is not considered as active.
 		/// </summary>
 		private IEnumerator UpdateAvatarFromURL()

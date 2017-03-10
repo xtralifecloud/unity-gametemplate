@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 114536781789416722}
   - component: {fileID: 114338831334485450}
   m_Layer: 5
-  m_Name: CotcItem-EventFriendItem
+  m_Name: CotcItem-CommunityFriend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 1
+  m_ChildAlignment: 4
   m_Spacing: 25
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -288,7 +288,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[GamerNickname]'
+  m_Text: '[FriendNickname]'
 --- !u!114 &114264355462740532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -339,6 +339,7 @@ MonoBehaviour:
   loading: {fileID: 114427114185162334}
   friendNicknameText: {fileID: 114258201440614998}
   friendMessageText: {fileID: 114706269104737298}
+  friendMessageLine: {fileID: 0}
   friendRelationshipBackgroundColor: {r: 0.9, g: 1, b: 0.9, a: 1}
   blacklistRelationshipBackgroundColor: {r: 1, g: 0.9, b: 0.9, a: 1}
   forgotRelationshipBackgroundColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
@@ -481,7 +482,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[ScoreValue]'
+  m_Text: '[FriendMessage]'
 --- !u!114 &114748606503770670
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -525,7 +526,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 3
+  m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0

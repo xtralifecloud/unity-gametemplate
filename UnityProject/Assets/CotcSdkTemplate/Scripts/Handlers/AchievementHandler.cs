@@ -18,7 +18,7 @@ namespace CotcSdkTemplate
 		[SerializeField] private Text achievementPanelTitle = null;
 		[SerializeField] private GameObject noAchievementText = null;
 
-		// Reference to the achievement GameObject prefab and the achievement items layout
+		// Reference to the achievement GameObject prefabs and the achievement items layout
 		[SerializeField] private GameObject achievementItemPrefab = null;
 		[SerializeField] private GridLayoutGroup achievementItemsLayout = null;
 
