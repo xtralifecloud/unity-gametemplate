@@ -16,6 +16,8 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject outClickMask = null;
 		[SerializeField] private GameObject leaderboardPanel = null;
 		[SerializeField] private Text leaderboardPanelTitle = null;
+		[SerializeField] private GameObject loadingBlock = null;
+		[SerializeField] private Text errorText = null;
 		[SerializeField] private Text noScoreText = null;
 		[SerializeField] private GameObject pageButtons = null;
 		[SerializeField] private Button previousPageButton = null;
@@ -37,44 +39,71 @@ namespace CotcSdkTemplate
 		/// </summary>
 		private void Start()
 		{
-			ShowLeaderboardPanel(false);
+			HideLeaderboardPanel();
 		}
 
 		/// <summary>
-		/// Show or hide the leaderboard panel.
+		/// Hide the leaderboard panel.
 		/// </summary>
-		/// <param name="show">If the panel should be shown.</param>
-		public void ShowLeaderboardPanel(bool show = true)
+		public void HideLeaderboardPanel()
 		{
-			outClickMask.SetActive(show);
-			leaderboardPanel.SetActive(show);
+			// Hide the leaderboard panel with its outclickMask and loading block
+			outClickMask.SetActive(false);
+			leaderboardPanel.SetActive(false);
+			ClearLeaderboardPanel(false);
+		}
+
+		/// <summary>
+		/// Show the leaderboard panel.
+		/// </summary>
+		/// <param name="panelTitle">Title of the panel to display. (optional)</param>
+		public void ShowLeaderboardPanel(string panelTitle = null)
+		{
+			// Set the leaderboard panel's title only if not null or empty
+			if (!string.IsNullOrEmpty(panelTitle))
+				leaderboardPanelTitle.text = panelTitle;
+
+			// Show the leaderboard panel with its outclickMask and loading block
+			outClickMask.SetActive(true);
+			leaderboardPanel.SetActive(true);
+			ClearLeaderboardPanel(true);
+		}
+
+		/// <summary>
+		/// Clear the leaderboard panel container (loading block, texts, page buttons, previously created items).
+		/// </summary>
+		/// <param name="showLoadingBlock">If the loading block should be shown.</param>
+		public void ClearLeaderboardPanel(bool showLoadingBlock = false)
+		{
+			// Show/hide the loading block
+			loadingBlock.SetActive(showLoadingBlock);
+
+			// Hide all texts
+			errorText.gameObject.SetActive(false);
+			noScoreText.gameObject.SetActive(false);
+
+			// Hide the previous page and next page buttons
+			pageButtons.SetActive(false);
+
+			// Destroy the previously created leaderboard GameObjects if any exist and clear the list
+			foreach (GameObject leaderboardItem in leaderboardItems)
+				DestroyObject(leaderboardItem);
+
+			leaderboardItems.Clear();
 		}
 
 		/// <summary>
 		/// Fill the leaderboard panel with nonpaged scores then show it.
 		/// </summary>
 		/// <param name="scoresList">List of the scores to display.</param>
-		/// <param name="panelTitle">Title of the panel.</param>
 		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
-		public void FillAndShowNonpagedLeaderboardPanel(NonpagedList<Score> scoresList, string panelTitle = "Leaderboard Scores", string noScoreErrorMessage = "(no score to display)")
+		public void FillNonpagedLeaderboardPanel(NonpagedList<Score> scoresList, string noScoreErrorMessage = "(no score to display)")
 		{
-			// Hide the "no score" text and hide the previous page and next page buttons
-			noScoreText.gameObject.SetActive(false);
-			pageButtons.SetActive(false);
+			// Clear the leaderboard panel
+			ClearLeaderboardPanel(false);
 
-			// Destroy the previously created leaderboard GameObjects if any exist and clear the list
-			foreach (GameObject leaderboardItem in leaderboardItems)
-				DestroyObject(leaderboardItem);
-			
-			leaderboardItems.Clear();
-
-			// Set the leaderboard panel's title only if not null or empty
-			if (!string.IsNullOrEmpty(panelTitle))
-				leaderboardPanelTitle.text = panelTitle;
-			
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
-			{
 				foreach (Score score in scoresList)
 				{
 					// Create a leaderboard score GameObject and hook it at the leaderboard items layout
@@ -88,47 +117,27 @@ namespace CotcSdkTemplate
 					// Add the newly created GameObject to the list
 					leaderboardItems.Add(prefabInstance);
 				}
-			}
 			// Else, show the "no score" text
 			else
 			{
-				if (!string.IsNullOrEmpty(noScoreErrorMessage))
-					noScoreText.text = noScoreErrorMessage;
-				
+				noScoreText.text = noScoreErrorMessage;
 				noScoreText.gameObject.SetActive(true);
 			}
-			
-			// Show the leaderboard panel
-			ShowLeaderboardPanel(true);
 		}
 
 		/// <summary>
 		/// Fill the leaderboard panel with paged scores then show it.
 		/// </summary>
 		/// <param name="scoresList">List of the scores to display.</param>
-		/// <param name="panelTitle">Title of the panel.</param>
 		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
-		public void FillAndShowPagedLeaderboardPanel(PagedList<Score> scoresList, string panelTitle = "Leaderboard Scores", string noScoreErrorMessage = "(no score to display)")
+		public void FillPagedLeaderboardPanel(PagedList<Score> scoresList, string noScoreErrorMessage = "(no score to display)")
 		{
-			// Hide the "no score" text
-			noScoreText.gameObject.SetActive(false);
-
-			// Destroy the previously created leaderboard GameObjects if any exist and clear the list
-			foreach (GameObject leaderboardItem in leaderboardItems)
-				DestroyObject(leaderboardItem);
-			
-			leaderboardItems.Clear();
-
-			// Set the leaderboard panel's title only if not null or empty
-			if (!string.IsNullOrEmpty(panelTitle))
-				leaderboardPanelTitle.text = panelTitle;
+			// Clear the leaderboard panel
+			ClearLeaderboardPanel(false);
 
 			// If there are scores to display, fill the leaderboard panel with score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
 			{
-				// Show the previous page and next page buttons
-				pageButtons.SetActive(true);
-
 				foreach (Score score in scoresList)
 				{
 					// Create a leaderboard score GameObject and hook it at the leaderboard items layout
@@ -143,51 +152,33 @@ namespace CotcSdkTemplate
 					leaderboardItems.Add(prefabInstance);
 				}
 
-				// Keep the last PagedList<Score> to allow usage of previous and next leaderboard page
+				// Keep the last PagedList<Score> to allow fetching of previous and next leaderboard pages and show the previous page and next page buttons
 				currentScoresList = scoresList;
 				previousPageButton.interactable = currentScoresList.HasPrevious;
 				nextPageButton.interactable = currentScoresList.HasNext;
+				pageButtons.SetActive(true);
 			}
-			// Else, show the "no score" text and hide the previous page and next page buttons
+			// Else, show the "no score" text and reset the current scores list
 			else
 			{
-				if (!string.IsNullOrEmpty(noScoreErrorMessage))
-					noScoreText.text = noScoreErrorMessage;
-
+				noScoreText.text = noScoreErrorMessage;
 				noScoreText.gameObject.SetActive(true);
-				pageButtons.SetActive(false);
 				currentScoresList = null;
 			}
-			
-			// Show the leaderboard panel
-			ShowLeaderboardPanel(true);
 		}
 
 		/// <summary>
 		/// Fill the leaderboard panel with scores from multiple boards then show it.
 		/// </summary>
 		/// <param name="scoresList">List of the scores to display.</param>
-		/// <param name="panelTitle">Title of the panel.</param>
 		/// <param name="noScoreErrorMessage">Error message to display in case of no score to display.</param>
-		public void FillAndShowMultipleLeaderboardPanel(Dictionary<string, Score> scoresList, string panelTitle = "Gamer Best Scores", string noScoreErrorMessage = "(no score to display)")
+		public void FillMultipleLeaderboardPanel(Dictionary<string, Score> scoresList, string noScoreErrorMessage = "(no score to display)")
 		{
-			// Hide the "no score" text and hide the previous page and next page buttons
-			noScoreText.gameObject.SetActive(false);
-			pageButtons.SetActive(false);
-
-			// Destroy the previously created leaderboard GameObjects if any exist and clear the list
-			foreach (GameObject leaderboardItem in leaderboardItems)
-				DestroyObject(leaderboardItem);
-			
-			leaderboardItems.Clear();
-
-			// Set the leaderboard panel's title only if not null or empty
-			if (!string.IsNullOrEmpty(panelTitle))
-				leaderboardPanelTitle.text = panelTitle;
+			// Clear the leaderboard panel
+			ClearLeaderboardPanel(false);
 
 			// If there are scores to display, fill the leaderboard panel with gamer score prefabs
 			if ((scoresList != null) && (scoresList.Count > 0))
-			{
 				foreach (KeyValuePair<string, Score> score in scoresList)
 				{
 					// Create a leaderboard gamer score GameObject and hook it at the leaderboard items layout
@@ -201,18 +192,26 @@ namespace CotcSdkTemplate
 					// Add the newly created GameObject to the list
 					leaderboardItems.Add(prefabInstance);
 				}
-			}
 			// Else, show the "no score" text
 			else
 			{
-				if (!string.IsNullOrEmpty(noScoreErrorMessage))
-					noScoreText.text = noScoreErrorMessage;
-
+				noScoreText.text = noScoreErrorMessage;
 				noScoreText.gameObject.SetActive(true);
 			}
+		}
 
-			// Show the leaderboard panel
-			ShowLeaderboardPanel(true);
+		/// <summary>
+		/// Clear the leaderboard panel and show an error message.
+		/// </summary>
+		/// <param name="errorMessage">Error message to display.</param>
+		public void ShowError(string errorMessage)
+		{
+			// Clear the leaderboard panel
+			ClearLeaderboardPanel(false);
+
+			// Set and show the error message
+			errorText.text = string.Format("\n{0}\n", errorMessage);
+			errorText.gameObject.SetActive(true);
 		}
 		#endregion
 

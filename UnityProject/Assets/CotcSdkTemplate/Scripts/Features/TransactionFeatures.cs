@@ -20,7 +20,10 @@ namespace CotcSdkTemplate
 			if (!TransactionHandler.HasInstance)
 				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found ›› Please attach a TransactionHandler script on an active object of the scene");
 			else
+			{
+				TransactionHandler.Instance.ShowTransactionPanel("Currencies Balance");
 				Backend_Balance(DisplayBalance_OnSuccess, DisplayBalance_OnError);
+			}
 		}
 
 		/// <summary>
@@ -34,7 +37,10 @@ namespace CotcSdkTemplate
 			if (!TransactionHandler.HasInstance)
 				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found ›› Please attach a TransactionHandler script on an active object of the scene");
 			else
+			{
+				TransactionHandler.Instance.ShowTransactionPanel("Transactions History");
 				Backend_History(currencyName, transactionsPerPage, 0, DisplayCurrencyHistory_OnSuccess, DisplayCurrencyHistory_OnError);
+			}
 		}
 
 		/// <summary>
@@ -268,7 +274,7 @@ namespace CotcSdkTemplate
 		/// <param name="currentBalance">List of current logged in gamer's currencies and their amounts under the Bundle format.</param>
 		private static void DisplayBalance_OnSuccess(Bundle currentBalance)
 		{
-			TransactionHandler.Instance.FillAndShowTransactionPanel(currentBalance.AsDictionary());
+			TransactionHandler.Instance.FillTransactionPanel(currentBalance.AsDictionary());
 		}
 
 		/// <summary>
@@ -282,6 +288,7 @@ namespace CotcSdkTemplate
 				// Unhandled error types
 				default:
 				DebugLogs.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured ›› {0}", exceptionError));
+				TransactionHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
 				break;
 			}
 		}
@@ -292,7 +299,7 @@ namespace CotcSdkTemplate
 		/// <param name="transactionsList">List of current logged in gamer's currencies history.</param>
 		private static void DisplayCurrencyHistory_OnSuccess(PagedList<Transaction> transactionsList)
 		{
-			TransactionHandler.Instance.FillAndShowPagedTransactionPanel(transactionsList);
+			TransactionHandler.Instance.FillPagedTransactionPanel(transactionsList);
 		}
 
 		/// <summary>
@@ -306,6 +313,7 @@ namespace CotcSdkTemplate
 				// Unhandled error types
 				default:
 				DebugLogs.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured ›› {0}", exceptionError));
+				TransactionHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
 				break;
 			}
 		}
@@ -319,14 +327,9 @@ namespace CotcSdkTemplate
 			// An EventHandler instance should be attached to an active object of the scene to display the result
 			if (!EventHandler.HasInstance)
 				DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No EventHandler instance found ›› Please attach an EventHandler script on an active object of the scene");
-			else
-			{
-				string message = "An achievement has been unlocked!";
-
-				// For each achievement unlocked by the transaction post, display it as if it was an event
-				foreach (KeyValuePair<string, AchievementDefinition> triggeredAchievement in postedTransaction.TriggeredAchievements)
-					EventHandler.Instance.BuildAndAddEventItem_AchievementUnlocked(message, triggeredAchievement.Value);
-			}
+			// For each achievement unlocked by the transaction post, display it as if it was an event
+			else foreach (KeyValuePair<string, AchievementDefinition> triggeredAchievement in postedTransaction.TriggeredAchievements)
+				EventHandler.Instance.BuildAndAddEventItem_AchievementUnlocked("An achievement has been unlocked!", triggeredAchievement.Value);
 		}
 
 		/// <summary>

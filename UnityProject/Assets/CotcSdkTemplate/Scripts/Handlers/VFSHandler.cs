@@ -16,6 +16,8 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject outClickMask = null;
 		[SerializeField] private GameObject VFSPanel = null;
 		[SerializeField] private Text VFSPanelTitle = null;
+		[SerializeField] private GameObject loadingBlock = null;
+		[SerializeField] private Text errorText = null;
 		[SerializeField] private GameObject noKeyText = null;
 
 		// Reference to the VFS GameObject prefabs and the VFS items layout
@@ -30,42 +32,67 @@ namespace CotcSdkTemplate
 		/// </summary>
 		private void Start()
 		{
-			ShowVFSPanel(false);
+			HideVFSPanel();
 		}
 
 		/// <summary>
-		/// Show or hide the VFS panel.
+		/// Hide the VFS panel.
 		/// </summary>
-		/// <param name="show">If the panel should be shown.</param>
-		public void ShowVFSPanel(bool show = true)
+		public void HideVFSPanel()
 		{
-			outClickMask.SetActive(show);
-			VFSPanel.SetActive(show);
+			// Hide the VFS panel with its outclickMask and loading block
+			outClickMask.SetActive(false);
+			VFSPanel.SetActive(false);
+			ClearVFSPanel(false);
+		}
+
+		/// <summary>
+		/// Show the VFS panel.
+		/// </summary>
+		/// <param name="panelTitle">Title of the panel to display. (optional)</param>
+		public void ShowVFSPanel(string panelTitle = null)
+		{
+			// Set the VFS panel's title only if not null or empty
+			if (!string.IsNullOrEmpty(panelTitle))
+				VFSPanelTitle.text = panelTitle;
+			
+			// Show the VFS panel with its outclickMask and loading block
+			outClickMask.SetActive(true);
+			VFSPanel.SetActive(true);
+			ClearVFSPanel(true);
+		}
+
+		/// <summary>
+		/// Clear the VFS panel container (loading block, texts, previously created items).
+		/// </summary>
+		/// <param name="showLoadingBlock">If the loading block should be shown.</param>
+		public void ClearVFSPanel(bool showLoadingBlock = false)
+		{
+			// Show/hide the loading block
+			loadingBlock.SetActive(showLoadingBlock);
+
+			// Hide all texts
+			errorText.gameObject.SetActive(false);
+			noKeyText.SetActive(false);
+
+			// Destroy the previously created VFS GameObjects if any exist and clear the list
+			foreach (GameObject VFSItems in VFSItems)
+				DestroyObject(VFSItems);
+
+			VFSItems.Clear();
 		}
 
 		/// <summary>
 		/// Fill the VFS panel with keys then show it.
 		/// </summary>
 		/// <param name="keysList">List of the keys to display.</param>
-		/// <param name="panelTitle">Title of the panel.</param>
-		public void FillAndShowVFSPanel(Dictionary<string, Bundle> keysList, string panelTitle = "VFS Keys")
+		public void FillVFSPanel(Dictionary<string, Bundle> keysList)
 		{
-			// Destroy the previously created VFS GameObjects if any exist and clear the list
-			foreach (GameObject VFSItem in VFSItems)
-				DestroyObject(VFSItem);
-			
-			VFSItems.Clear();
-
-			// Set the VFS panel's title only if not null or empty
-			if (!string.IsNullOrEmpty(panelTitle))
-				VFSPanelTitle.text = panelTitle;
+			// Clear the VFS panel
+			ClearVFSPanel(false);
 
 			// If there are keys to display, fill the VFS panel with key prefabs
 			if ((keysList != null) && (keysList.Count > 0))
-			{
-				// Hide the "no key" text
-				noKeyText.SetActive(false);
-
 				foreach (KeyValuePair<string, Bundle> keyValuePair in keysList)
 				{
 					// Create a VFS key GameObject and hook it at the VFS items layout
@@ -79,13 +106,23 @@ namespace CotcSdkTemplate
 					// Add the newly created GameObject to the list
 					VFSItems.Add(prefabInstance);
 				}
-			}
 			// Else, show the "no key" text
 			else
 				noKeyText.SetActive(true);
-			
-			// Show the VFS panel
-			ShowVFSPanel(true);
+		}
+
+		/// <summary>
+		/// Clear the VFS panel and show an error message.
+		/// </summary>
+		/// <param name="errorMessage">Error message to display.</param>
+		public void ShowError(string errorMessage)
+		{
+			// Clear the VFS panel
+			ClearVFSPanel(false);
+
+			// Set and show the error message
+			errorText.text = string.Format("\n{0}\n", errorMessage);
+			errorText.gameObject.SetActive(true);
 		}
 		#endregion
 	}

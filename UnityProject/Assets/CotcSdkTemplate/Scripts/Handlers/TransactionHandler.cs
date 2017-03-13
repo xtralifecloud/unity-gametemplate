@@ -16,6 +16,8 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject outClickMask = null;
 		[SerializeField] private GameObject transactionPanel = null;
 		[SerializeField] private Text transactionPanelTitle = null;
+		[SerializeField] private GameObject loadingBlock = null;
+		[SerializeField] private Text errorText = null;
 		[SerializeField] private GameObject noCurrencyText = null;
 		[SerializeField] private GameObject noTransactionText = null;
 		[SerializeField] private GameObject pageButtons = null;
@@ -42,49 +44,74 @@ namespace CotcSdkTemplate
 		/// </summary>
 		private void Start()
 		{
-			ShowTransactionPanel(false);
+			HideTransactionPanel();
 		}
 
 		/// <summary>
-		/// Show or hide the transaction panel.
+		/// Hide the transaction panel.
 		/// </summary>
-		/// <param name="show">If the panel should be shown.</param>
-		public void ShowTransactionPanel(bool show = true)
+		public void HideTransactionPanel()
 		{
-			outClickMask.SetActive(show);
-			transactionPanel.SetActive(show);
+			// Hide the transaction panel with its outclickMask and loading block
+			outClickMask.SetActive(false);
+			transactionPanel.SetActive(false);
+			ClearTransactionPanel(false);
+		}
+
+		/// <summary>
+		/// Show the transaction panel.
+		/// </summary>
+		/// <param name="panelTitle">Title of the panel to display. (optional)</param>
+		public void ShowTransactionPanel(string panelTitle = null)
+		{
+			// Set the transaction panel's title only if not null or empty
+			if (!string.IsNullOrEmpty(panelTitle))
+				transactionPanelTitle.text = panelTitle;
+
+			// Show the transaction panel with its outclickMask and loading block
+			outClickMask.SetActive(true);
+			transactionPanel.SetActive(true);
+			ClearTransactionPanel(true);
+		}
+
+		/// <summary>
+		/// Clear the transaction panel container (loading block, texts, previously created items).
+		/// </summary>
+		/// <param name="showLoadingBlock">If the loading block should be shown.</param>
+		public void ClearTransactionPanel(bool showLoadingBlock = false)
+		{
+			// Show/hide the loading block
+			loadingBlock.SetActive(showLoadingBlock);
+
+			// Hide all texts
+			errorText.gameObject.SetActive(false);
+			noCurrencyText.SetActive(false);
+			noTransactionText.SetActive(false);
+
+			// Hide the previous page and next page buttons
+			pageButtons.SetActive(false);
+
+			// Destroy the previously created transaction GameObjects if any exist and clear the list
+			foreach (GameObject transactionItem in transactionItems)
+				DestroyObject(transactionItem);
+
+			transactionItems.Clear();
 		}
 
 		/// <summary>
 		/// Fill the transaction panel with currencies then show it.
 		/// </summary>
 		/// <param name="currenciesList">List of the currencies to display.</param>
-		/// <param name="panelTitle">Title of the panel.</param>
-		public void FillAndShowTransactionPanel(Dictionary<string, Bundle> currenciesList, string panelTitle = "Currencies Balance")
+		public void FillTransactionPanel(Dictionary<string, Bundle> currenciesList)
 		{
-			// Hide the "no transaction" text and hide the previous page and next page buttons
-			noTransactionText.SetActive(false);
-			pageButtons.SetActive(false);
-
-			// Destroy the previously created transaction GameObjects if any exist and clear the list
-			foreach (GameObject transactionItem in transactionItems)
-				DestroyObject(transactionItem);
-			
-			transactionItems.Clear();
+			// Clear the transaction panel
+			ClearTransactionPanel(false);
 
 			// Adapt the GridLayout cells Y size
 			transactionItemsLayout.cellSize = new Vector2(transactionItemsLayout.cellSize.x, currencyGridCellSizeY);
 
-			// Set the transaction panel's title only if not null or empty
-			if (!string.IsNullOrEmpty(panelTitle))
-				transactionPanelTitle.text = panelTitle;
-
 			// If there are currencies to display, fill the transaction panel with currency prefabs
 			if ((currenciesList != null) && (currenciesList.Count > 0))
-			{
-				// Hide the "no currency" text
-				noCurrencyText.SetActive(false);
-
 				// TODO: You may want to display only currencies which are not achievement-progression-type currencies
 				foreach (KeyValuePair<string, Bundle> currency in currenciesList)
 				{
@@ -99,45 +126,26 @@ namespace CotcSdkTemplate
 					// Add the newly created GameObject to the list
 					transactionItems.Add(prefabInstance);
 				}
-			}
 			// Else, show the "no currency" text
 			else
 				noCurrencyText.SetActive(true);
-			
-			// Show the transaction panel
-			ShowTransactionPanel(true);
 		}
 
 		/// <summary>
 		/// Fill the transaction panel with transactions then show it.
 		/// </summary>
 		/// <param name="transactionsList">List of the transactions to display.</param>
-		/// <param name="panelTitle">Title of the panel.</param>
-		public void FillAndShowPagedTransactionPanel(PagedList<Transaction> transactionsList, string panelTitle = "Transactions History")
+		public void FillPagedTransactionPanel(PagedList<Transaction> transactionsList)
 		{
-			// Hide the "no currency" text
-			noCurrencyText.SetActive(false);
-
-			// Destroy the previously created transaction GameObjects if any exist and clear the list
-			foreach (GameObject transactionItem in transactionItems)
-				DestroyObject(transactionItem);
-
-			transactionItems.Clear();
+			// Clear the transaction panel
+			ClearTransactionPanel(false);
 
 			// Adapt the GridLayout cells Y size for transactions
 			transactionItemsLayout.cellSize = new Vector2(transactionItemsLayout.cellSize.x, transactionGridCellSizeY);
 
-			// Set the transaction panel's title only if not null or empty
-			if (!string.IsNullOrEmpty(panelTitle))
-				transactionPanelTitle.text = panelTitle;
-
 			// If there are transactions to display, fill the transaction panel with transaction prefabs
 			if ((transactionsList != null) && (transactionsList.Count > 0))
 			{
-				// Hide the "no transaction" text and show the previous page and next page buttons
-				noTransactionText.SetActive(false);
-				pageButtons.SetActive(true);
-
 				foreach (Transaction transaction in transactionsList)
 				{
 					// Create a transaction item GameObject and hook it at the transaction items layout
@@ -152,21 +160,32 @@ namespace CotcSdkTemplate
 					transactionItems.Add(prefabInstance);
 				}
 
-				// Keep the last PagedList<Transaction> to allow usage of previous and next transaction page
+				// Keep the last PagedList<Transaction> to allow fetching of previous and next transaction pages and show the previous page and next page buttons
 				currentTransactionsList = transactionsList;
 				previousPageButton.interactable = currentTransactionsList.HasPrevious;
 				nextPageButton.interactable = currentTransactionsList.HasNext;
+				pageButtons.SetActive(true);
 			}
 			// Else, show the "no transaction" text and hide the previous page and next page buttons
 			else
 			{
 				noTransactionText.SetActive(true);
-				pageButtons.SetActive(false);
 				currentTransactionsList = null;
 			}
+		}
 
-			// Show the transaction panel
-			ShowTransactionPanel(true);
+		/// <summary>
+		/// Clear the transaction panel and show an error message.
+		/// </summary>
+		/// <param name="errorMessage">Error message to display.</param>
+		public void ShowError(string errorMessage)
+		{
+			// Clear the transaction panel
+			ClearTransactionPanel(false);
+
+			// Set and show the error message
+			errorText.text = string.Format("\n{0}\n", errorMessage);
+			errorText.gameObject.SetActive(true);
 		}
 		#endregion
 

@@ -20,7 +20,10 @@ namespace CotcSdkTemplate
 			if (!VFSHandler.HasInstance)
 				DebugLogs.LogError("[CotcSdkTemplate:GamerVFSFeatures] No VFSHandler instance found ›› Please attach a VFSHandler script on an active object of the scene");
 			else
+			{
+				VFSHandler.Instance.ShowVFSPanel("Gamer VFS Keys");
 				Backend_GetValue(key, DisplayGamerKey_OnSuccess, DisplayGamerKey_OnError);
+			}
 		}
 
 		/// <summary>
@@ -209,7 +212,7 @@ namespace CotcSdkTemplate
 			if (!keysValues.Has(resultField))
 				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] No {0} field found in the key value result", resultField));
 			else
-				VFSHandler.Instance.FillAndShowVFSPanel(keysValues[resultField].AsDictionary(), "Gamer VFS Keys");
+				VFSHandler.Instance.FillVFSPanel(keysValues[resultField].AsDictionary());
 		}
 
 		/// <summary>
@@ -222,12 +225,13 @@ namespace CotcSdkTemplate
 			{
 				// Error type: the specified key doesn't exist yet
 				case "KeyNotFound":
-				VFSHandler.Instance.FillAndShowVFSPanel(null);
+				VFSHandler.Instance.FillVFSPanel(null);
 				break;
 
 				// Unhandled error types
 				default:
 				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
+				VFSHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
 				break;
 			}
 		}

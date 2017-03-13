@@ -20,7 +20,10 @@ namespace CotcSdkTemplate
 			if (!AchievementHandler.HasInstance)
 				DebugLogs.LogError("[CotcSdkTemplate:AchievementFeatures] No AchievementHandler instance found ›› Please attach an AchievementHandler script on an active object of the scene");
 			else
+			{
+				AchievementHandler.Instance.ShowAchievementPanel("Achievements Progress");
 				Backend_ListAchievements(DisplayAchievements_OnSuccess, DisplayAchievements_OnError);
+			}
 		}
 		#endregion
 
@@ -68,7 +71,7 @@ namespace CotcSdkTemplate
 		/// <param name="achievementsList">List of logged in gamer's progress on all game's achievements.</param>
 		private static void DisplayAchievements_OnSuccess(Dictionary<string, AchievementDefinition> achievementsList)
 		{
-			AchievementHandler.Instance.FillAndShowAchievementPanel(achievementsList);
+			AchievementHandler.Instance.FillAchievementPanel(achievementsList);
 		}
 
 		/// <summary>
@@ -82,6 +85,7 @@ namespace CotcSdkTemplate
 				// Unhandled error types
 				default:
 				DebugLogs.LogError(string.Format("[CotcSdkTemplate:AchievementFeatures] An unhandled error occured ›› {0}", exceptionError));
+				AchievementHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
 				break;
 			}
 		}

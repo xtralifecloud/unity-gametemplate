@@ -16,6 +16,8 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject outClickMask = null;
 		[SerializeField] private GameObject communityPanel = null;
 		[SerializeField] private Text communityPanelTitle = null;
+		[SerializeField] private GameObject loadingBlock = null;
+		[SerializeField] private Text errorText = null;
 		[SerializeField] private GameObject noFriendText = null;
 
 		// Reference to the community GameObject prefabs and the community items layout
@@ -30,42 +32,67 @@ namespace CotcSdkTemplate
 		/// </summary>
 		private void Start()
 		{
-			ShowCommunityPanel(false);
+			HideCommunityPanel();
 		}
 
 		/// <summary>
-		/// Show or hide the community panel.
+		/// Hide the community panel.
 		/// </summary>
-		/// <param name="show">If the panel should be shown.</param>
-		public void ShowCommunityPanel(bool show = true)
+		public void HideCommunityPanel()
 		{
-			outClickMask.SetActive(show);
-			communityPanel.SetActive(show);
+			// Hide the community panel with its outclickMask and loading block
+			outClickMask.SetActive(false);
+			communityPanel.SetActive(false);
+			ClearCommunityPanel(false);
 		}
 
 		/// <summary>
-		/// Fill the community panel with friends (or blacklisted gamers) then show it.
+		/// Show the community panel.
 		/// </summary>
-		/// <param name="friendsList">List of the friends to display.</param>
-		/// <param name="panelTitle">Title of the panel.</param>
-		public void FillAndShowCommunityPanel(NonpagedList<GamerInfo> friendsList, string panelTitle = "Friends List")
+		/// <param name="panelTitle">Title of the panel to display. (optional)</param>
+		public void ShowCommunityPanel(string panelTitle = null)
 		{
-			// Destroy the previously created community GameObjects if any exist and clear the list
-			foreach (GameObject communityItem in communityItems)
-				DestroyObject(communityItem);
-			
-			communityItems.Clear();
-
 			// Set the community panel's title only if not null or empty
 			if (!string.IsNullOrEmpty(panelTitle))
 				communityPanelTitle.text = panelTitle;
 
+			// Show the achievement panel with its outclickMask and loading block
+			outClickMask.SetActive(true);
+			communityPanel.SetActive(true);
+			ClearCommunityPanel(true);
+		}
+
+		/// <summary>
+		/// Clear the community panel container (loading block, texts, previously created items).
+		/// </summary>
+		/// <param name="showLoadingBlock">If the loading block should be shown.</param>
+		public void ClearCommunityPanel(bool showLoadingBlock = false)
+		{
+			// Show/hide the loading block
+			loadingBlock.SetActive(showLoadingBlock);
+
+			// Hide all texts
+			errorText.gameObject.SetActive(false);
+			noFriendText.SetActive(false);
+
+			// Destroy the previously created community GameObjects if any exist and clear the list
+			foreach (GameObject communityItem in communityItems)
+				DestroyObject(communityItem);
+
+			communityItems.Clear();
+		}
+
+		/// <summary>
+		/// Fill the community panel with friends (or blacklisted gamers).
+		/// </summary>
+		/// <param name="friendsList">List of the friends to display.</param>
+		public void FillCommunityPanel(NonpagedList<GamerInfo> friendsList)
+		{
+			// Clear the community panel
+			ClearCommunityPanel(false);
+
 			// If there are friends to display, fill the community panel with friend prefabs
 			if ((friendsList != null) && (friendsList.Count > 0))
-			{
-				// Hide the "no friend" text
-				noFriendText.SetActive(false);
-
 				foreach (GamerInfo friend in friendsList)
 				{
 					// Create a community friend GameObject and hook it at the community items layout
@@ -79,13 +106,23 @@ namespace CotcSdkTemplate
 					// Add the newly created GameObject to the list
 					communityItems.Add(prefabInstance);
 				}
-			}
 			// Else, show the "no friend" text
 			else
 				noFriendText.SetActive(true);
-			
-			// Show the community panel
-			ShowCommunityPanel(true);
+		}
+
+		/// <summary>
+		/// Clear the community panel and show an error message.
+		/// </summary>
+		/// <param name="errorMessage">Error message to display.</param>
+		public void ShowError(string errorMessage)
+		{
+			// Clear the community panel
+			ClearCommunityPanel(false);
+
+			// Set and show the error message
+			errorText.text = string.Format("\n{0}\n", errorMessage);
+			errorText.gameObject.SetActive(true);
 		}
 		#endregion
 
