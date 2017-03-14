@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-using CotcSdk;
-
 namespace CotcSdkTemplate
 {
 	/// <summary>
