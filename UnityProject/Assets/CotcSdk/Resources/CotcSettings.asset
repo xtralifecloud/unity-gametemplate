@@ -14,8 +14,8 @@ MonoBehaviour:
   FileVersion: 2
   Environments:
   - Name: Default
-    ApiKey: 
-    ApiSecret: 
+    ApiKey: jO6h9ndwmHRS0OX
+    ApiSecret: u5irMS8QqNp5YWzkDnML
     ServerUrl: https://sandbox-api[id].clanofthecloud.mobi
     LbCount: 2
     HttpVerbose: 1

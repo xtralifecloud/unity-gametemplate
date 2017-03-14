@@ -10,6 +10,10 @@ using CotcSdkTemplate;
 public class SampleScript : MonoBehaviour
 {
 	#region Initialization (Cloud + Event + Login)
+	// TODO: You may use the following credentials on your CotcGameObject GameObject instance to land on the sandbox XlGameTemplate test environment:
+	// API Key: jO6h9ndwmHRS0OX
+	// API Secret: u5irMS8QqNp5YWzkDnML
+
 	// CotcSdkTemplate's messages logging level
 	[SerializeField] private CotcSdkTemplate.LogLevel cotcSdkTemplateLogLevel = CotcSdkTemplate.LogLevel.Verbose;
 
