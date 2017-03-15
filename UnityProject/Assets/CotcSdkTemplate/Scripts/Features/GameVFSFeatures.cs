@@ -18,7 +18,7 @@ namespace CotcSdkTemplate
 		{
 			// A VFSHandler instance should be attached to an active object of the scene to display the result
 			if (!VFSHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:GameVFSFeatures] No VFSHandler instance found ›› Please attach a VFSHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "GameVFSFeatures", "VFSHandler"));
 			else
 			{
 				VFSHandler.Instance.ShowVFSPanel("Game VFS Keys");
@@ -39,8 +39,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Bundle result
 			CloudFeatures.cloud.Game.GameVfs.Domain(domain).GetValue(key)
 				// Result if everything went well
@@ -94,10 +97,15 @@ namespace CotcSdkTemplate
 				VFSHandler.Instance.FillVFSPanel(null);
 				break;
 
+				// Error type: not initialized Cloud
+				case "NotInitializedCloud":
+				VFSHandler.Instance.ShowError(ExceptionTools.notInitializedCloudMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GameVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
-				VFSHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "GameVFSFeatures", exceptionError));
+				VFSHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}

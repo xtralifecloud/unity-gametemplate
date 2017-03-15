@@ -18,7 +18,7 @@ namespace CotcSdkTemplate
 		{
 			// A TransactionHandler instance should be attached to an active object of the scene to display the result
 			if (!TransactionHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found ›› Please attach a TransactionHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "TransactionFeatures", "TransactionHandler"));
 			else
 			{
 				TransactionHandler.Instance.ShowTransactionPanel("Currencies Balance");
@@ -35,7 +35,7 @@ namespace CotcSdkTemplate
 		{
 			// A TransactionHandler instance should be attached to an active object of the scene to display the result
 			if (!TransactionHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:TransactionFeatures] No TransactionHandler instance found ›› Please attach a TransactionHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "TransactionFeatures", "TransactionHandler"));
 			else
 			{
 				TransactionHandler.Instance.ShowTransactionPanel("Transactions History");
@@ -94,8 +94,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Bundle result
 			CloudFeatures.gamer.Transactions.Domain(domain).Balance()
 				// Result if everything went well
@@ -132,8 +135,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a PagedList<Transaction> result
 			CloudFeatures.gamer.Transactions.Domain(domain).History(currencyName, transactionsPerPage, transactionsOffset)
 				// Result if everything went well
@@ -241,8 +247,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a TransactionResult result
 			CloudFeatures.gamer.Transactions.Domain(domain).Post(transaction, transactionDescription)
 				// Result if everything went well
@@ -285,10 +294,15 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				TransactionHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured ›› {0}", exceptionError));
-				TransactionHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "TransactionFeatures", exceptionError));
+				TransactionHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}
@@ -310,10 +324,15 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				TransactionHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured ›› {0}", exceptionError));
-				TransactionHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "TransactionFeatures", exceptionError));
+				TransactionHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}
@@ -326,7 +345,7 @@ namespace CotcSdkTemplate
 		{
 			// An EventHandler instance should be attached to an active object of the scene to display the result
 			if (!EventHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No EventHandler instance found ›› Please attach an EventHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "TransactionFeatures", "EventHandler"));
 			// For each achievement unlocked by the transaction post, display it as if it was an event
 			else foreach (KeyValuePair<string, AchievementDefinition> triggeredAchievement in postedTransaction.TriggeredAchievements)
 				EventHandler.Instance.BuildAndAddEventItem_AchievementUnlocked("An achievement has been unlocked!", triggeredAchievement.Value);
@@ -340,9 +359,14 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				TransactionHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:TransactionFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "TransactionFeatures", exceptionError));
 				break;
 			}
 		}

@@ -76,8 +76,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Gamer result
 			CloudFeatures.cloud.LoginAnonymously()
 				// Result if everything went well
@@ -119,8 +122,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Gamer result
 			CloudFeatures.cloud.ResumeSession(gamerID, gamerSecret)
 				// Result if everything went well
@@ -160,8 +166,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Done result
 			CloudFeatures.cloud.Logout()
 				// Result if everything went well
@@ -213,9 +222,14 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud
+				case "NotInitializedCloud":
+				// Do whatever...
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "LoginFeatures", exceptionError));
 				break;
 			}
 		}
@@ -238,9 +252,14 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				// Do whatever...
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LoginFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "LoginFeatures", exceptionError));
 				break;
 			}
 		}

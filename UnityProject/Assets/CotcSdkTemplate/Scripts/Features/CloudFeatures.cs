@@ -138,7 +138,7 @@ namespace CotcSdkTemplate
 			{
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:CloudFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "CloudFeatures", exceptionError));
 				break;
 			}
 		}

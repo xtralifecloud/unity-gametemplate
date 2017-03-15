@@ -170,7 +170,7 @@ namespace CotcSdkTemplate
 		{
 			// An EventHandler instance should be attached to an active object of the scene to display the result
 			if (!EventHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No EventHandler instance found ›› Please attach an EventHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "EventFeatures", "EventHandler"));
 			else
 			{
 				string backOfficeMessage = eventData["event"]["message"].AsString();
@@ -186,7 +186,7 @@ namespace CotcSdkTemplate
 		{
 			// An EventHandler instance should be attached to an active object of the scene to display the result
 			if (!EventHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No EventHandler instance found ›› Please attach an EventHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "EventFeatures", "EventHandler"));
 			else
 			{
 				string message = eventData["message"].AsString();
@@ -205,7 +205,7 @@ namespace CotcSdkTemplate
 		{
 			// An EventHandler instance should be attached to an active object of the scene to display the result
 			if (!EventHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No EventHandler instance found ›› Please attach an EventHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "EventFeatures", "EventHandler"));
 			else
 			{
 				string message = eventData["message"].AsString();

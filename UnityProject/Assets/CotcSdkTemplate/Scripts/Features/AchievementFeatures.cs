@@ -18,7 +18,7 @@ namespace CotcSdkTemplate
 		{
 			// An AchievementHandler instance should be attached to an active object of the scene to display the result
 			if (!AchievementHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:AchievementFeatures] No AchievementHandler instance found ›› Please attach an AchievementHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "AchievementFeatures", "AchievementHandler"));
 			else
 			{
 				AchievementHandler.Instance.ShowAchievementPanel("Achievements Progress");
@@ -38,7 +38,10 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
+			}
 			
 			// Call the API method which returns a Dictionary<string, AchievementDefinition> result
 			CloudFeatures.gamer.Achievements.Domain(domain).List()
@@ -82,10 +85,15 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				AchievementHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:AchievementFeatures] An unhandled error occured ›› {0}", exceptionError));
-				AchievementHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "AchievementFeatures", exceptionError));
+				AchievementHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}

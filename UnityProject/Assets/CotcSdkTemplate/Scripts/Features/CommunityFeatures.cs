@@ -17,7 +17,7 @@ namespace CotcSdkTemplate
 		{
 			// A CommunityHandler instance should be attached to an active object of the scene to display the result
 			if (!CommunityHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:CommunityFeatures] No CommunityHandler instance found ›› Please attach a CommunityHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "CommunityFeatures", "CommunityHandler"));
 			else
 			{
 				CommunityHandler.Instance.ShowCommunityPanel("Blacklisted Gamers");
@@ -32,7 +32,7 @@ namespace CotcSdkTemplate
 		{
 			// A CommunityHandler instance should be attached to an active object of the scene to display the result
 			if (!CommunityHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:CommunityFeatures] No CommunityHandler instance found ›› Please attach a CommunityHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "CommunityFeatures", "CommunityHandler"));
 			else
 			{
 				CommunityHandler.Instance.ShowCommunityPanel("Friends List");
@@ -117,7 +117,10 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
+			}
 
 			// Call the API method which returns a NonpagedList<GamerInfo> result
 			CloudFeatures.gamer.Community.Domain(domain).ListFriends(blacklisted)
@@ -155,8 +158,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Done result
 			CloudFeatures.gamer.Community.Domain(domain).SendEvent(gamerID, eventData, pushNotification)
 				// Result if everything went well
@@ -193,7 +199,10 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), gamerID, relationship);
 				return;
+			}
 
 			// Call the API method which returns a Done result
 			CloudFeatures.gamer.Community.Domain(domain).ChangeRelationshipStatus(gamerID, relationship, pushNotification)
@@ -237,10 +246,15 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				CommunityHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:CommunityFeatures] An unhandled error occured ›› {0}", exceptionError));
-				CommunityHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "CommunityFeatures", exceptionError));
+				CommunityHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}
@@ -262,9 +276,14 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				CommunityHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:CommunityFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "CommunityFeatures", exceptionError));
 				break;
 			}
 		}
@@ -320,9 +339,14 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				CommunityHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:CommunityFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "CommunityFeatures", exceptionError));
 				break;
 			}
 		}

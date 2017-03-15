@@ -18,7 +18,7 @@ namespace CotcSdkTemplate
 		{
 			// A VFSHandler instance should be attached to an active object of the scene to display the result
 			if (!VFSHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:GamerVFSFeatures] No VFSHandler instance found ›› Please attach a VFSHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "GamerVFSFeatures", "VFSHandler"));
 			else
 			{
 				VFSHandler.Instance.ShowVFSPanel("Gamer VFS Keys");
@@ -100,8 +100,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Bundle result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).GetValue(key)
 				// Result if everything went well
@@ -137,8 +140,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Done result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).SetValue(key, value)
 				// Result if everything went well
@@ -173,8 +179,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a Done result
 			CloudFeatures.gamer.GamerVfs.Domain(domain).DeleteValue(key)
 				// Result if everything went well
@@ -228,10 +237,15 @@ namespace CotcSdkTemplate
 				VFSHandler.Instance.FillVFSPanel(null);
 				break;
 
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				VFSHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
-				VFSHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "GamerVFSFeatures", exceptionError));
+				VFSHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}
@@ -253,9 +267,14 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				VFSHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "GamerVFSFeatures", exceptionError));
 				break;
 			}
 		}
@@ -277,9 +296,14 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				VFSHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:GamerVFSFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "GamerVFSFeatures", exceptionError));
 				break;
 			}
 		}

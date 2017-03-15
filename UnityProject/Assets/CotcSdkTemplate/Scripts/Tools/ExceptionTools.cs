@@ -10,11 +10,21 @@ namespace CotcSdkTemplate
 	public static class ExceptionTools
 	{
 		#region Exceptions Handling
+		// Error messages corresponding to different cases
+		public const string noInstanceErrorFormat = "[CotcSdkTemplate:{0}] No {1} instance found ›› Please attach a {1} script on an active object of the scene";
+		public const string unhandledErrorFormat = "[CotcSdkTemplate:{0}] An unhandled error occured ›› {1}";
+
+		// Error formats corresponding to different cases
+		public const string notInitializedCloudMessage = "You need an initialized Cloud\ninstance to use this feature.";
+		public const string notLoggedInMessage = "You need be logged in\nto use this feature.";
+		public const string unhandledErrorMessage = "An unhandled error occured.\n(please check console logs)";
+
 		/// <summary>
 		/// Return an exception (expected to be a CotcException) under the ExceptionError format.
 		/// </summary>
 		/// <param name="exception">The original Exception.</param>
-		public static ExceptionError GetExceptionError(Exception exception)
+		/// <param name="exceptionType">To set the exception type in case the exception is not of CotcException type or doesn't contain any server data. (optional)</param>
+		public static ExceptionError GetExceptionError(Exception exception, string exceptionType = null)
 		{
 			// The exception should always be of the CotcException type
 			CotcException cotcException = exception as CotcException;
@@ -22,7 +32,7 @@ namespace CotcSdkTemplate
 			if ((cotcException != null) && (cotcException.ServerData != null))
 				return new ExceptionError(cotcException.ServerData["name"].AsString(), cotcException.ServerData["message"].AsString());
 			else
-				return new ExceptionError("UnknownException", exception.ToString());
+				return new ExceptionError(string.IsNullOrEmpty(exceptionType) ? "UnknownException" : exceptionType, exception.ToString());
 		}
 
 		/// <summary>
@@ -36,15 +46,12 @@ namespace CotcSdkTemplate
 			// The exception should always be of the CotcException type
 			CotcException cotcException = exception as CotcException;
 
-			if (cotcException != null)
-			{
-				if ((cotcException.ServerData != null) && !string.IsNullOrEmpty(cotcException.ServerData.ToString()))
-					DebugLogs.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception ›› ({2}) {3}: {4} ›› {5}", className, methodName, cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
-				else
-					DebugLogs.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception ›› ({2}) {3}: {4}", className, methodName, cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation));
-			}
-			else
+			if (cotcException == null)
 				DebugLogs.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception ›› {2}", className, methodName, exception));
+			else if ((cotcException.ServerData != null) && !string.IsNullOrEmpty(cotcException.ServerData.ToString()))
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception ›› ({2}) {3}: {4} ›› {5}", className, methodName, cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation, cotcException.ServerData));
+			else
+				DebugLogs.LogError(string.Format("[CotcSdkTemplate:{0}] {1} exception ›› ({2}) {3}: {4}", className, methodName, cotcException.HttpStatusCode, cotcException.ErrorCode, cotcException.ErrorInformation));
 		}
 		#endregion
 	}

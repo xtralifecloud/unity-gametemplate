@@ -27,7 +27,7 @@ namespace CotcSdkTemplate
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
 			if (!LeaderboardHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found ›› Please attach a LeaderboardHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "LeaderboardFeatures", "LeaderboardHandler"));
 			// The board name should not be empty
 			else if (string.IsNullOrEmpty(boardName))
 				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty ›› Please enter a valid board name");
@@ -55,7 +55,7 @@ namespace CotcSdkTemplate
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
 			if (!LeaderboardHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found ›› Please attach a LeaderboardHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "LeaderboardFeatures", "LeaderboardHandler"));
 			// The board name should not be empty
 			else if (string.IsNullOrEmpty(boardName))
 				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] The board name is empty ›› Please enter a valid board name");
@@ -73,7 +73,7 @@ namespace CotcSdkTemplate
 		{
 			// A LeaderboardHandler instance should be attached to an active object of the scene to display the result
 			if (!LeaderboardHandler.HasInstance)
-				DebugLogs.LogError("[CotcSdkTemplate:LeaderboardFeatures] No LeaderboardHandler instance found ›› Please attach a LeaderboardHandler script on an active object of the scene");
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "LeaderboardFeatures", "LeaderboardHandler"));
 			else
 			{
 				LeaderboardHandler.Instance.ShowLeaderboardPanel(CloudFeatures.gamer["profile"]["displayName"].AsString());
@@ -134,8 +134,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), noScoreErrorMessage);
 				return;
-			
+			}
+
 			// Call the API method which returns a PagedList<Score> result
 			CloudFeatures.gamer.Scores.Domain(domain).BestHighScores(boardName, scoresPerPage, pageNumber)
 				// Result if everything went well
@@ -172,8 +175,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), noScoreErrorMessage);
 				return;
-			
+			}
+
 			// Call the API method which returns a PagedList<Score> result
 			CloudFeatures.gamer.Scores.Domain(domain).PagedCenteredScore(boardName, scoresPerPage)
 				// Result if everything went well
@@ -209,7 +215,10 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), noScoreErrorMessage);
 				return;
+			}
 
 			// Call the API method which returns a NonpagedList<Score> result
 			CloudFeatures.gamer.Scores.Domain(domain).ListFriendScores(boardName)
@@ -245,7 +254,10 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), noScoreErrorMessage);
 				return;
+			}
 
 			// Call the API method which returns a Dictionary<string, Score> result
 			CloudFeatures.gamer.Scores.Domain(domain).ListUserBestScores()
@@ -357,8 +369,11 @@ namespace CotcSdkTemplate
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
 				return;
-			
+			}
+
 			// Call the API method which returns a PostedGameScore result
 			CloudFeatures.gamer.Scores.Domain(domain).Post(scoreValue, boardName, scoreOrder, scoreDescription, forceSave)
 				// Result if everything went well
@@ -408,10 +423,15 @@ namespace CotcSdkTemplate
 				LeaderboardHandler.Instance.FillNonpagedLeaderboardPanel(null, noScoreErrorMessage);
 				break;
 
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				LeaderboardHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured ›› {0}", exceptionError));
-				LeaderboardHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "LeaderboardFeatures", exceptionError));
+				LeaderboardHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}
@@ -440,10 +460,15 @@ namespace CotcSdkTemplate
 				LeaderboardHandler.Instance.FillPagedLeaderboardPanel(null, noScoreErrorMessage);
 				break;
 
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				LeaderboardHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured ›› {0}", exceptionError));
-				LeaderboardHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "LeaderboardFeatures", exceptionError));
+				LeaderboardHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}
@@ -467,10 +492,15 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				LeaderboardHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured ›› {0}", exceptionError));
-				LeaderboardHandler.Instance.ShowError("An unhandled error occured.\n(please check console logs)");
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "LeaderboardFeatures", exceptionError));
+				LeaderboardHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
 				break;
 			}
 		}
@@ -492,9 +522,14 @@ namespace CotcSdkTemplate
 		{
 			switch (exceptionError.type)
 			{
+				// Error type: not initialized Cloud or no logged in gamer
+				case "NotLoggedIn":
+				LeaderboardHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
 				// Unhandled error types
 				default:
-				DebugLogs.LogError(string.Format("[CotcSdkTemplate:LeaderboardFeatures] An unhandled error occured ›› {0}", exceptionError));
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "LeaderboardFeatures", exceptionError));
 				break;
 			}
 		}
