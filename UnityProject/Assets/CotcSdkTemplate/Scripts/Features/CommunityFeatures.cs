@@ -41,6 +41,23 @@ namespace CotcSdkTemplate
 		}
 
 		/// <summary>
+		/// Get and display a list of gamers matching with the given match pattern (tested against display name and email).
+		/// </summary>
+		/// <param name="matchPattern">What users' display name or email must contain.</param>
+		/// <param name="usersPerPage">Number of users to get per page.</param>
+		public static void Handling_FindGamers(string matchPattern, int usersPerPage)
+		{
+			// A CommunityHandler instance should be attached to an active object of the scene to display the result
+			if (!CommunityHandler.HasInstance)
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "CommunityFeatures", "CommunityHandler"));
+			else
+			{
+				CommunityHandler.Instance.ShowCommunityPanel("Matching Users List");
+				Backend_ListUsers(matchPattern, usersPerPage, 0, FindGamers_OnSuccess, FindGamers_OnError);
+			}
+		}
+
+		/// <summary>
 		/// Send an event from the current logged in gamer to the given other gamer.
 		/// </summary>
 		/// <param name="gamerID">Identifier of the gamer with who to change the relationship.</param>
@@ -142,6 +159,46 @@ namespace CotcSdkTemplate
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("CommunityFeatures", "ListFriends", exception);
+				});
+		}
+
+		/// <summary>
+		/// Get a list of gamers matching with the given match pattern (tested against display name and email).
+		/// </summary>
+		/// <param name="matchPattern">What users' display name or email must contain.</param>
+		/// <param name="usersPerPage">Number of users to get per page.</param>
+		/// <param name="usersOffset">Number of users to skip.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		public static void Backend_ListUsers(string matchPattern, int usersPerPage, int usersOffset, Action<PagedList<UserInfo>> OnSuccess = null, Action<ExceptionError> OnError = null)
+		{
+			// Need an initialized Cloud to proceed
+			if (!CloudFeatures.IsCloudInitialized())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
+				return;
+			}
+
+			// Call the API method which returns a PagedList<UserInfo> result
+			CloudFeatures.cloud.ListUsers(matchPattern, usersPerPage, usersOffset)
+				// Result if everything went well
+				.Done(delegate (PagedList<UserInfo> usersList)
+				{
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:CommunityFeatures] ListUsers success ›› {0} user(s)", usersList.Count));
+					
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(usersList);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("CommunityFeatures", "ListUsers", exception);
 				});
 		}
 
@@ -249,6 +306,36 @@ namespace CotcSdkTemplate
 				// Error type: not initialized Cloud or no logged in gamer
 				case "NotLoggedIn":
 				CommunityHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				break;
+
+				// Unhandled error types
+				default:
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "CommunityFeatures", exceptionError));
+				CommunityHandler.Instance.ShowError(ExceptionTools.unhandledErrorMessage);
+				break;
+			}
+		}
+
+		/// <summary>
+		/// What to do if any FindGamers request succeeded.
+		/// </summary>
+		/// <param name="usersList">List of matching users.</param>
+		private static void FindGamers_OnSuccess(PagedList<UserInfo> usersList)
+		{
+			CommunityHandler.Instance.FillCommunityPanel(usersList);
+		}
+
+		/// <summary>
+		/// What to do if any FindGamers request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
+		private static void FindGamers_OnError(ExceptionError exceptionError)
+		{
+			switch (exceptionError.type)
+			{
+				// Error type: not initialized Cloud
+				case "NotInitializedCloud":
+				CommunityHandler.Instance.ShowError(ExceptionTools.notInitializedCloudMessage);
 				break;
 
 				// Unhandled error types

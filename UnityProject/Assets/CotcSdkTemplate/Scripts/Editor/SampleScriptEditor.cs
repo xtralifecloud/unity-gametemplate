@@ -19,6 +19,10 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty noReferenceDebug;
 
 	#region Community References
+	// FindGamers properties references
+	private SerializedProperty findGamers_MatchPattern;
+	private SerializedProperty findGamers_UsersPerPage;
+
 	// SendEventToGamer properties references
 	private SerializedProperty sendEventToGamer_GamerID;
 	private SerializedProperty sendEventToGamer_EventData;
@@ -103,6 +107,10 @@ public class SampleScriptEditor : Editor
 		noReferenceDebug = serializedObject.FindProperty("noReferenceDebug");
 
 		#region Community Find
+		// Find FindGamers properties references on the serialized object
+		findGamers_MatchPattern = serializedObject.FindProperty("findGamers_MatchPattern");
+		findGamers_UsersPerPage = serializedObject.FindProperty("findGamers_UsersPerPage");
+
 		// Find SendEventToGamer properties references on the serialized object
 		sendEventToGamer_GamerID = serializedObject.FindProperty("sendEventToGamer_GamerID");
 		sendEventToGamer_EventData = serializedObject.FindProperty("sendEventToGamer_EventData");
@@ -220,6 +228,12 @@ public class SampleScriptEditor : Editor
 
 		if (communityFoldoutState)
 		{
+			// Show FindGamers properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Find Gamers", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(findGamers_MatchPattern, new GUIContent("  > Match Pattern"));
+			EditorGUILayout.PropertyField(findGamers_UsersPerPage, new GUIContent("  > Users Per Page"));
+
 			// Show SendEventToGamer properties references on the inspector
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Send Event To Gamer", EditorStyles.boldLabel);

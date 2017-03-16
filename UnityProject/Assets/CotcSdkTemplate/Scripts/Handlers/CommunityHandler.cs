@@ -19,9 +19,11 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject loadingBlock = null;
 		[SerializeField] private Text errorText = null;
 		[SerializeField] private GameObject noFriendText = null;
+		[SerializeField] private GameObject noUserText = null;
 
 		// Reference to the community GameObject prefabs and the community items layout
 		[SerializeField] private GameObject communityFriendPrefab = null;
+		[SerializeField] private GameObject communityUserPrefab = null;
 		[SerializeField] private GridLayoutGroup communityItemsLayout = null;
 
 		// List of the community GameObjects created on the community panel
@@ -74,6 +76,7 @@ namespace CotcSdkTemplate
 			// Hide all texts
 			errorText.gameObject.SetActive(false);
 			noFriendText.SetActive(false);
+			noUserText.SetActive(false);
 
 			// Destroy the previously created community GameObjects if any exist and clear the list
 			foreach (GameObject communityItem in communityItems)
@@ -109,6 +112,35 @@ namespace CotcSdkTemplate
 			// Else, show the "no friend" text
 			else
 				noFriendText.SetActive(true);
+		}
+
+		/// <summary>
+		/// Fill the community panel with users.
+		/// </summary>
+		/// <param name="usersList">List of the users to display.</param>
+		public void FillCommunityPanel(PagedList<UserInfo> usersList)
+		{
+			// Clear the community panel
+			ClearCommunityPanel(false);
+
+			// If there are users to display, fill the community panel with user prefabs
+			if ((usersList != null) && (usersList.Count > 0))
+				foreach (UserInfo user in usersList)
+				{
+					// Create a community user GameObject and hook it at the community items layout
+					GameObject prefabInstance = Instantiate<GameObject>(communityUserPrefab);
+					prefabInstance.transform.SetParent(communityItemsLayout.transform, false);
+
+					// Fill the newly created GameObject with user data
+					CommunityUserHandler communityUserHandler = prefabInstance.GetComponent<CommunityUserHandler>();
+					communityUserHandler.FillData(user.UserId, user["profile"]);
+
+					// Add the newly created GameObject to the list
+					communityItems.Add(prefabInstance);
+				}
+			// Else, show the "no user" text
+			else
+				noUserText.SetActive(true);
 		}
 
 		/// <summary>

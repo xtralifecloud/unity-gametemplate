@@ -7,13 +7,13 @@ using CotcSdk;
 namespace CotcSdkTemplate
 {
 	/// <summary>
-	/// Methods to fill a displayed event friend item.
+	/// Methods to fill a displayed community friend.
 	/// </summary>
 	public class CommunityFriendHandler : MonoBehaviour
 	{
 		#region Handling
-		// Reference to the event friend item GameObject UI elements
-		[SerializeField] private Image eventFriendItemBackground = null;
+		// Reference to the community friend GameObject UI elements
+		[SerializeField] private Image communityFriendBackground = null;
 		[SerializeField] private Image friendAvatar = null;
 		[SerializeField] private Image loading = null;
 		[SerializeField] private Text friendNicknameText = null;
@@ -28,9 +28,9 @@ namespace CotcSdkTemplate
 		[SerializeField] private string forgotRelationshipStatusText = "Forgotten";
 
 		/// <summary>
-		/// Fill the event friend item with new data. (friend message)
+		/// Fill the community friend with new data. (friend message)
 		/// </summary>
-		/// <param name="friendProfile">Profile of the friend whith who the relationship changed under the Bundle format.</param>
+		/// <param name="friendProfile">Profile of the friend under the Bundle format.</param>
 		/// <param name="friendMessage">The message from friend to display.</param>
 		public void FillData(Bundle friendProfile, string friendMessage = null)
 		{
@@ -48,9 +48,9 @@ namespace CotcSdkTemplate
 		}
 
 		/// <summary>
-		/// Fill the event friend item with new data. (relationship changed)
+		/// Fill the community friend with new data. (relationship changed)
 		/// </summary>
-		/// <param name="friendProfile">Profile of the friend whith who the relationship changed under the Bundle format.</param>
+		/// <param name="friendProfile">Profile of the friend under the Bundle format.</param>
 		/// <param name="relationship">Type of relationship which has been set.</param>
 		public void FillData(Bundle friendProfile, FriendRelationshipStatus relationship)
 		{
@@ -62,17 +62,17 @@ namespace CotcSdkTemplate
 			{
 				case FriendRelationshipStatus.Add:
 				friendMessageText.text = friendRelationshipStatusText;
-				eventFriendItemBackground.color = friendRelationshipBackgroundColor;
+				communityFriendBackground.color = friendRelationshipBackgroundColor;
 				break;
 
 				case FriendRelationshipStatus.Blacklist:
 				friendMessageText.text = blacklistRelationshipStatusText;
-				eventFriendItemBackground.color = blacklistRelationshipBackgroundColor;
+				communityFriendBackground.color = blacklistRelationshipBackgroundColor;
 				break;
 
 				case FriendRelationshipStatus.Forget:
 				friendMessageText.text = forgotRelationshipStatusText;
-				eventFriendItemBackground.color = forgotRelationshipBackgroundColor;
+				communityFriendBackground.color = forgotRelationshipBackgroundColor;
 				break;
 			}
 		}
@@ -93,7 +93,7 @@ namespace CotcSdkTemplate
 
 		/// <summary>
 		/// Download the avatar image from a URL. Actually, we need to wait the Start event to download the avatar as coroutines need the GameObject to be started to be launched.
-		/// As we use FillData() just after the LeaderboardScoreHandler Instantiate in LeaderboardHandler, it hasn't gone through an Update yet and is not considered as active.
+		/// As we use FillData() just after the CommunityFriendHandler Instantiate in CommunityHandler, it hasn't gone through an Update yet and is not considered as active.
 		/// </summary>
 		private IEnumerator UpdateAvatarFromURL()
 		{

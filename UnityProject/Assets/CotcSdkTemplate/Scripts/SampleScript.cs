@@ -100,6 +100,35 @@ public class SampleScript : MonoBehaviour
 	}
 
 	// References to the community UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField findGamers_MatchPattern = null;
+	[SerializeField] private InputField findGamers_UsersPerPage = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, get and display a list of gamers matching with the given match pattern (tested against display name and email).
+	/// </summary>
+	public void Button_FindGamers()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string matchPattern = "Guest";
+		int usersPerPage = 20;
+
+		// Check the filter value
+		if (findGamers_MatchPattern == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "findGamers_MatchPattern"));
+		else if (!string.IsNullOrEmpty(findGamers_MatchPattern.text))
+			matchPattern = findGamers_MatchPattern.text;
+
+		// Check the usersPerPage value
+		if (findGamers_UsersPerPage == null)
+			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "findGamers_UsersPerPage"));
+		else if (!string.IsNullOrEmpty(findGamers_UsersPerPage.text))
+			usersPerPage = int.Parse(findGamers_UsersPerPage.text);
+
+		// Call the template method
+		CommunityFeatures.Handling_FindGamers(matchPattern, usersPerPage);
+	}
+
+	// References to the community UI elements (their serialized references are directly assigned in the scene)
 	[SerializeField] private InputField sendEventToGamer_GamerID = null;
 	[SerializeField] private InputField sendEventToGamer_EventData = null;
 	[SerializeField] private InputField sendEventToGamer_Notification = null;
