@@ -160,7 +160,7 @@ public class SampleScript : MonoBehaviour
 			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendEventToGamer_Notification"));
 		else
 			notification = sendEventToGamer_Notification.text;
-
+		
 		// Call the template method
 		CommunityFeatures.Handling_SendEventToGamer(gamerID, eventData, notification);
 	}
@@ -387,6 +387,17 @@ public class SampleScript : MonoBehaviour
 
 		// Call the template method
 		GamerVFSFeatures.Handling_DeleteGamerKey(key);
+	}
+	#endregion
+
+	#region Godfather
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the logged in gamer's referral code.
+	/// </summary>
+	public void Button_DisplayReferralCode()
+	{
+		// Call the template method
+		GodfatherFeatures.Handling_DisplayReferralCode();
 	}
 	#endregion
 
