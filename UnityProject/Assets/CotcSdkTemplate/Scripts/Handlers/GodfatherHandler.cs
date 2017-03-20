@@ -18,9 +18,12 @@ namespace CotcSdkTemplate
 		[SerializeField] private Text godfatherPanelTitle = null;
 		[SerializeField] private GameObject loadingBlock = null;
 		[SerializeField] private Text errorText = null;
+		[SerializeField] private Text noGodchildText = null;
+		[SerializeField] private Text noGodfatherText = null;
 
 		// Reference to the godfather GameObject prefabs and the godfather items layout
 		[SerializeField] private GameObject godfatherReferralCodePrefab = null;
+		[SerializeField] private GameObject godfatherGamerPrefab = null;
 		[SerializeField] private GridLayoutGroup godfatherItemsLayout = null;
 
 		// List of the godfather GameObjects created on the godfather panel
@@ -72,6 +75,8 @@ namespace CotcSdkTemplate
 
 			// Hide all texts
 			errorText.gameObject.SetActive(false);
+			noGodchildText.gameObject.SetActive(false);
+			noGodfatherText.gameObject.SetActive(false);
 
 			// Destroy the previously created godfather GameObjects if any exist and clear the list
 			foreach (GameObject godfatherItem in godfatherItems)
@@ -99,6 +104,63 @@ namespace CotcSdkTemplate
 
 			// Add the newly created GameObject to the list
 			godfatherItems.Add(prefabInstance);
+		}
+
+		/// <summary>
+		/// Fill the godfather panel with godchildren list.
+		/// </summary>
+		/// <param name="godchildrenList">Godchildren gamer info.</param>
+		public void FillGodfatherPanel(NonpagedList<GamerInfo> godchildrenList)
+		{
+			// Clear the godfather panel
+			ClearGodfatherPanel(false);
+
+			// If there are godchildren to display, fill the godfather panel with gamer prefabs
+			if ((godchildrenList != null) && (godchildrenList.Count > 0))
+				foreach (GamerInfo godchild in godchildrenList)
+				{
+					// Create a godfather gamer GameObject and hook it at the godfather items layout
+					GameObject prefabInstance = Instantiate<GameObject>(godfatherGamerPrefab);
+					prefabInstance.transform.SetParent(godfatherItemsLayout.transform, false);
+
+					// Fill the newly created GameObject with gamer data
+					GodfatherGamerHandler godfatherGamerHandler = prefabInstance.GetComponent<GodfatherGamerHandler>();
+					godfatherGamerHandler.FillData(godchild.GamerId, godchild["profile"]);
+
+					// Add the newly created GameObject to the list
+					godfatherItems.Add(prefabInstance);
+				}
+			// Else, show the "no godchild" text
+			else
+				noGodchildText.gameObject.SetActive(true);
+		}
+
+		/// <summary>
+		/// Fill the godfather panel with godfather.
+		/// </summary>
+		/// <param name="godfather">Godfather gamer info.</param>
+		public void FillGodfatherPanel(GamerInfo godfather)
+		{
+			// Clear the godfather panel
+			ClearGodfatherPanel(false);
+
+			// If there is godfather to display, fill the godfather panel with gamer prefab
+			if (!string.IsNullOrEmpty(godfather.GamerId))
+			{
+				// Create a godfather gamer GameObject and hook it at the godfather items layout
+				GameObject prefabInstance = Instantiate<GameObject>(godfatherGamerPrefab);
+				prefabInstance.transform.SetParent(godfatherItemsLayout.transform, false);
+
+				// Fill the newly created GameObject with gamer data
+				GodfatherGamerHandler godfatherGamerHandler = prefabInstance.GetComponent<GodfatherGamerHandler>();
+				godfatherGamerHandler.FillData(godfather.GamerId, godfather["profile"]);
+
+				// Add the newly created GameObject to the list
+				godfatherItems.Add(prefabInstance);
+			}
+			// Else, show the "no godfather" text
+			else
+				noGodfatherText.gameObject.SetActive(true);
 		}
 
 		/// <summary>

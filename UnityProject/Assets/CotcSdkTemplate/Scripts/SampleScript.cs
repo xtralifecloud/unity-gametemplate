@@ -420,6 +420,24 @@ public class SampleScript : MonoBehaviour
 		// Call the template method
 		GodfatherFeatures.Handling_UseReferralCode(referralCode);
 	}
+
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the list of current logged in gamer's godchildren.
+	/// </summary>
+	public void Button_DisplayGodchildren()
+	{
+		// Call the template method
+		GodfatherFeatures.Handling_DisplayGodchildren();
+	}
+
+	/// <summary>
+	/// When the corresponding button is clicked, get and display the current logged in gamer's godfather.
+	/// </summary>
+	public void Button_DisplayGodfather()
+	{
+		// Call the template method
+		GodfatherFeatures.Handling_DisplayGodfather();
+	}
 	#endregion
 
 	#region Leaderboard
