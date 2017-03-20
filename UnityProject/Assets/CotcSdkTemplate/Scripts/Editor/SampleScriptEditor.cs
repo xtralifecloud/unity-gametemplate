@@ -15,9 +15,6 @@ public class SampleScriptEditor : Editor
 	// CotcSdkTemplate's messages logging level
 	private SerializedProperty cotcSdkTemplateLogLevel;
 
-	// No reference debug message format
-	private SerializedProperty noReferenceDebug;
-
 	#region Community References
 	// FindGamers properties references
 	private SerializedProperty findGamers_MatchPattern;
@@ -54,6 +51,11 @@ public class SampleScriptEditor : Editor
 
 	// DeleteGamerKey properties references
 	private SerializedProperty deleteGamerKey_Key;
+	#endregion
+
+	#region Godfather References
+	// UseReferralCode properties references
+	private SerializedProperty useReferralCode_ReferralCode;
 	#endregion
 
 	#region Leaderboard References
@@ -103,9 +105,6 @@ public class SampleScriptEditor : Editor
 		// Find cotcSdkTemplateLogLevel property references on the serialized object
 		cotcSdkTemplateLogLevel = serializedObject.FindProperty("cotcSdkTemplateLogLevel");
 
-		// Find noReferenceDebug property references on the serialized object
-		noReferenceDebug = serializedObject.FindProperty("noReferenceDebug");
-
 		#region Community Find
 		// Find FindGamers properties references on the serialized object
 		findGamers_MatchPattern = serializedObject.FindProperty("findGamers_MatchPattern");
@@ -142,6 +141,11 @@ public class SampleScriptEditor : Editor
 
 		// Find DeleteGamerKey properties references on the serialized object
 		deleteGamerKey_Key = serializedObject.FindProperty("deleteGamerKey_Key");
+		#endregion
+
+		#region Godfather
+		// Find UseReferralCode properties references on the serialized object
+		useReferralCode_ReferralCode = serializedObject.FindProperty("useReferralCode_ReferralCode");
 		#endregion
 
 		#region Leaderboard Find
@@ -192,6 +196,7 @@ public class SampleScriptEditor : Editor
 	private bool communityFoldoutState = true;
 	private bool gameVFSFoldoutState = true;
 	private bool gamerVFSFoldoutState = true;
+	private bool godfatherFoldoutState = true;
 	private bool leaderboardFoldoutState = true;
 	private bool loginFoldoutState = true;
 	private bool transactionFoldoutState = true;
@@ -217,9 +222,6 @@ public class SampleScriptEditor : Editor
 
 		// Display the CotcSdkTemplate's messages logging level
 		EditorGUILayout.PropertyField(cotcSdkTemplateLogLevel, new GUIContent("CotcSdkTemplate Logging Level"));
-
-		// Display the no reference debug message format
-		EditorGUILayout.PropertyField(noReferenceDebug, new GUIContent("No Reference Debug"));
 
 		#region Community Foldout
 		// Open / Close the Community foldout
@@ -293,6 +295,20 @@ public class SampleScriptEditor : Editor
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Delete Gamer Key", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(deleteGamerKey_Key, new GUIContent("  > Key"));
+		}
+		#endregion
+
+		#region Godfather Foldout
+		// Open / Close the Godfather foldout
+		GUILayout.Space(verticalSpaces);
+		godfatherFoldoutState = EditorGUILayout.Foldout(godfatherFoldoutState, "Godfather", foldoutLabelToggle, foldoutStyle);
+
+		if (godfatherFoldoutState)
+		{
+			// Show UseReferralCode properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Use Referral Code", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(useReferralCode_ReferralCode, new GUIContent("  > Referral Code"));
 		}
 		#endregion
 

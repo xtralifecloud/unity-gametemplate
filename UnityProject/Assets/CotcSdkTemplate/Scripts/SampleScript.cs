@@ -18,7 +18,7 @@ public class SampleScript : MonoBehaviour
 	[SerializeField] private CotcSdkTemplate.LogLevel cotcSdkTemplateLogLevel = CotcSdkTemplate.LogLevel.Verbose;
 
 	// No InputField reference debug message format
-	[SerializeField] private string noReferenceDebug = "[SampleScript:{0}] {1} reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values";
+	private const string noReferenceFormat = "[SampleScript:{0}] {1} reference is null >> Please assign it on the SampleScript script's instance attached to an object in the scene if you wish to replace the default hardcoded values";
 
 	/// <summary>
 	/// Set CotcSdkTemplate's messages logging level and initialize the CotcSdk's Cloud instance at Start.
@@ -114,13 +114,13 @@ public class SampleScript : MonoBehaviour
 
 		// Check the filter value
 		if (findGamers_MatchPattern == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "findGamers_MatchPattern"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "findGamers_MatchPattern"));
 		else if (!string.IsNullOrEmpty(findGamers_MatchPattern.text))
 			matchPattern = findGamers_MatchPattern.text;
 
 		// Check the usersPerPage value
 		if (findGamers_UsersPerPage == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "findGamers_UsersPerPage"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "findGamers_UsersPerPage"));
 		else if (!string.IsNullOrEmpty(findGamers_UsersPerPage.text))
 			usersPerPage = int.Parse(findGamers_UsersPerPage.text);
 
@@ -145,19 +145,19 @@ public class SampleScript : MonoBehaviour
 
 		// Check the gamerID value
 		if (sendEventToGamer_GamerID == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendEventToGamer_GamerID"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "sendEventToGamer_GamerID"));
 		else if (!string.IsNullOrEmpty(sendEventToGamer_GamerID.text))
 			gamerID = sendEventToGamer_GamerID.text;
 
 		// Check the eventData value
 		if (sendEventToGamer_EventData == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendEventToGamer_EventData"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "sendEventToGamer_EventData"));
 		else if (!string.IsNullOrEmpty(sendEventToGamer_EventData.text))
 			eventData = sendEventToGamer_EventData.text;
 
 		// Check the notification value
 		if (sendEventToGamer_Notification == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendEventToGamer_Notification"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "sendEventToGamer_Notification"));
 		else
 			notification = sendEventToGamer_Notification.text;
 		
@@ -180,13 +180,13 @@ public class SampleScript : MonoBehaviour
 
 		// Check the gamerID value
 		if (sendMessageToGamer_GamerID == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendMessageToGamer_GamerID"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "sendMessageToGamer_GamerID"));
 		else if (!string.IsNullOrEmpty(sendMessageToGamer_GamerID.text))
 			gamerID = sendMessageToGamer_GamerID.text;
 
 		// Check the eventData value
 		if (sendMessageToGamer_Message == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "sendMessageToGamer_Message"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "sendMessageToGamer_Message"));
 		else if (!string.IsNullOrEmpty(sendMessageToGamer_Message.text))
 			message = sendMessageToGamer_Message.text;
 
@@ -211,19 +211,19 @@ public class SampleScript : MonoBehaviour
 
 		// Check the gamerID value
 		if (setRelationshipWithGamer_GamerID == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "setRelationshipWithGamer_GamerID"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "setRelationshipWithGamer_GamerID"));
 		else if (!string.IsNullOrEmpty(setRelationshipWithGamer_GamerID.text))
 			gamerID = setRelationshipWithGamer_GamerID.text;
 
 		// Check the notification value
 		if (setRelationshipWithGamer_Notification == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "setRelationshipWithGamer_Notification"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "setRelationshipWithGamer_Notification"));
 		else
 			notification = setRelationshipWithGamer_Notification.text;
 
 		// Check the relationship value
 		if (setRelationshipWithGamer_Relationship == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Community", "setRelationshipWithGamer_Relationship"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Community", "setRelationshipWithGamer_Relationship"));
 		// This foreach should give only one active toggle
 		else foreach (Toggle activeToggle in setRelationshipWithGamer_Relationship.ActiveToggles())
 			switch (activeToggle.name)
@@ -269,7 +269,7 @@ public class SampleScript : MonoBehaviour
 
 		// Check the key value
 		if (displayGameKey_Key == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "GameVFS", "displayGameKey_Key"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "GameVFS", "displayGameKey_Key"));
 		else if (!string.IsNullOrEmpty(displayGameKey_Key.text))
 			key = displayGameKey_Key.text;
 
@@ -301,7 +301,7 @@ public class SampleScript : MonoBehaviour
 
 		// Check the key value
 		if (displayGamerKey_Key == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "GamerVFS", "displayGamerKey_Key"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "GamerVFS", "displayGamerKey_Key"));
 		else if (!string.IsNullOrEmpty(displayGamerKey_Key.text))
 			key = displayGamerKey_Key.text;
 
@@ -326,19 +326,19 @@ public class SampleScript : MonoBehaviour
 
 		// Check the key value
 		if (setGamerKey_Key == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "GamerVFS", "setGamerKey_Key"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "GamerVFS", "setGamerKey_Key"));
 		else if (!string.IsNullOrEmpty(setGamerKey_Key.text))
 			key = setGamerKey_Key.text;
 
 		// Check the value value
 		if (setGamerKey_Value == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "GamerVFS", "setGamerKey_Value"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "GamerVFS", "setGamerKey_Value"));
 		else if (!string.IsNullOrEmpty(setGamerKey_Value.text))
 			value = setGamerKey_Value.text;
 		
 		// Check the type value
 		if (setGamerKey_Type == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "GamerVFS", "setGamerKey_Type"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "GamerVFS", "setGamerKey_Type"));
 		// This foreach should give only one active toggle
 		else foreach (Toggle activeToggle in setGamerKey_Type.ActiveToggles())
 			switch (activeToggle.name)
@@ -381,7 +381,7 @@ public class SampleScript : MonoBehaviour
 
 		// Check the key value
 		if (deleteGamerKey_Key == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "GamerVFS", "deleteGamerKey_Key"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "GamerVFS", "deleteGamerKey_Key"));
 		else if (!string.IsNullOrEmpty(deleteGamerKey_Key.text))
 			key = deleteGamerKey_Key.text;
 
@@ -398,6 +398,27 @@ public class SampleScript : MonoBehaviour
 	{
 		// Call the template method
 		GodfatherFeatures.Handling_DisplayReferralCode();
+	}
+
+	// References to the godfather UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField useReferralCode_ReferralCode = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, use a referral code to set the current logged in gamer's godfather.
+	/// </summary>
+	public void Button_UseReferralCode()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string referralCode = null;
+
+		// Check the referralCode value
+		if (useReferralCode_ReferralCode == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Godfather", "useReferralCode_ReferralCode"));
+		else if (!string.IsNullOrEmpty(useReferralCode_ReferralCode.text))
+			referralCode = useReferralCode_ReferralCode.text;
+
+		// Call the template method
+		GodfatherFeatures.Handling_UseReferralCode(referralCode);
 	}
 	#endregion
 
@@ -419,19 +440,19 @@ public class SampleScript : MonoBehaviour
 
 		// Check the boardName value
 		if (displayAllHighScores_BoardName == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "displayAllHighScores_BoardName"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Leaderboard", "displayAllHighScores_BoardName"));
 		else if (!string.IsNullOrEmpty(displayAllHighScores_BoardName.text))
 			boardName = displayAllHighScores_BoardName.text;
 		
 		// Check the scoresPerPage value
 		if (displayAllHighScores_ScoresPerPage == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "displayAllHighScores_ScoresPerPage"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Leaderboard", "displayAllHighScores_ScoresPerPage"));
 		else if (!string.IsNullOrEmpty(displayAllHighScores_ScoresPerPage.text))
 			scoresPerPage = int.Parse(displayAllHighScores_ScoresPerPage.text);
 		
 		// Check the centeredBoard value
 		if (displayAllHighScores_CenteredBoard == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "displayAllHighScores_CenteredBoard"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Leaderboard", "displayAllHighScores_CenteredBoard"));
 		else
 			centeredBoard = displayAllHighScores_CenteredBoard.isOn;
 
@@ -452,7 +473,7 @@ public class SampleScript : MonoBehaviour
 
 		// Check the boardName value
 		if (displayFriendsHighScores_BoardName == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "displayFriendsHighScores_BoardName"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Leaderboard", "displayFriendsHighScores_BoardName"));
 		else if (!string.IsNullOrEmpty(displayFriendsHighScores_BoardName.text))
 			boardName = displayFriendsHighScores_BoardName.text;
 
@@ -488,25 +509,25 @@ public class SampleScript : MonoBehaviour
 
 		// Check the boardName value
 		if (postScore_BoardName == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "postScore_BoardName"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Leaderboard", "postScore_BoardName"));
 		else if (!string.IsNullOrEmpty(postScore_BoardName.text))
 			boardName = postScore_BoardName.text;
 		
 		// Check the scoreValue value
 		if (postScore_ScoreValue == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "postScore_ScoreValue"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Leaderboard", "postScore_ScoreValue"));
 		else if (!string.IsNullOrEmpty(postScore_ScoreValue.text))
 			scoreValue = long.Parse(postScore_ScoreValue.text);
 		
 		// Check the scoreDescription value
 		if (postScore_ScoreDescription == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "postScore_ScoreDescription"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Leaderboard", "postScore_ScoreDescription"));
 		else
 			scoreDescription = postScore_ScoreDescription.text;
 		
 		// Check the forceSave value
 		if (postScore_ForceSave == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Leaderboard", "postScore_ForceSave"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Leaderboard", "postScore_ForceSave"));
 		else
 			forceSave = postScore_ForceSave.isOn;
 
@@ -540,13 +561,13 @@ public class SampleScript : MonoBehaviour
 
 		// Check the gamerID value
 		if (loginWithCredentials_GamerID == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Login", "loginWithCredentials_GamerID"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Login", "loginWithCredentials_GamerID"));
 		else if (!string.IsNullOrEmpty(loginWithCredentials_GamerID.text))
 			gamerID = loginWithCredentials_GamerID.text;
 		
 		// Check the gamerSecret value
 		if (loginWithCredentials_GamerSecret == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Login", "loginWithCredentials_GamerSecret"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Login", "loginWithCredentials_GamerSecret"));
 		else if (!string.IsNullOrEmpty(loginWithCredentials_GamerSecret.text))
 			gamerSecret = loginWithCredentials_GamerSecret.text;
 		
@@ -587,7 +608,7 @@ public class SampleScript : MonoBehaviour
 
 		// Check the currenciesPerPage value
 		if (displayAllCurrenciesHistory_TransactionsPerPage == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Transaction", "displayAllCurrenciesHistory_TransactionsPerPage"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Transaction", "displayAllCurrenciesHistory_TransactionsPerPage"));
 		else if (!string.IsNullOrEmpty(displayAllCurrenciesHistory_TransactionsPerPage.text))
 			transactionsPerPage = int.Parse(displayAllCurrenciesHistory_TransactionsPerPage.text);
 		
@@ -610,13 +631,13 @@ public class SampleScript : MonoBehaviour
 
 		// Check the currencyName value
 		if (displayCurrencyHistory_CurrencyName == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Transaction", "displayCurrencyHistory_CurrencyName"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Transaction", "displayCurrencyHistory_CurrencyName"));
 		else if (!string.IsNullOrEmpty(displayCurrencyHistory_CurrencyName.text))
 			currencyName = displayCurrencyHistory_CurrencyName.text;
 		
 		// Check the currenciesPerPage value
 		if (displayCurrencyHistory_TransactionsPerPage == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Transaction", "displayCurrencyHistory_TransactionsPerPage"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Transaction", "displayCurrencyHistory_TransactionsPerPage"));
 		else if (!string.IsNullOrEmpty(displayCurrencyHistory_TransactionsPerPage.text))
 			transactionsPerPage = int.Parse(displayCurrencyHistory_TransactionsPerPage.text);
 		
@@ -641,19 +662,19 @@ public class SampleScript : MonoBehaviour
 
 		// Check the currencyName value
 		if (postTransaction_CurrencyName == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Transaction", "postTransaction_CurrencyName"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Transaction", "postTransaction_CurrencyName"));
 		else if (!string.IsNullOrEmpty(postTransaction_CurrencyName.text))
 			currencyName = postTransaction_CurrencyName.text;
 		
 		// Check the currencyAmount value
 		if (postTransaction_CurrencyAmount == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Transaction", "postTransaction_CurrencyAmount"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Transaction", "postTransaction_CurrencyAmount"));
 		else if (!string.IsNullOrEmpty(postTransaction_CurrencyAmount.text))
 			currencyAmount = float.Parse(postTransaction_CurrencyAmount.text);
 		
 		// Check the transactionDescription value
 		if (postTransaction_TransactionDescription == null)
-			Debug.LogWarning(string.Format(noReferenceDebug, "Transaction", "postTransaction_TransactionDescription"));
+			Debug.LogWarning(string.Format(noReferenceFormat, "Transaction", "postTransaction_TransactionDescription"));
 		else
 			transactionDescription = postTransaction_TransactionDescription.text;
 		
