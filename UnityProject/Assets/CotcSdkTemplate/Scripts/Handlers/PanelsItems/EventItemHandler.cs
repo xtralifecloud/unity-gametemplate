@@ -8,7 +8,7 @@ namespace CotcSdkTemplate
 	/// </summary>
 	public class EventItemHandler : MonoBehaviour
 	{
-		#region Handling
+		#region Display
 		// Reference to the event item GameObject UI elements
 		[SerializeField] private Text eventMessageText = null;
 

@@ -27,7 +27,7 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
-		#region Features
+		#region Backend
 		/// <summary>
 		/// Get the value of the given key (or all keys if null or empty) associated to the current game.
 		/// </summary>

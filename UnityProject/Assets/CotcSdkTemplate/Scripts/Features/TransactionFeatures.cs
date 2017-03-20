@@ -83,7 +83,7 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
-		#region Features
+		#region Backend
 		/// <summary>
 		/// Get the current logged in gamer currencies balance.
 		/// </summary>

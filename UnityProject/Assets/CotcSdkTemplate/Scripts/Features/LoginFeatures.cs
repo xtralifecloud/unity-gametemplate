@@ -66,7 +66,7 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
-		#region Features
+		#region Backend
 		/// <summary>
 		/// Login the gamer with a new anonymous account.
 		/// </summary>

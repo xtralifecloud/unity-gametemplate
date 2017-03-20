@@ -11,7 +11,7 @@ namespace CotcSdkTemplate
 	/// </summary>
 	public class CommunityFriendHandler : MonoBehaviour
 	{
-		#region Handling
+		#region Display
 		// Reference to the community friend GameObject UI elements
 		[SerializeField] private Image communityFriendBackground = null;
 		[SerializeField] private Image friendAvatar = null;

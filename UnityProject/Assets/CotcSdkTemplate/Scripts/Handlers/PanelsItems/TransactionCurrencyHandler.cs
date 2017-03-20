@@ -10,7 +10,7 @@ namespace CotcSdkTemplate
 	/// </summary>
 	public class TransactionCurrencyHandler : MonoBehaviour
 	{
-		#region Handling
+		#region Display
 		// Reference to the transaction currency GameObject UI elements
 		//[SerializeField] private Image currencyIcon = null;
 		[SerializeField] private Text nameText = null;

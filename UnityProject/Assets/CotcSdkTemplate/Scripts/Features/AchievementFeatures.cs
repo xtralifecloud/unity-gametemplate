@@ -27,7 +27,7 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
-		#region Features
+		#region Backend
 		/// <summary>
 		/// Get logged in gamer's progress on all game's achievements.
 		/// </summary>

@@ -122,7 +122,7 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
-		#region Features
+		#region Backend
 		/// <summary>
 		/// Get the list of current logged in gamer's friends (or blacklisted gamers).
 		/// </summary>

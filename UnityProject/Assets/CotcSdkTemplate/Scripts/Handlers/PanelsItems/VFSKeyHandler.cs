@@ -10,7 +10,7 @@ namespace CotcSdkTemplate
 	/// </summary>
 	public class VFSKeyHandler : MonoBehaviour
 	{
-		#region Handling
+		#region Display
 		// Reference to the gamer VFS key GameObject UI elements
 		[SerializeField] private Text keyText = null;
 		[SerializeField] private Text valueText = null;

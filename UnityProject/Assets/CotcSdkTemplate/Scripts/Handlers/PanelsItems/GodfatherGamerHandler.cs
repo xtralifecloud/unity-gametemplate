@@ -7,54 +7,32 @@ using CotcSdk;
 namespace CotcSdkTemplate
 {
 	/// <summary>
-	/// Methods to fill a displayed leaderboard score.
+	/// Methods to fill a displayed godfather gamer.
 	/// </summary>
-	public class LeaderboardScoreHandler : MonoBehaviour
+	public class GodfatherGamerHandler : MonoBehaviour
 	{
-		#region Handling
-		// Reference to the leaderboard score GameObject UI elements
-		[SerializeField] private Image leaderboardScoreBackground = null;
-		[SerializeField] private Text rankText = null;
+		#region Display
+		// Reference to the godfather gamer GameObject UI elements
 		[SerializeField] private Image gamerAvatar = null;
 		[SerializeField] private Image loading = null;
 		[SerializeField] private Text gamerNicknameText = null;
-		[SerializeField] private Text valueText = null;
-		[SerializeField] private Text infoText = null;
-		[SerializeField] private GameObject scoreInfoLine = null;
-
-		// The current gamer score background color
-		[SerializeField] private Color gamerScoreBackgroundColor = new Color(1f, 1f, 0.9f, 1f);
-
-		// Text to display to show the score rank
-		private const string rankFormat = "# {0}";
+		[SerializeField] private InputField gamerGamerIDInput = null;
 
 		/// <summary>
-		/// Fill the leaderboard score with new data.
+		/// Fill the godfather gamer with new data.
 		/// </summary>
-		/// <param name="score">The score details.</param>
-		/// <param name="displayScoreInfo">If the score description should be shown.</param>
-		public void FillData(Score score, bool displayScoreInfo = true)
+		/// <param name="gamerGamerID">The gamerID of the gamer to display.</param>
+		/// <param name="gamerProfile">Profile of the gamer under the Bundle format.</param>
+		public void FillData(string gamerGamerID, Bundle gamerProfile)
 		{
-			// Get the gamer info from score's Json
-			Bundle gamerInfo = Bundle.FromJson(score.GamerInfo.ToJson());
-
 			// Update fields
-			rankText.text = string.Format(rankFormat, score.Rank);
-			gamerNicknameText.text = gamerInfo["profile"]["displayName"].AsString();
-			avatarUrlToDownload = gamerInfo["profile"]["avatar"].AsString();
-			valueText.text = score.Value.ToString();
-			infoText.text = score.Info;
+			avatarUrlToDownload = gamerProfile["avatar"].AsString();
+			gamerNicknameText.text = gamerProfile["displayName"].AsString();
+			gamerGamerIDInput.text = gamerGamerID;
 
 			// Hide the loading animation and show the gamer avatar
 			gamerAvatar.gameObject.SetActive(true);
 			loading.gameObject.SetActive(false);
-
-			// Display the score info only if there is one
-			scoreInfoLine.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));
-
-			// Change the background color to highlight if this is the current gamer's score
-			if (gamerInfo["gamer_id"].AsString() == CloudFeatures.gamer.GamerId)
-				leaderboardScoreBackground.color = gamerScoreBackgroundColor;
 		}
 		#endregion
 
@@ -73,7 +51,7 @@ namespace CotcSdkTemplate
 
 		/// <summary>
 		/// Download the avatar image from a URL. Actually, we need to wait the Start event to download the avatar as coroutines need the GameObject to be started to be launched.
-		/// As we use FillData() just after the LeaderboardScoreHandler Instantiate in LeaderboardHandler, it hasn't gone through an Update yet and is not considered as active.
+		/// As we use FillData() just after the GodfatherGamerHandler Instantiate in GodfatherHandler, it hasn't gone through an Update yet and is not considered as active.
 		/// </summary>
 		private IEnumerator UpdateAvatarFromURL()
 		{

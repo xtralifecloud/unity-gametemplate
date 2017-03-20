@@ -10,7 +10,7 @@ namespace CotcSdkTemplate
 	/// </summary>
 	public class LeaderboardGamerScoreHandler : MonoBehaviour
 	{
-		#region Handling
+		#region Display
 		// Reference to the leaderboard gamer score GameObject UI elements
 		[SerializeField] private GameObject boardNameLine = null;
 		[SerializeField] private Text boardNameText = null;

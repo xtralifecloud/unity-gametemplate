@@ -8,7 +8,7 @@ namespace CotcSdkTemplate
 	/// </summary>
 	public class GodfatherReferralCodeHandler : MonoBehaviour
 	{
-		#region Handling
+		#region Display
 		// Reference to the godfather referral code GameObject UI elements
 		[SerializeField] private InputField referralCodeInput = null;
 

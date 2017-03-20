@@ -75,7 +75,7 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
-		#region Features
+		#region Backend
 		/// <summary>
 		/// Get the CotcSdk's Cloud instance.
 		/// </summary>

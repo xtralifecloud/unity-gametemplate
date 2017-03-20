@@ -12,7 +12,7 @@ namespace CotcSdkTemplate
 	/// </summary>
 	public class TransactionItemHandler : MonoBehaviour
 	{
-		#region Handling
+		#region Display
 		// Reference to the transaction item GameObject UI elements
 		[SerializeField] private Text dateText = null;
 		[SerializeField] private Text currenciesText = null;

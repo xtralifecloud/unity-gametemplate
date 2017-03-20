@@ -70,7 +70,7 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
-		#region Features
+		#region Backend
 		/// <summary>
 		/// Get the logged in gamer's referral code.
 		/// </summary>

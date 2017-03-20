@@ -119,7 +119,7 @@ namespace CotcSdkTemplate
 		}
 		#endregion
 
-		#region Features
+		#region Backend
 		/// <summary>
 		/// Get all gamers' high scores from the given leaderboard.
 		/// </summary>
