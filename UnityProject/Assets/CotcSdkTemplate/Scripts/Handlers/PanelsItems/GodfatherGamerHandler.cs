@@ -21,9 +21,9 @@ namespace CotcSdkTemplate
 		/// <summary>
 		/// Fill the godfather gamer with new data.
 		/// </summary>
-		/// <param name="gamerGamerID">The gamerID of the gamer to display.</param>
 		/// <param name="gamerProfile">Profile of the gamer under the Bundle format.</param>
-		public void FillData(string gamerGamerID, Bundle gamerProfile)
+		/// <param name="gamerGamerID">The gamerID of the gamer to display. (optional)</param>
+		public void FillData(Bundle gamerProfile, string gamerGamerID = null)
 		{
 			// Update fields
 			avatarUrlToDownload = gamerProfile["avatar"].AsString();
@@ -33,6 +33,9 @@ namespace CotcSdkTemplate
 			// Hide the loading animation and show the gamer avatar
 			gamerAvatar.gameObject.SetActive(true);
 			loading.gameObject.SetActive(false);
+
+			// Display the gamer gamerID only if there is one
+			gamerGamerIDInput.gameObject.SetActive(!string.IsNullOrEmpty(gamerGamerID));
 		}
 		#endregion
 

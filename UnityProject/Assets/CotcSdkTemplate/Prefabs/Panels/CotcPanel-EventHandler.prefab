@@ -46,6 +46,8 @@ MonoBehaviour:
     type: 2}
   communityFriendPrefab: {fileID: 1527987582116430, guid: 82e9304c4c9ba9349843c92ef4277f1f,
     type: 2}
+  godfatherGamerPrefab: {fileID: 1527987582116430, guid: 84e1b547813293e4a9275d26b6b175d3,
+    type: 2}
   transitionSpeed: 3
   transitionSnap: 3
   transitionDelay: 3

@@ -16,6 +16,7 @@ namespace CotcSdkTemplate
 		[SerializeField] private GameObject eventItemsParent = null;
 		[SerializeField] private GameObject achievementItemPrefab = null;
 		[SerializeField] private GameObject communityFriendPrefab = null;
+		[SerializeField] private GameObject godfatherGamerPrefab = null;
 
 		// Speed at which the showing / hiding transitions are made
 		[SerializeField][Range(0.1f, 10f)] private float transitionSpeed = 3f;
@@ -240,6 +241,30 @@ namespace CotcSdkTemplate
 			// Fill the newly created GameObject with event data
 			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
 			eventItemHandler.FillData(eventMessage, communityFriendPrefabInstance);
+
+			// Add the newly created GameObject to the pending list
+			AddNewPendingEvent(eventItemPrefabInstance);
+		}
+
+		/// <summary>
+		/// Build a "new godchild" event type then add it to the pending list to display. (events are displayed one by one)
+		/// </summary>
+		/// <param name="godchildProfile">Profile of the new godchild under the Bundle format.</param>
+		public void BuildAndAddEventItem_NewGodchild(string eventMessage, Bundle godchildProfile)
+		{
+			// Create a godfather gamer GameObject
+			GameObject godfatherGamerPrefabInstance = Instantiate<GameObject>(godfatherGamerPrefab);
+
+			// Fill the newly created GameObject with event gamer data
+			GodfatherGamerHandler godfatherGamerHandler = godfatherGamerPrefabInstance.GetComponent<GodfatherGamerHandler>();
+			godfatherGamerHandler.FillData(godchildProfile);
+
+			// Create an event item GameObject
+			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
+
+			// Fill the newly created GameObject with event data
+			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
+			eventItemHandler.FillData(eventMessage, godfatherGamerPrefabInstance);
 
 			// Add the newly created GameObject to the pending list
 			AddNewPendingEvent(eventItemPrefabInstance);

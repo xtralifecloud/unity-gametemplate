@@ -125,7 +125,7 @@ namespace CotcSdkTemplate
 
 					// Fill the newly created GameObject with gamer data
 					GodfatherGamerHandler godfatherGamerHandler = prefabInstance.GetComponent<GodfatherGamerHandler>();
-					godfatherGamerHandler.FillData(godchild.GamerId, godchild["profile"]);
+					godfatherGamerHandler.FillData(godchild["profile"], godchild.GamerId);
 
 					// Add the newly created GameObject to the list
 					godfatherItems.Add(prefabInstance);
@@ -153,7 +153,7 @@ namespace CotcSdkTemplate
 
 				// Fill the newly created GameObject with gamer data
 				GodfatherGamerHandler godfatherGamerHandler = prefabInstance.GetComponent<GodfatherGamerHandler>();
-				godfatherGamerHandler.FillData(godfather.GamerId, godfather["profile"]);
+				godfatherGamerHandler.FillData(godfather["profile"], godfather.GamerId);
 
 				// Add the newly created GameObject to the list
 				godfatherItems.Add(prefabInstance);

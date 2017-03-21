@@ -55,6 +55,9 @@ namespace CotcSdkTemplate
 		// String format to describe a soon deprecated event
 		private static string soonDeprecatedEvent = "[CotcSdkTemplate:EventFeatures] The {0} event type may be deprecated soon ›› If you want to handle it, using gamer.Community.SendEvent() to send your own custom event is safer";
 
+		// String format to describe no callback registered for a given event
+		private const string noEventCallbackFormat = "[CotcSdkTemplate:EventFeatures] No callback registered to the {0} event ›› Please ensure an active script registered to it to prevent events loss";
+
 		/// <summary>
 		/// Once an event is retrieved from the server, check its type and call the corresponding callback.
 		/// </summary>
@@ -73,7 +76,7 @@ namespace CotcSdkTemplate
 				// Event type: message sent from the BackOffice
 				case "backoffice":
 				if (Event_BackOfficeMessage == null)
-					DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No callback registered to the Event_BackOfficeMessage event ›› Please ensure an active script registered to it to avoid events loss");
+					DebugLogs.LogError(string.Format(noEventCallbackFormat, "Event_BackOfficeMessage"));
 				else
 					Event_BackOfficeMessage(eventBundle);
 				break;
@@ -91,6 +94,14 @@ namespace CotcSdkTemplate
 				// Event type: another gamer removed the currently logged in one from friend/blacklisted (automatic)
 				case "friend.forget":
 				DebugLogs.LogWarning(string.Format(soonDeprecatedEvent, "friend.forget"));
+				break;
+
+				// Event type: another gamer used the currently logged in one's referral code (automatic)
+				case "godchildren":
+				if (Event_NewGodchild == null)
+					DebugLogs.LogError(string.Format(noEventCallbackFormat, "Event_NewGodchild"));
+				else
+					Event_NewGodchild(eventBundle);
 				break;
 
 				// Event type: message sent from another gamer (our "custom" events sent by gamer.Community.SendEvent() are of this type)
@@ -119,7 +130,7 @@ namespace CotcSdkTemplate
 				// Event type: another gamer sent a message to the currently logged in one (custom)
 				case "friend_message":
 				if (Event_FriendMessage == null)
-					DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No callback registered to the Event_FriendMessage event ›› Please ensure an active script registered to it to avoid events loss");
+					DebugLogs.LogError(string.Format(noEventCallbackFormat, "Event_FriendMessage"));
 				else
 					Event_FriendMessage(customEvent);
 				break;
@@ -127,7 +138,7 @@ namespace CotcSdkTemplate
 				// Event type: another gamer added the currently logged in one as friend (custom)
 				case "friend_add":
 				if (Event_FriendRelationshipChanged == null)
-					DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No callback registered to the Event_FriendRelationshipChanged event ›› Please ensure an active script registered to it to avoid events loss");
+					DebugLogs.LogError(string.Format(noEventCallbackFormat, "Event_FriendRelationshipChanged"));
 				else
 					Event_FriendRelationshipChanged(customEvent, FriendRelationshipStatus.Add);
 				break;
@@ -135,7 +146,7 @@ namespace CotcSdkTemplate
 				// Event type: another gamer added the currently logged in one as blacklisted (custom)
 				case "friend_blacklist":
 				if (Event_FriendRelationshipChanged == null)
-					DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No callback registered to the Event_FriendRelationshipChanged event ›› Please ensure an active script registered to it to avoid events loss");
+					DebugLogs.LogError(string.Format(noEventCallbackFormat, "Event_FriendRelationshipChanged"));
 				else
 					Event_FriendRelationshipChanged(customEvent, FriendRelationshipStatus.Blacklist);
 				break;
@@ -143,7 +154,7 @@ namespace CotcSdkTemplate
 				// Event type: another gamer removed the currently logged in one from friend/blacklisted (custom)
 				case "friend_forget":
 				if (Event_FriendRelationshipChanged == null)
-					DebugLogs.LogError("[CotcSdkTemplate:EventFeatures] No callback registered to the Event_FriendRelationshipChanged event ›› Please ensure an active script registered to it to avoid events loss");
+					DebugLogs.LogError(string.Format(noEventCallbackFormat, "Event_FriendRelationshipChanged"));
 				else
 					Event_FriendRelationshipChanged(customEvent, FriendRelationshipStatus.Forget);
 				break;
@@ -161,11 +172,12 @@ namespace CotcSdkTemplate
 		public static event Action<Bundle> Event_BackOfficeMessage = OnBackOfficeMessage;
 		public static event Action<Bundle> Event_FriendMessage = OnFriendMessage;
 		public static event Action<Bundle, FriendRelationshipStatus> Event_FriendRelationshipChanged = OnFriendRelationshipChanged;
+		public static event Action<Bundle> Event_NewGodchild = OnNewGodchild;
 
 		/// <summary>
 		/// When a "BackOffice message" event is received, display it on the event handler.
 		/// </summary>
-		/// <param name="eventData">Event details under the expected format {"message":"..."}.</param>
+		/// <param name="eventData">Event details under the expected format {"type":"...","event":{"message":"..."}}.</param>
 		private static void OnBackOfficeMessage(Bundle eventData)
 		{
 			// An EventHandler instance should be attached to an active object of the scene to display the result
@@ -211,6 +223,22 @@ namespace CotcSdkTemplate
 				string message = eventData["message"].AsString();
 				Bundle friendProfile = Bundle.FromJson(eventData["friendProfile"]);
 				EventHandler.Instance.BuildAndAddEventItem_FriendRelationshipChanged(message, friendProfile, relationship);
+			}
+		}
+
+		/// <summary>
+		/// When a "new godchild" event is received, display it on the event handler.
+		/// </summary>
+		/// <param name="eventData">Event details under the expected format {"type":"...","event":{"godchildren":{"gamer_id":"...","profile":{...}}}}.</param>
+		private static void OnNewGodchild(Bundle eventData)
+		{
+			// An EventHandler instance should be attached to an active object of the scene to display the result
+			if (!EventHandler.HasInstance)
+				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "EventFeatures", "EventHandler"));
+			else
+			{
+				Bundle godchildProfile = eventData["event"]["godchildren"]["profile"];
+				EventHandler.Instance.BuildAndAddEventItem_NewGodchild("You've got a new godchild!", godchildProfile);
 			}
 		}
 		#endregion
