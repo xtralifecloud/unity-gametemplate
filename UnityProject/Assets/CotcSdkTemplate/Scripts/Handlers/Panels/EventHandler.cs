@@ -119,7 +119,7 @@ namespace CotcSdkTemplate
 		/// Add a built event item to the pending list to show. (events are displayed one by one)
 		/// </summary>
 		/// <param name="pendingEventItem">Built event item to add to the pending list.</param>
-		public void AddNewPendingEvent(GameObject pendingEventItem)
+		private void AddNewPendingEvent(GameObject pendingEventItem)
 		{
 			// Hook the event item at the event items parent, hide it, and add it to the pending events list
 			pendingEventItem.transform.SetParent(eventItemsParent.transform, false);
@@ -153,6 +153,24 @@ namespace CotcSdkTemplate
 
 		#region Events Building
 		/// <summary>
+		/// Add an event with an optional linked item to the pending list to display. (events are displayed one by one)
+		/// </summary>
+		/// <param name="eventMessage">Message of the event.</param>
+		/// <param name="linkedItem">GameObject to display with this event. (optional)</param>
+		public void AddEventItem(string eventMessage, GameObject linkedItem = null)
+		{
+			// Create an event item GameObject
+			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
+
+			// Fill the newly created GameObject with event data
+			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
+			eventItemHandler.FillData(eventMessage, linkedItem);
+
+			// Add the newly created GameObject to the pending list
+			AddNewPendingEvent(eventItemPrefabInstance);
+		}
+
+		/// <summary>
 		/// Build an "achievement unlocked" event type then add it to the pending list to display. (events are displayed one by one)
 		/// </summary>
 		/// <param name="eventMessage">Message of the event. (describes an unlocked achievement)</param>
@@ -166,15 +184,8 @@ namespace CotcSdkTemplate
 			AchievementItemHandler achievementItemHandler = achievementItemPrefabInstance.GetComponent<AchievementItemHandler>();
 			achievementItemHandler.FillData(achievement);
 
-			// Create an event item GameObject
-			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
-
-			// Fill the newly created GameObject with event data
-			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(eventMessage, achievementItemPrefabInstance);
-
-			// Add the newly created GameObject to the pending list
-			AddNewPendingEvent(eventItemPrefabInstance);
+			// Add an event item with the newly created GameObject linked to it
+			AddEventItem(eventMessage, achievementItemPrefabInstance);
 		}
 
 		/// <summary>
@@ -183,15 +194,8 @@ namespace CotcSdkTemplate
 		/// <param name="eventMessage">Message of the event. (message from the BackOffice)</param>
 		public void BuildAndAddEventItem_BackOfficeMessage(string eventMessage)
 		{
-			// Create an event item GameObject
-			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
-
-			// Fill the newly created GameObject with event data
-			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(eventMessage);
-
-			// Add the newly created GameObject to the pending list
-			AddNewPendingEvent(eventItemPrefabInstance);
+			// Add an event item
+			AddEventItem(eventMessage);
 		}
 
 		/// <summary>
@@ -209,15 +213,8 @@ namespace CotcSdkTemplate
 			CommunityFriendHandler communityFriendHandler = communityFriendPrefabInstance.GetComponent<CommunityFriendHandler>();
 			communityFriendHandler.FillData(friendProfile, friendMessage);
 
-			// Create an event item GameObject
-			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
-
-			// Fill the newly created GameObject with event data
-			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(eventMessage, communityFriendPrefabInstance);
-
-			// Add the newly created GameObject to the pending list
-			AddNewPendingEvent(eventItemPrefabInstance);
+			// Add an event item with the newly created GameObject linked to it
+			AddEventItem(eventMessage, communityFriendPrefabInstance);
 		}
 
 		/// <summary>
@@ -235,20 +232,14 @@ namespace CotcSdkTemplate
 			CommunityFriendHandler communityFriendHandler = communityFriendPrefabInstance.GetComponent<CommunityFriendHandler>();
 			communityFriendHandler.FillData(friendProfile, relationship);
 
-			// Create an event item GameObject
-			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
-
-			// Fill the newly created GameObject with event data
-			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(eventMessage, communityFriendPrefabInstance);
-
-			// Add the newly created GameObject to the pending list
-			AddNewPendingEvent(eventItemPrefabInstance);
+			// Add an event item with the newly created GameObject linked to it
+			AddEventItem(eventMessage, communityFriendPrefabInstance);
 		}
 
 		/// <summary>
 		/// Build a "new godchild" event type then add it to the pending list to display. (events are displayed one by one)
 		/// </summary>
+		/// <param name="eventMessage">Message of the event. (describes there is a new godchild)</param>
 		/// <param name="godchildProfile">Profile of the new godchild under the Bundle format.</param>
 		public void BuildAndAddEventItem_NewGodchild(string eventMessage, Bundle godchildProfile)
 		{
@@ -259,15 +250,8 @@ namespace CotcSdkTemplate
 			GodfatherGamerHandler godfatherGamerHandler = godfatherGamerPrefabInstance.GetComponent<GodfatherGamerHandler>();
 			godfatherGamerHandler.FillData(godchildProfile);
 
-			// Create an event item GameObject
-			GameObject eventItemPrefabInstance = Instantiate<GameObject>(eventItemPrefab);
-
-			// Fill the newly created GameObject with event data
-			EventItemHandler eventItemHandler = eventItemPrefabInstance.GetComponent<EventItemHandler>();
-			eventItemHandler.FillData(eventMessage, godfatherGamerPrefabInstance);
-
-			// Add the newly created GameObject to the pending list
-			AddNewPendingEvent(eventItemPrefabInstance);
+			// Add an event item with the newly created GameObject linked to it
+			AddEventItem(eventMessage, godfatherGamerPrefabInstance);
 		}
 		#endregion
 	}
