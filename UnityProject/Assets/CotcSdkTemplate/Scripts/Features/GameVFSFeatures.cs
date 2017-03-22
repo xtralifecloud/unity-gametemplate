@@ -40,7 +40,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
 				return;
 			}
 
@@ -93,12 +93,12 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: the specified key doesn't exist yet
-				case "KeyNotFound":
+				case ExceptionTools.keyNotFoundErrorType:
 				VFSHandler.Instance.FillVFSPanel(null);
 				break;
 
 				// Error type: not initialized Cloud
-				case "NotInitializedCloud":
+				case ExceptionTools.notInitializedCloudErrorType:
 				VFSHandler.Instance.ShowError(ExceptionTools.notInitializedCloudMessage);
 				break;
 

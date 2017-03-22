@@ -135,7 +135,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
@@ -175,7 +175,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
 				return;
 			}
 
@@ -216,7 +216,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
@@ -257,7 +257,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), gamerID, relationship);
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), gamerID, relationship);
 				return;
 			}
 
@@ -304,7 +304,7 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: not initialized Cloud or no logged in gamer
-				case "NotLoggedIn":
+				case ExceptionTools.notLoggedInErrorType:
 				CommunityHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
 				break;
 
@@ -334,7 +334,7 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: not initialized Cloud
-				case "NotInitializedCloud":
+				case ExceptionTools.notInitializedCloudErrorType:
 				CommunityHandler.Instance.ShowError(ExceptionTools.notInitializedCloudMessage);
 				break;
 
@@ -364,8 +364,8 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: not initialized Cloud or no logged in gamer
-				case "NotLoggedIn":
-				CommunityHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				case ExceptionTools.notLoggedInErrorType:
+				// Do whatever...
 				break;
 
 				// Unhandled error types
@@ -427,8 +427,8 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: not initialized Cloud or no logged in gamer
-				case "NotLoggedIn":
-				CommunityHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				case ExceptionTools.notLoggedInErrorType:
+				// Do whatever...
 				break;
 
 				// Unhandled error types

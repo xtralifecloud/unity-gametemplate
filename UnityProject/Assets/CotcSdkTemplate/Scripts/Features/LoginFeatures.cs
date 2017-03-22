@@ -97,7 +97,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
 				return;
 			}
 
@@ -143,7 +143,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
 				return;
 			}
 
@@ -190,7 +190,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
 				return;
 			}
 
@@ -234,7 +234,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
@@ -290,7 +290,7 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: not initialized Cloud
-				case "NotInitializedCloud":
+				case ExceptionTools.notInitializedCloudErrorType:
 				// Do whatever...
 				break;
 
@@ -320,7 +320,7 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: not initialized Cloud or no logged in gamer
-				case "NotLoggedIn":
+				case ExceptionTools.notLoggedInErrorType:
 				// Do whatever...
 				break;
 

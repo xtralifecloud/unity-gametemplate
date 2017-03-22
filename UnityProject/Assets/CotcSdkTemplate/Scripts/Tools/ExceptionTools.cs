@@ -10,6 +10,12 @@ namespace CotcSdkTemplate
 	public static class ExceptionTools
 	{
 		#region Exceptions Handling
+		// Error types corresponding to different cases
+		public const string keyNotFoundErrorType = "KeyNotFound";
+		public const string missingScoreErrorType = "MissingScore";
+		public const string notInitializedCloudErrorType = "NotInitializedCloud";
+		public const string notLoggedInErrorType = "NotLoggedIn";
+
 		// Error messages corresponding to different cases
 		public const string noInstanceErrorFormat = "[CotcSdkTemplate:{0}] No {1} instance found ›› Please attach a {1} script on an active object of the scene";
 		public const string unhandledErrorFormat = "[CotcSdkTemplate:{0}] An unhandled error occured ›› {1}";

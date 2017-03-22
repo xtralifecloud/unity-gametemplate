@@ -135,7 +135,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), noScoreErrorMessage);
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), noScoreErrorMessage);
 				return;
 			}
 
@@ -176,7 +176,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), noScoreErrorMessage);
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), noScoreErrorMessage);
 				return;
 			}
 
@@ -216,7 +216,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), noScoreErrorMessage);
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), noScoreErrorMessage);
 				return;
 			}
 
@@ -255,7 +255,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"), noScoreErrorMessage);
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), noScoreErrorMessage);
 				return;
 			}
 
@@ -370,7 +370,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!CloudFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), "NotLoggedIn"));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
@@ -419,12 +419,12 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: no gamer ever scored on this leaderboard (board doesn't exist yet)
-				case "MissingScore":
+				case ExceptionTools.missingScoreErrorType:
 				LeaderboardHandler.Instance.FillNonpagedLeaderboardPanel(null, noScoreErrorMessage);
 				break;
 
 				// Error type: not initialized Cloud or no logged in gamer
-				case "NotLoggedIn":
+				case ExceptionTools.notLoggedInErrorType:
 				LeaderboardHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
 				break;
 
@@ -456,12 +456,12 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: no gamer ever scored on this leaderboard (board doesn't exist yet)
-				case "MissingScore":
+				case ExceptionTools.missingScoreErrorType:
 				LeaderboardHandler.Instance.FillPagedLeaderboardPanel(null, noScoreErrorMessage);
 				break;
 
 				// Error type: not initialized Cloud or no logged in gamer
-				case "NotLoggedIn":
+				case ExceptionTools.notLoggedInErrorType:
 				LeaderboardHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
 				break;
 
@@ -493,7 +493,7 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: not initialized Cloud or no logged in gamer
-				case "NotLoggedIn":
+				case ExceptionTools.notLoggedInErrorType:
 				LeaderboardHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
 				break;
 
@@ -523,8 +523,8 @@ namespace CotcSdkTemplate
 			switch (exceptionError.type)
 			{
 				// Error type: not initialized Cloud or no logged in gamer
-				case "NotLoggedIn":
-				LeaderboardHandler.Instance.ShowError(ExceptionTools.notLoggedInMessage);
+				case ExceptionTools.notLoggedInErrorType:
+				// Do whatever...
 				break;
 
 				// Unhandled error types
