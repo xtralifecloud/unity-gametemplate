@@ -593,6 +593,35 @@ public class SampleScript : MonoBehaviour
 		LoginFeatures.Handling_LoginWithCredentials(gamerID, gamerSecret);
 	}
 
+	// References to the login UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField loginWithEmail_Email = null;
+	[SerializeField] private InputField loginWithEmail_Password = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, login the gamer with email and password credentials. (create a new account if it doesn't exist yet)
+	/// </summary>
+	public void Button_LoginWithEmail()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string email = "test@mail.com";
+		string password = "pass";
+
+		// Check the email value
+		if (loginWithEmail_Email == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Login", "loginWithEmail_Email"));
+		else if (!string.IsNullOrEmpty(loginWithEmail_Email.text))
+			email = loginWithEmail_Email.text;
+
+		// Check the password value
+		if (loginWithEmail_Password == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Login", "loginWithEmail_Password"));
+		else if (!string.IsNullOrEmpty(loginWithEmail_Password.text))
+			password = loginWithEmail_Password.text;
+
+		// Call the template method
+		LoginFeatures.Handling_LoginWithEmail(email, password);
+	}
+
 	/// <summary>
 	/// When the corresponding button is clicked, logout the current logged in gamer.
 	/// </summary>

@@ -58,6 +58,26 @@ namespace CotcSdkTemplate
 		}
 
 		/// <summary>
+		/// Login the gamer with email and password credentials. (create a new account if it doesn't exist yet)
+		/// </summary>
+		/// <param name="email">Identifier of the gamer's email account.</param>
+		/// <param name="password">Password of the gamer's email account.</param>
+		public static void Handling_LoginWithEmail(string email, string password)
+		{
+			// The email should not be empty
+			if (string.IsNullOrEmpty(email))
+				DebugLogs.LogError("[CotcSdkTemplate:LoginFeatures] The email is empty ›› Please enter a valid email");
+			// The password should not be empty
+			else if (string.IsNullOrEmpty(password))
+				DebugLogs.LogError("[CotcSdkTemplate:LoginFeatures] The password is empty ›› Please enter a valid password");
+			else
+			{
+				string network = LoginNetwork.Email.ToString().ToLower();
+				Backend_Login(network, email, password, Login_OnSuccess, Login_OnError);
+			}
+		}
+
+		/// <summary>
 		/// Logout the current logged in gamer.
 		/// </summary>
 		public static void Handling_LogoutGamer()
@@ -154,6 +174,53 @@ namespace CotcSdkTemplate
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("LoginFeatures", "ResumeSession", exception);
+				});
+		}
+
+		/// <summary>
+		/// Login the gamer on a given network with specific credentials. (create a new account if it doesn't exist yet)
+		/// </summary>
+		/// <param name="network">Name of the network to use (lowercase from the LoginNetwork enum).</param>
+		/// <param name="accountID">Identifier (email, ID, ...) of the gamer's account.</param>
+		/// <param name="accountSecret">Secret (password, token, ...) of the gamer's account.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		public static void Backend_Login(string network, string accountID, string accountSecret, Action<Gamer> OnSuccess = null, Action<ExceptionError> OnError = null)
+		{
+			// Need an initialized Cloud to proceed
+			if (!CloudFeatures.IsCloudInitialized())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), "NotInitializedCloud"));
+				return;
+			}
+
+			// Call the API method which returns a Gamer result
+			CloudFeatures.cloud.Login(network, accountID, accountSecret)
+				// Result if everything went well
+				.Done(delegate (Gamer loggedInGamer)
+				{
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] Login success ›› Logged In Gamer: {0}", loggedInGamer));
+					
+					// Keep the Gamer's reference
+					CloudFeatures.gamer = loggedInGamer;
+					
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(loggedInGamer);
+					
+					// Call the GamerLoggedIn event if any callback registered to it
+					if (Event_GamerLoggedIn != null)
+						Event_GamerLoggedIn(CloudFeatures.gamer);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("LoginFeatures", "Login", exception);
 				});
 		}
 

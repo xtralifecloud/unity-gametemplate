@@ -78,6 +78,10 @@ public class SampleScriptEditor : Editor
 	// LoginWithCredentials properties references
 	private SerializedProperty loginWithCredentials_GamerID;
 	private SerializedProperty loginWithCredentials_GamerSecret;
+
+	// LoginWithEmail properties references
+	private SerializedProperty loginWithEmail_Email;
+	private SerializedProperty loginWithEmail_Password;
 	#endregion
 
 	#region Transaction References
@@ -168,6 +172,10 @@ public class SampleScriptEditor : Editor
 		// Find LoginWithCredentials properties references on the serialized object
 		loginWithCredentials_GamerID = serializedObject.FindProperty("loginWithCredentials_GamerID");
 		loginWithCredentials_GamerSecret = serializedObject.FindProperty("loginWithCredentials_GamerSecret");
+
+		// Find LoginWithEmail properties references on the serialized object
+		loginWithEmail_Email = serializedObject.FindProperty("loginWithEmail_Email");
+		loginWithEmail_Password = serializedObject.FindProperty("loginWithEmail_Password");
 		#endregion
 
 		#region Transaction Find
@@ -353,6 +361,12 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.LabelField("  Login With Credentials", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(loginWithCredentials_GamerID, new GUIContent("  > Gamer ID"));
 			EditorGUILayout.PropertyField(loginWithCredentials_GamerSecret, new GUIContent("  > Gamer Secret"));
+
+			// Show LoginWithEmail properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Login With Email", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(loginWithEmail_Email, new GUIContent("  > Email"));
+			EditorGUILayout.PropertyField(loginWithEmail_Password, new GUIContent("  > Password"));
 		}
 		#endregion
 
