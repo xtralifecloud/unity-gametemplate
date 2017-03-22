@@ -15,6 +15,12 @@ public class SampleScriptEditor : Editor
 	// CotcSdkTemplate's messages logging level
 	private SerializedProperty cotcSdkTemplateLogLevel;
 
+	#region Account References
+	// ConvertAnonymousToEmail properties references
+	private SerializedProperty convertAnonymousToEmail_Email;
+	private SerializedProperty convertAnonymousToEmail_Password;
+	#endregion
+
 	#region Community References
 	// FindGamers properties references
 	private SerializedProperty findGamers_MatchPattern;
@@ -109,6 +115,12 @@ public class SampleScriptEditor : Editor
 		// Find cotcSdkTemplateLogLevel property references on the serialized object
 		cotcSdkTemplateLogLevel = serializedObject.FindProperty("cotcSdkTemplateLogLevel");
 
+		#region Account Find
+		// Find ConvertAnonymousToEmail properties references on the serialized object
+		convertAnonymousToEmail_Email = serializedObject.FindProperty("convertAnonymousToEmail_Email");
+		convertAnonymousToEmail_Password = serializedObject.FindProperty("convertAnonymousToEmail_Password");
+		#endregion
+
 		#region Community Find
 		// Find FindGamers properties references on the serialized object
 		findGamers_MatchPattern = serializedObject.FindProperty("findGamers_MatchPattern");
@@ -201,6 +213,7 @@ public class SampleScriptEditor : Editor
 	private const float verticalSpaces = 5f;
 
 	// The foldouts states
+	private bool accountFoldoutState = true;
 	private bool communityFoldoutState = true;
 	private bool gameVFSFoldoutState = true;
 	private bool gamerVFSFoldoutState = true;
@@ -230,6 +243,21 @@ public class SampleScriptEditor : Editor
 
 		// Display the CotcSdkTemplate's messages logging level
 		EditorGUILayout.PropertyField(cotcSdkTemplateLogLevel, new GUIContent("CotcSdkTemplate Logging Level"));
+
+		#region Account Foldout
+		// Open / Close the Account foldout
+		GUILayout.Space(verticalSpaces);
+		accountFoldoutState = EditorGUILayout.Foldout(accountFoldoutState, "Account", foldoutLabelToggle, foldoutStyle);
+
+		if (accountFoldoutState)
+		{
+			// Show ConvertAnonymousToEmail properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Convert Anonymous To Email", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(convertAnonymousToEmail_Email, new GUIContent("  > Email"));
+			EditorGUILayout.PropertyField(convertAnonymousToEmail_Password, new GUIContent("  > Password"));
+		}
+		#endregion
 
 		#region Community Foldout
 		// Open / Close the Community foldout

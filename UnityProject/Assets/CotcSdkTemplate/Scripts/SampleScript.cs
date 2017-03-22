@@ -69,6 +69,37 @@ public class SampleScript : MonoBehaviour
 	}
 	#endregion
 
+	#region Account
+	// References to the login UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField convertAnonymousToEmail_Email = null;
+	[SerializeField] private InputField convertAnonymousToEmail_Password = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, convert a logged in gamer's anonymous account to an email one with the given credentials.
+	/// </summary>
+	public void Button_ConvertAnonymousToEmail()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string email = "test@mail.com";
+		string password = "pass";
+
+		// Check the email value
+		if (convertAnonymousToEmail_Email == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Account", "convertAnonymousToEmail_Email"));
+		else if (!string.IsNullOrEmpty(convertAnonymousToEmail_Email.text))
+			email = convertAnonymousToEmail_Email.text;
+
+		// Check the password value
+		if (convertAnonymousToEmail_Password == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Account", "convertAnonymousToEmail_Password"));
+		else if (!string.IsNullOrEmpty(convertAnonymousToEmail_Password.text))
+			password = convertAnonymousToEmail_Password.text;
+
+		// Call the template method
+		AccountFeatures.Handling_ConvertAnonymousToEmail(email, password);
+	}
+	#endregion
+
 	#region Achievement
 	/// <summary>
 	/// When the corresponding button is clicked, get and display logged in gamer's progress on all game's achievements.
