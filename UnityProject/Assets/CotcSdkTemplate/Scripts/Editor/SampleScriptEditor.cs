@@ -19,6 +19,12 @@ public class SampleScriptEditor : Editor
 	// ConvertAnonymousToEmail properties references
 	private SerializedProperty convertAnonymousToEmail_Email;
 	private SerializedProperty convertAnonymousToEmail_Password;
+
+	// ChangeEmailAddress properties references
+	private SerializedProperty changeEmailAddress_NewEmailAddress;
+
+	// ChangeEmailPassword properties references
+	private SerializedProperty changeEmailPassword_NewPassword;
 	#endregion
 
 	#region Community References
@@ -119,6 +125,12 @@ public class SampleScriptEditor : Editor
 		// Find ConvertAnonymousToEmail properties references on the serialized object
 		convertAnonymousToEmail_Email = serializedObject.FindProperty("convertAnonymousToEmail_Email");
 		convertAnonymousToEmail_Password = serializedObject.FindProperty("convertAnonymousToEmail_Password");
+
+		// Find ChangeEmailAddress properties references on the serialized object
+		changeEmailAddress_NewEmailAddress = serializedObject.FindProperty("changeEmailAddress_NewEmailAddress");
+
+		// Find ChangeEmailPassword properties references on the serialized object
+		changeEmailPassword_NewPassword = serializedObject.FindProperty("changeEmailPassword_NewPassword");
 		#endregion
 
 		#region Community Find
@@ -256,6 +268,16 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.LabelField("  Convert Anonymous To Email", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(convertAnonymousToEmail_Email, new GUIContent("  > Email"));
 			EditorGUILayout.PropertyField(convertAnonymousToEmail_Password, new GUIContent("  > Password"));
+
+			// Show ChangeEmailAddress properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Change Email Address", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(changeEmailAddress_NewEmailAddress, new GUIContent("  > New Email Address"));
+
+			// Show ChangeEmailPassword properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Change Email Password", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(changeEmailPassword_NewPassword, new GUIContent("  > New Password"));
 		}
 		#endregion
 

@@ -98,6 +98,48 @@ public class SampleScript : MonoBehaviour
 		// Call the template method
 		AccountFeatures.Handling_ConvertAnonymousToEmail(email, password);
 	}
+
+	// References to the login UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField changeEmailAddress_NewEmailAddress = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, change a logged in gamer's email account's email address.
+	/// </summary>
+	public void Button_ChangeEmailAddress()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string newEmailAddress = "newtest@mail.com";
+
+		// Check the newEmailAddress value
+		if (changeEmailAddress_NewEmailAddress == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Account", "changeEmailAddress_NewEmailAddress"));
+		else if (!string.IsNullOrEmpty(changeEmailAddress_NewEmailAddress.text))
+			newEmailAddress = changeEmailAddress_NewEmailAddress.text;
+
+		// Call the template method
+		AccountFeatures.Handling_ChangeEmailAddress(newEmailAddress);
+	}
+
+	// References to the login UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField changeEmailPassword_NewPassword = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, change a logged in gamer's email account's password.
+	/// </summary>
+	public void Button_ChangeEmailPassword()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string newPassword = "newpass";
+
+		// Check the newEmailAddress value
+		if (changeEmailPassword_NewPassword == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Account", "changeEmailPassword_NewPassword"));
+		else if (!string.IsNullOrEmpty(changeEmailPassword_NewPassword.text))
+			newPassword = changeEmailPassword_NewPassword.text;
+
+		// Call the template method
+		AccountFeatures.Handling_ChangeEmailPassword(newPassword);
+	}
 	#endregion
 
 	#region Achievement
