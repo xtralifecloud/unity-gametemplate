@@ -25,6 +25,12 @@ public class SampleScriptEditor : Editor
 
 	// ChangeEmailPassword properties references
 	private SerializedProperty changeEmailPassword_NewPassword;
+
+	// SendLostPasswordEmail properties references
+	private SerializedProperty sendLostPasswordEmail_ToEmailAddress;
+	private SerializedProperty sendLostPasswordEmail_FromEmailAddress;
+	private SerializedProperty sendLostPasswordEmail_EmailTitle;
+	private SerializedProperty sendLostPasswordEmail_EmailBody;
 	#endregion
 
 	#region Community References
@@ -47,7 +53,7 @@ public class SampleScriptEditor : Editor
 	private SerializedProperty setRelationshipWithGamer_Relationship;
 	#endregion
 
-	#region Gamer VFS References
+	#region Game VFS References
 	// DisplayGameKey properties references
 	private SerializedProperty displayGameKey_Key;
 	#endregion
@@ -94,6 +100,9 @@ public class SampleScriptEditor : Editor
 	// LoginWithEmail properties references
 	private SerializedProperty loginWithEmail_Email;
 	private SerializedProperty loginWithEmail_Password;
+
+	// LoginWithShortCode properties references
+	private SerializedProperty loginWithShortCode_ShortCode;
 	#endregion
 
 	#region Transaction References
@@ -131,6 +140,12 @@ public class SampleScriptEditor : Editor
 
 		// Find ChangeEmailPassword properties references on the serialized object
 		changeEmailPassword_NewPassword = serializedObject.FindProperty("changeEmailPassword_NewPassword");
+
+		// Find SendLostPasswordEmail properties references on the serialized object
+		sendLostPasswordEmail_ToEmailAddress = serializedObject.FindProperty("sendLostPasswordEmail_ToEmailAddress");
+		sendLostPasswordEmail_FromEmailAddress = serializedObject.FindProperty("sendLostPasswordEmail_FromEmailAddress");
+		sendLostPasswordEmail_EmailTitle = serializedObject.FindProperty("sendLostPasswordEmail_EmailTitle");
+		sendLostPasswordEmail_EmailBody = serializedObject.FindProperty("sendLostPasswordEmail_EmailBody");
 		#endregion
 
 		#region Community Find
@@ -200,6 +215,9 @@ public class SampleScriptEditor : Editor
 		// Find LoginWithEmail properties references on the serialized object
 		loginWithEmail_Email = serializedObject.FindProperty("loginWithEmail_Email");
 		loginWithEmail_Password = serializedObject.FindProperty("loginWithEmail_Password");
+
+		// Find LoginWithShortCode properties references on the serialized object
+		loginWithShortCode_ShortCode = serializedObject.FindProperty("loginWithShortCode_ShortCode");
 		#endregion
 
 		#region Transaction Find
@@ -278,6 +296,14 @@ public class SampleScriptEditor : Editor
 			GUILayout.Space(verticalSpaces);
 			EditorGUILayout.LabelField("  Change Email Password", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(changeEmailPassword_NewPassword, new GUIContent("  > New Password"));
+
+			// Show SendLostPasswordEmail properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Send Lost Password Email", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(sendLostPasswordEmail_ToEmailAddress, new GUIContent("  > To Email Address"));
+			EditorGUILayout.PropertyField(sendLostPasswordEmail_FromEmailAddress, new GUIContent("  > From Email Address"));
+			EditorGUILayout.PropertyField(sendLostPasswordEmail_EmailTitle, new GUIContent("  > Email Title"));
+			EditorGUILayout.PropertyField(sendLostPasswordEmail_EmailBody, new GUIContent("  > Email Body"));
 		}
 		#endregion
 
@@ -417,6 +443,11 @@ public class SampleScriptEditor : Editor
 			EditorGUILayout.LabelField("  Login With Email", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(loginWithEmail_Email, new GUIContent("  > Email"));
 			EditorGUILayout.PropertyField(loginWithEmail_Password, new GUIContent("  > Password"));
+
+			// Show LoginWithShortCode properties references on the inspector
+			GUILayout.Space(verticalSpaces);
+			EditorGUILayout.LabelField("  Login With Short Code", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(loginWithShortCode_ShortCode, new GUIContent("  > Short Code"));
 		}
 		#endregion
 

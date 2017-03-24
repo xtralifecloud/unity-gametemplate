@@ -140,6 +140,51 @@ public class SampleScript : MonoBehaviour
 		// Call the template method
 		AccountFeatures.Handling_ChangeEmailPassword(newPassword);
 	}
+
+	// References to the login UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField sendLostPasswordEmail_ToEmailAddress = null;
+	[SerializeField] private InputField sendLostPasswordEmail_FromEmailAddress = null;
+	[SerializeField] private InputField sendLostPasswordEmail_EmailTitle = null;
+	[SerializeField] private InputField sendLostPasswordEmail_EmailBody = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, send an email to a gamer who has lost its email account's password.
+	/// </summary>
+	public void Button_SendLostPasswordEmail()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string toEmailAddress = "test@mail.com";
+		string fromEmailAddress = "support@mail.com";
+		string emailTitle = "Lost password - Your login short code";
+		string emailBody = string.Format("Please use this code: [[SHORTCODE]]");
+
+		// Check the toEmailAddress value
+		if (sendLostPasswordEmail_ToEmailAddress == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Account", "sendLostPasswordEmail_ToEmailAddress"));
+		else if (!string.IsNullOrEmpty(sendLostPasswordEmail_ToEmailAddress.text))
+			toEmailAddress = sendLostPasswordEmail_ToEmailAddress.text;
+
+		// Check the fromEmailAddress value
+		if (sendLostPasswordEmail_FromEmailAddress == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Account", "sendLostPasswordEmail_FromEmailAddress"));
+		else if (!string.IsNullOrEmpty(sendLostPasswordEmail_FromEmailAddress.text))
+			fromEmailAddress = sendLostPasswordEmail_FromEmailAddress.text;
+
+		// Check the emailTitle value
+		if (sendLostPasswordEmail_EmailTitle == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Account", "sendLostPasswordEmail_EmailTitle"));
+		else if (!string.IsNullOrEmpty(sendLostPasswordEmail_EmailTitle.text))
+			emailTitle = sendLostPasswordEmail_EmailTitle.text;
+
+		// Check the emailBody value
+		if (sendLostPasswordEmail_EmailBody == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Account", "sendLostPasswordEmail_EmailBody"));
+		else if (!string.IsNullOrEmpty(sendLostPasswordEmail_EmailBody.text))
+			emailBody = sendLostPasswordEmail_EmailBody.text;
+
+		// Call the template method
+		AccountFeatures.Handling_SendLostPasswordEmail(toEmailAddress, fromEmailAddress, emailTitle, emailBody);
+	}
 	#endregion
 
 	#region Achievement
@@ -693,6 +738,27 @@ public class SampleScript : MonoBehaviour
 
 		// Call the template method
 		LoginFeatures.Handling_LoginWithEmail(email, password);
+	}
+
+	// References to the login UI elements (their serialized references are directly assigned in the scene)
+	[SerializeField] private InputField loginWithShortCode_ShortCode = null;
+
+	/// <summary>
+	/// When the corresponding button is clicked, login the gamer to its email account with a short code previously received by email.
+	/// </summary>
+	public void Button_LoginWithShortCode()
+	{
+		// Default hardcoded values to use if no InputField elements references are assigned
+		string shortCode = null;
+
+		// Check the password value
+		if (loginWithShortCode_ShortCode == null)
+			Debug.LogWarning(string.Format(noReferenceFormat, "Login", "loginWithShortCode_ShortCode"));
+		else if (!string.IsNullOrEmpty(loginWithShortCode_ShortCode.text))
+			shortCode = loginWithShortCode_ShortCode.text;
+
+		// Call the template method
+		LoginFeatures.Handling_LoginWithShortCode(shortCode);
 	}
 
 	/// <summary>

@@ -78,6 +78,19 @@ namespace CotcSdkTemplate
 		}
 
 		/// <summary>
+		/// Login the gamer to its email account with a short code previously received by email.
+		/// </summary>
+		/// <param name="shortCode">Short code received by email to allow login without credentials.</param>
+		public static void Handling_LoginWithShortCode(string shortCode)
+		{
+			// The short code should not be empty
+			if (string.IsNullOrEmpty(shortCode))
+				DebugLogs.LogError("[CotcSdkTemplate:LoginFeatures] The short code is empty ›› Please enter a valid short code");
+			else
+				Backend_LoginWithShortCode(shortCode, Login_OnSuccess, Login_OnError);
+		}
+
+		/// <summary>
 		/// Logout the current logged in gamer.
 		/// </summary>
 		public static void Handling_LogoutGamer()
@@ -221,6 +234,51 @@ namespace CotcSdkTemplate
 					// Else, log the error (expected to be a CotcException)
 					else
 						ExceptionTools.LogCotcException("LoginFeatures", "Login", exception);
+				});
+		}
+
+		/// <summary>
+		/// Login the gamer to its email account with a short code previously received by email.
+		/// </summary>
+		/// <param name="shortCode">Short code received by email to allow login without credentials.</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		public static void Backend_LoginWithShortCode(string shortCode, Action<Gamer> OnSuccess = null, Action<ExceptionError> OnError = null)
+		{
+			// Need an initialized Cloud to proceed
+			if (!CloudFeatures.IsCloudInitialized())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
+				return;
+			}
+
+			// Call the API method which returns a Gamer result
+			CloudFeatures.cloud.LoginWithShortcode(shortCode)
+				// Result if everything went well
+				.Done(delegate (Gamer loggedInGamer)
+				{
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] LoginWithShortcode success ›› Logged In Gamer: {0}", loggedInGamer));
+					
+					// Keep the Gamer's reference
+					CloudFeatures.gamer = loggedInGamer;
+					
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(loggedInGamer);
+					
+					// Call the GamerLoggedIn event if any callback registered to it
+					if (Event_GamerLoggedIn != null)
+						Event_GamerLoggedIn(CloudFeatures.gamer);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("LoginFeatures", "LoginWithShortcode", exception);
 				});
 		}
 

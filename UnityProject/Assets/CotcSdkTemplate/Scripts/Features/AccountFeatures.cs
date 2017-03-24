@@ -65,6 +65,31 @@ namespace CotcSdkTemplate
 			else
 				Backend_ChangePassword(newPassword, ChangeEmailPassword_OnSuccess, ChangeEmailPassword_OnError);
 		}
+
+		/// <summary>
+		/// Send an email to a gamer who has lost its email account's password.
+		/// </summary>
+		/// <param name="toEmailAddress">Email address of the gamer to who the email will be sent.</param>
+		/// <param name="fromEmailAddress">Email address of the company from which the email will be sent.</param>
+		/// <param name="emailTitle">Title of the email to send.</param>
+		/// <param name="emailBody">Body of the email to send. (needs to contain the [[SHORTCODE]] tag)</param>
+		public static void Handling_SendLostPasswordEmail(string toEmailAddress, string fromEmailAddress, string emailTitle, string emailBody)
+		{
+			// The to email address should not be empty
+			if (string.IsNullOrEmpty(toEmailAddress))
+				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The to email address is empty ›› Please enter a valid to email address");
+			// The from email address should not be empty
+			else if (string.IsNullOrEmpty(fromEmailAddress))
+				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The from email address is empty ›› Please enter a valid from email address");
+			// The email title should not be empty
+			else if (string.IsNullOrEmpty(emailTitle))
+				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The email title is empty ›› Please enter a valid email title");
+			// The email body should not be empty
+			else if (string.IsNullOrEmpty(emailBody))
+				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The email body is empty ›› Please enter a valid email body");
+			else
+				Backend_SendResetPasswordEmail(toEmailAddress, fromEmailAddress, emailTitle, emailBody, SendResetPasswordEmail_OnSuccess, SendResetPasswordEmail_OnError);
+		}
 		#endregion
 
 		#region Backend
@@ -183,6 +208,47 @@ namespace CotcSdkTemplate
 						ExceptionTools.LogCotcException("AccountFeatures", "ChangePassword", exception);
 				});
 		}
+
+		/// <summary>
+		/// Send an email to a gamer who has lost its email account's password.
+		/// </summary>
+		/// <param name="toEmailAddress">Email address of the gamer to who the email will be sent.</param>
+		/// <param name="fromEmailAddress">Email address of the company from which the email will be sent.</param>
+		/// <param name="emailTitle">Title of the email to send.</param>
+		/// <param name="emailBody">Body of the email to send. (needs to contain the [[SHORTCODE]] tag)</param>
+		/// <param name="OnSuccess">The callback in case of request success.</param>
+		/// <param name="OnError">The callback in case of request error.</param>
+		public static void Backend_SendResetPasswordEmail(string toEmailAddress, string fromEmailAddress, string emailTitle, string emailBody, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null)
+		{
+			// Need an initialized Cloud to proceed
+			if (!CloudFeatures.IsCloudInitialized())
+			{
+				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
+				return;
+			}
+
+			// Call the API method which returns a Done result
+			CloudFeatures.cloud.SendResetPasswordEmail(toEmailAddress, fromEmailAddress, emailTitle, emailBody)
+				// Result if everything went well
+				.Done(delegate (Done sendDone)
+				{
+					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:AccountFeatures] SendResetPasswordEmail success ›› Successful: {0}", sendDone.Successful));
+					
+					// Call the OnSuccess action if any callback registered to it
+					if (OnSuccess != null)
+						OnSuccess(sendDone);
+				},
+				// Result if an error occured
+				delegate (Exception exception)
+				{
+					// Call the OnError action if any callback registered to it
+					if (OnError != null)
+						OnError(ExceptionTools.GetExceptionError(exception));
+					// Else, log the error (expected to be a CotcException)
+					else
+						ExceptionTools.LogCotcException("AccountFeatures", "SendResetPasswordEmail", exception);
+				});
+		}
 		#endregion
 
 		#region Delegate Callbacks
@@ -263,6 +329,35 @@ namespace CotcSdkTemplate
 			{
 				// Error type: not initialized Cloud or no logged in gamer
 				case ExceptionTools.notLoggedInErrorType:
+				// Do whatever...
+				break;
+
+				// Unhandled error types
+				default:
+				DebugLogs.LogError(string.Format(ExceptionTools.unhandledErrorFormat, "AccountFeatures", exceptionError));
+				break;
+			}
+		}
+
+		/// <summary>
+		/// What to do if any SendResetPasswordEmail request succeeded.
+		/// </summary>
+		/// <param name="sendDone">Request result details.</param>
+		private static void SendResetPasswordEmail_OnSuccess(Done sendDone)
+		{
+			// Do whatever...
+		}
+
+		/// <summary>
+		/// What to do if any SendResetPasswordEmail request failed.
+		/// </summary>
+		/// <param name="exceptionError">Request error details under the ExceptionError format.</param>
+		private static void SendResetPasswordEmail_OnError(ExceptionError exceptionError)
+		{
+			switch (exceptionError.type)
+			{
+				// Error type: not initialized Cloud
+				case ExceptionTools.notInitializedCloudErrorType:
 				// Do whatever...
 				break;
 
