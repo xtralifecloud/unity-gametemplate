@@ -53,7 +53,7 @@ namespace CotcSdkTemplate
 			scoreInfoLine.SetActive(displayScoreInfo && !string.IsNullOrEmpty(score.Info));
 
 			// Change the background color to highlight if this is the current gamer's score
-			if (gamerInfo["gamer_id"].AsString() == CloudFeatures.gamer.GamerId)
+			if (gamerInfo["gamer_id"].AsString() == LoginFeatures.gamer.GamerId)
 				leaderboardScoreBackground.color = gamerScoreBackgroundColor;
 		}
 		#endregion

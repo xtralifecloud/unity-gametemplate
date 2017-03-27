@@ -13,8 +13,23 @@ namespace CotcSdkTemplate
 		#region Handling
 		// The cloud allows to make generic operations (non user related)
 		public static Cloud cloud = null;
-		// The gamer is the base to perform most operations. A gamer object is obtained after successfully signing in.
-		public static Gamer gamer = null;
+
+		/// <summary>
+		/// Check if the CotcSdk's Cloud instance is initialized.
+		/// </summary>
+		/// <param name="verbose">If the check should log in case of error.</param>
+		public static bool IsCloudInitialized(bool verbose = true)
+		{
+			if (cloud == null)
+			{
+				if (verbose)
+					DebugLogs.LogError("[CotcSdkTemplate:CloudFeatures] Cloud is not initialized ›› Please call CloudFeatures.InitializeCloud() first (CotcSdk features are not available otherwise)");
+
+				return false;
+			}
+
+			return true;
+		}
 
 		/// <summary>
 		/// Initialize the CotcSdk's Cloud instance.
@@ -35,43 +50,6 @@ namespace CotcSdkTemplate
 
 			// Get and keep the Cloud instance reference
 			Backend_GetCloud(cotcGameObject, InitializeCloud_OnSuccess, InitializeCloud_OnError);
-		}
-
-		/// <summary>
-		/// Check if the CotcSdk's Cloud instance is initialized.
-		/// </summary>
-		/// <param name="verbose">If the check should log in case of error.</param>
-		public static bool IsCloudInitialized(bool verbose = true)
-		{
-			if (cloud == null)
-			{
-				if (verbose)
-					DebugLogs.LogError("[CotcSdkTemplate:CloudFeatures] Cloud is not initialized ›› Please call CloudFeatures.InitializeCloud() first (CotcSdk features are not available otherwise)");
-				
-				return false;
-			}
-
-			return true;
-		}
-
-		/// <summary>
-		/// Check if the CotcSdk's Cloud instance is initialized and a Gamer is logged in.
-		/// </summary>
-		/// <param name="verbose">If the check should log in case of error.</param>
-		public static bool IsGamerLoggedIn(bool verbose = true)
-		{
-			if (!IsCloudInitialized(verbose))
-				return false;
-
-			if (gamer == null)
-			{
-				if (verbose)
-					DebugLogs.LogError("[CotcSdkTemplate:CloudFeatures] No Gamer is logged in ›› Please call a login method first (some of the CotcSdk features are not available otherwise)");
-				
-				return false;
-			}
-
-			return true;
 		}
 		#endregion
 

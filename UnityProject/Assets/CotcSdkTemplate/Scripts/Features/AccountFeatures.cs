@@ -25,7 +25,7 @@ namespace CotcSdkTemplate
 			else if (string.IsNullOrEmpty(password))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The password is empty ›› Please enter a valid password");
 			// The logged in account type should be anonymous
-			else if ((CloudFeatures.gamer == null) || (CloudFeatures.gamer["network"].AsString() != LoginNetwork.Anonymous.ToString().ToLower()))
+			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Anonymous.ToString().ToLower()))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] Wrong account type ›› Only anonymous type accounts can use this feature");
 			else
 			{
@@ -44,7 +44,7 @@ namespace CotcSdkTemplate
 			if (string.IsNullOrEmpty(newEmailAddress))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The new email address is empty ›› Please enter a valid new email address");
 			// The logged in account type should be email
-			else if ((CloudFeatures.gamer == null) || (CloudFeatures.gamer["network"].AsString() != LoginNetwork.Email.ToString().ToLower()))
+			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Email.ToString().ToLower()))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] Wrong account type ›› Only email type accounts can use this feature");
 			else
 				Backend_ChangeEmailAddress(newEmailAddress, ChangeEmailAddress_OnSuccess, ChangeEmailAddress_OnError);
@@ -60,7 +60,7 @@ namespace CotcSdkTemplate
 			if (string.IsNullOrEmpty(newPassword))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The new password is empty ›› Please enter a valid new password");
 			// The logged in account type should be email
-			else if ((CloudFeatures.gamer == null) || (CloudFeatures.gamer["network"].AsString() != LoginNetwork.Email.ToString().ToLower()))
+			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Email.ToString().ToLower()))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] Wrong account type ›› Only email type accounts can use this feature");
 			else
 				Backend_ChangePassword(newPassword, ChangeEmailPassword_OnSuccess, ChangeEmailPassword_OnError);
@@ -104,14 +104,14 @@ namespace CotcSdkTemplate
 		public static void Backend_Convert(string network, string accountID, string accountSecret, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a Done result
-			CloudFeatures.gamer.Account.Convert(network, accountID, accountSecret)
+			LoginFeatures.gamer.Account.Convert(network, accountID, accountSecret)
 				// Result if everything went well
 				.Done(delegate (Done convertDone)
 				{
@@ -142,14 +142,14 @@ namespace CotcSdkTemplate
 		public static void Backend_ChangeEmailAddress(string newEmailAddress, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a Done result
-			CloudFeatures.gamer.Account.ChangeEmailAddress(newEmailAddress)
+			LoginFeatures.gamer.Account.ChangeEmailAddress(newEmailAddress)
 				// Result if everything went well
 				.Done(delegate (Done changeDone)
 				{
@@ -180,14 +180,14 @@ namespace CotcSdkTemplate
 		public static void Backend_ChangePassword(string newPassword, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a Done result
-			CloudFeatures.gamer.Account.ChangePassword(newPassword)
+			LoginFeatures.gamer.Account.ChangePassword(newPassword)
 				// Result if everything went well
 				.Done(delegate (Done changeDone)
 				{

@@ -11,6 +11,29 @@ namespace CotcSdkTemplate
 	public static class LoginFeatures
 	{
 		#region Handling
+		// The gamer is the base to perform most operations. A gamer object is obtained after successfully signing in.
+		public static Gamer gamer = null;
+
+		/// <summary>
+		/// Check if the CotcSdk's Cloud instance is initialized and a Gamer is logged in.
+		/// </summary>
+		/// <param name="verbose">If the check should log in case of error.</param>
+		public static bool IsGamerLoggedIn(bool verbose = true)
+		{
+			if (!CloudFeatures.IsCloudInitialized(verbose))
+				return false;
+
+			if (gamer == null)
+			{
+				if (verbose)
+					DebugLogs.LogError("[CotcSdkTemplate:LoginFeatures] No Gamer is logged in ›› Please call a login method first (some of the CotcSdk features are not available otherwise)");
+
+				return false;
+			}
+
+			return true;
+		}
+
 		// The PlayerPref keys to store the last used account's gamerID and gamerSecret
 		private const string gamerIDPrefKey = "GamerID";
 		private const string gamerSecretPrefKey = "GamerSecret";
@@ -122,7 +145,7 @@ namespace CotcSdkTemplate
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] LoginAnonymously success ›› Logged In Gamer: {0}", loggedInGamer));
 					
 					// Keep the Gamer's reference
-					CloudFeatures.gamer = loggedInGamer;
+					gamer = loggedInGamer;
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -130,7 +153,7 @@ namespace CotcSdkTemplate
 					
 					// Call the GamerLoggedIn event if any callback registered to it
 					if (Event_GamerLoggedIn != null)
-						Event_GamerLoggedIn(CloudFeatures.gamer);
+						Event_GamerLoggedIn(gamer);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
@@ -168,7 +191,7 @@ namespace CotcSdkTemplate
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] ResumeSession success ›› Logged In Gamer: {0}", loggedInGamer));
 					
 					// Keep the Gamer's reference
-					CloudFeatures.gamer = loggedInGamer;
+					gamer = loggedInGamer;
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -176,7 +199,7 @@ namespace CotcSdkTemplate
 					
 					// Call the GamerLoggedIn event if any callback registered to it
 					if (Event_GamerLoggedIn != null)
-						Event_GamerLoggedIn(CloudFeatures.gamer);
+						Event_GamerLoggedIn(gamer);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
@@ -215,7 +238,7 @@ namespace CotcSdkTemplate
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] Login success ›› Logged In Gamer: {0}", loggedInGamer));
 					
 					// Keep the Gamer's reference
-					CloudFeatures.gamer = loggedInGamer;
+					gamer = loggedInGamer;
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -223,7 +246,7 @@ namespace CotcSdkTemplate
 					
 					// Call the GamerLoggedIn event if any callback registered to it
 					if (Event_GamerLoggedIn != null)
-						Event_GamerLoggedIn(CloudFeatures.gamer);
+						Event_GamerLoggedIn(gamer);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
@@ -260,7 +283,7 @@ namespace CotcSdkTemplate
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] LoginWithShortcode success ›› Logged In Gamer: {0}", loggedInGamer));
 					
 					// Keep the Gamer's reference
-					CloudFeatures.gamer = loggedInGamer;
+					gamer = loggedInGamer;
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)
@@ -268,7 +291,7 @@ namespace CotcSdkTemplate
 					
 					// Call the GamerLoggedIn event if any callback registered to it
 					if (Event_GamerLoggedIn != null)
-						Event_GamerLoggedIn(CloudFeatures.gamer);
+						Event_GamerLoggedIn(gamer);
 				},
 				// Result if an error occured
 				delegate (Exception exception)
@@ -290,7 +313,7 @@ namespace CotcSdkTemplate
 		public static void Backend_Logout(Action OnSuccess = null, Action<ExceptionError> OnError = null)
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
@@ -304,7 +327,7 @@ namespace CotcSdkTemplate
 					DebugLogs.LogVerbose(string.Format("[CotcSdkTemplate:LoginFeatures] Logout success ›› Successful: {0}", logoutDone.Successful));
 					
 					// Discard the Gamer's reference
-					CloudFeatures.gamer = null;
+					gamer = null;
 					
 					// Call the OnSuccess action if any callback registered to it
 					if (OnSuccess != null)

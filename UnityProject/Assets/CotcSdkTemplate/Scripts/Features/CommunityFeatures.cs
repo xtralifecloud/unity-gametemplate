@@ -98,7 +98,7 @@ namespace CotcSdkTemplate
 				eventData["type"] = "friend_message";
 				eventData["message"] = "You received a message from a friend!";
 				eventData["friendMessage"] = message;
-				eventData["friendProfile"] = CloudFeatures.gamer["profile"].ToString();
+				eventData["friendProfile"] = LoginFeatures.gamer["profile"].ToString();
 				Handling_SendEventToGamer(gamerID, eventData.ToString(), null);
 			}
 		}
@@ -133,14 +133,14 @@ namespace CotcSdkTemplate
 		public static void Backend_ListFriends(Action<NonpagedList<GamerInfo>> OnSuccess = null, Action<ExceptionError> OnError = null, bool blacklisted = false, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a NonpagedList<GamerInfo> result
-			CloudFeatures.gamer.Community.Domain(domain).ListFriends(blacklisted)
+			LoginFeatures.gamer.Community.Domain(domain).ListFriends(blacklisted)
 				// Result if everything went well
 				.Done(delegate (NonpagedList<GamerInfo> friendsList)
 				{
@@ -214,14 +214,14 @@ namespace CotcSdkTemplate
 		public static void Backend_SendEvent(string gamerID, Bundle eventData, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, PushNotification pushNotification = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a Done result
-			CloudFeatures.gamer.Community.Domain(domain).SendEvent(gamerID, eventData, pushNotification)
+			LoginFeatures.gamer.Community.Domain(domain).SendEvent(gamerID, eventData, pushNotification)
 				// Result if everything went well
 				.Done(delegate (Done sentDone)
 				{
@@ -255,14 +255,14 @@ namespace CotcSdkTemplate
 		public static void Backend_ChangeRelationshipStatus(string gamerID, FriendRelationshipStatus relationship, Action<Done, string, FriendRelationshipStatus> OnSuccess = null, Action<ExceptionError, string, FriendRelationshipStatus> OnError = null, PushNotification pushNotification = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), gamerID, relationship);
 				return;
 			}
 
 			// Call the API method which returns a Done result
-			CloudFeatures.gamer.Community.Domain(domain).ChangeRelationshipStatus(gamerID, relationship, pushNotification)
+			LoginFeatures.gamer.Community.Domain(domain).ChangeRelationshipStatus(gamerID, relationship, pushNotification)
 				// Result if everything went well
 				.Done(delegate (Done changeDone)
 				{
@@ -393,7 +393,7 @@ namespace CotcSdkTemplate
 				case FriendRelationshipStatus.Add:
 				eventData["type"] = "friend_add";
 				eventData["message"] = "Someone added you as friend!";
-				eventData["friendProfile"] = CloudFeatures.gamer["profile"].ToString();
+				eventData["friendProfile"] = LoginFeatures.gamer["profile"].ToString();
 				notificationJson = "{\"en\":\"You have a new friend!\"}";
 				break;
 
@@ -401,14 +401,14 @@ namespace CotcSdkTemplate
 				case FriendRelationshipStatus.Blacklist:
 				eventData["type"] = "friend_blacklist";
 				eventData["message"] = "Someone added you as blacklisted!";
-				eventData["friendProfile"] = CloudFeatures.gamer["profile"].ToString();
+				eventData["friendProfile"] = LoginFeatures.gamer["profile"].ToString();
 				break;
 
 				// Event type: another gamer removed the currently logged in one from friend/blacklisted (custom)
 				case FriendRelationshipStatus.Forget:
 				eventData["type"] = "friend_forget";
 				eventData["message"] = "Someone forgot about your existence!";
-				eventData["friendProfile"] = CloudFeatures.gamer["profile"].ToString();
+				eventData["friendProfile"] = LoginFeatures.gamer["profile"].ToString();
 				break;
 			}
 

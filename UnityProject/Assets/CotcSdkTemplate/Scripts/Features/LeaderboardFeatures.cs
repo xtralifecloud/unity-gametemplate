@@ -76,7 +76,7 @@ namespace CotcSdkTemplate
 				DebugLogs.LogError(string.Format(ExceptionTools.noInstanceErrorFormat, "LeaderboardFeatures", "LeaderboardHandler"));
 			else
 			{
-				LeaderboardHandler.Instance.ShowLeaderboardPanel(CloudFeatures.gamer["profile"]["displayName"].AsString());
+				LeaderboardHandler.Instance.ShowLeaderboardPanel(LoginFeatures.gamer["profile"]["displayName"].AsString());
 				Backend_ListUserBestScores(neverScoredErrorMessage, DisplayGamerHighScores_OnSuccess, DisplayGamerHighScores_OnError);
 			}
 		}
@@ -133,14 +133,14 @@ namespace CotcSdkTemplate
 		public static void Backend_BestHighScores(string boardName, int scoresPerPage, int pageNumber, string noScoreErrorMessage, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), noScoreErrorMessage);
 				return;
 			}
 
 			// Call the API method which returns a PagedList<Score> result
-			CloudFeatures.gamer.Scores.Domain(domain).BestHighScores(boardName, scoresPerPage, pageNumber)
+			LoginFeatures.gamer.Scores.Domain(domain).BestHighScores(boardName, scoresPerPage, pageNumber)
 				// Result if everything went well
 				.Done(delegate (PagedList<Score> scoresList)
 				{
@@ -174,14 +174,14 @@ namespace CotcSdkTemplate
 		public static void Backend_CenteredScore(string boardName, int scoresPerPage, string noScoreErrorMessage, Action<PagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), noScoreErrorMessage);
 				return;
 			}
 
 			// Call the API method which returns a PagedList<Score> result
-			CloudFeatures.gamer.Scores.Domain(domain).PagedCenteredScore(boardName, scoresPerPage)
+			LoginFeatures.gamer.Scores.Domain(domain).PagedCenteredScore(boardName, scoresPerPage)
 				// Result if everything went well
 				.Done(delegate (PagedList<Score> scoresList)
 				{
@@ -214,14 +214,14 @@ namespace CotcSdkTemplate
 		public static void Backend_ListFriendScores(string boardName, string noScoreErrorMessage, Action<NonpagedList<Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), noScoreErrorMessage);
 				return;
 			}
 
 			// Call the API method which returns a NonpagedList<Score> result
-			CloudFeatures.gamer.Scores.Domain(domain).ListFriendScores(boardName)
+			LoginFeatures.gamer.Scores.Domain(domain).ListFriendScores(boardName)
 				// Result if everything went well
 				.Done(delegate (NonpagedList<Score> scoresList)
 				{
@@ -253,14 +253,14 @@ namespace CotcSdkTemplate
 		public static void Backend_ListUserBestScores(string noScoreErrorMessage, Action<Dictionary<string, Score>, string> OnSuccess = null, Action<ExceptionError, string> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType), noScoreErrorMessage);
 				return;
 			}
 
 			// Call the API method which returns a Dictionary<string, Score> result
-			CloudFeatures.gamer.Scores.Domain(domain).ListUserBestScores()
+			LoginFeatures.gamer.Scores.Domain(domain).ListUserBestScores()
 				// Result if everything went well
 				.Done(delegate (Dictionary<string, Score> scoresList)
 				{
@@ -368,14 +368,14 @@ namespace CotcSdkTemplate
 		public static void Backend_Post(long scoreValue, string boardName, ScoreOrder scoreOrder, Action<PostedGameScore> OnSuccess = null, Action<ExceptionError> OnError = null, string scoreDescription = null, bool forceSave = false, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a PostedGameScore result
-			CloudFeatures.gamer.Scores.Domain(domain).Post(scoreValue, boardName, scoreOrder, scoreDescription, forceSave)
+			LoginFeatures.gamer.Scores.Domain(domain).Post(scoreValue, boardName, scoreOrder, scoreDescription, forceSave)
 				// Result if everything went well
 				.Done(delegate (PostedGameScore postedScore)
 				{

@@ -93,14 +93,14 @@ namespace CotcSdkTemplate
 		public static void Backend_Balance(Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a Bundle result
-			CloudFeatures.gamer.Transactions.Domain(domain).Balance()
+			LoginFeatures.gamer.Transactions.Domain(domain).Balance()
 				// Result if everything went well
 				.Done(delegate (Bundle currentBalance)
 				{
@@ -134,14 +134,14 @@ namespace CotcSdkTemplate
 		public static void Backend_History(string currencyName, int transactionsPerPage, int transactionsOffset, Action<PagedList<Transaction>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a PagedList<Transaction> result
-			CloudFeatures.gamer.Transactions.Domain(domain).History(currencyName, transactionsPerPage, transactionsOffset)
+			LoginFeatures.gamer.Transactions.Domain(domain).History(currencyName, transactionsPerPage, transactionsOffset)
 				// Result if everything went well
 				.Done(delegate (PagedList<Transaction> transactionsList)
 				{
@@ -246,14 +246,14 @@ namespace CotcSdkTemplate
 		public static void Backend_Post(Bundle transaction, Action<TransactionResult> OnSuccess = null, Action<ExceptionError> OnError = null, string transactionDescription = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a TransactionResult result
-			CloudFeatures.gamer.Transactions.Domain(domain).Post(transaction, transactionDescription)
+			LoginFeatures.gamer.Transactions.Domain(domain).Post(transaction, transactionDescription)
 				// Result if everything went well
 				.Done(delegate (TransactionResult postedTransaction)
 				{

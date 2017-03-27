@@ -99,14 +99,14 @@ namespace CotcSdkTemplate
 		public static void Backend_GetValue(string key, Action<Bundle> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a Bundle result
-			CloudFeatures.gamer.GamerVfs.Domain(domain).GetValue(key)
+			LoginFeatures.gamer.GamerVfs.Domain(domain).GetValue(key)
 				// Result if everything went well
 				.Done(delegate (Bundle keyValues)
 				{
@@ -139,14 +139,14 @@ namespace CotcSdkTemplate
 		public static void Backend_SetValue(string key, Bundle value, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a Done result
-			CloudFeatures.gamer.GamerVfs.Domain(domain).SetValue(key, value)
+			LoginFeatures.gamer.GamerVfs.Domain(domain).SetValue(key, value)
 				// Result if everything went well
 				.Done(delegate (Done setDone)
 				{
@@ -178,14 +178,14 @@ namespace CotcSdkTemplate
 		public static void Backend_DeleteValue(string key, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a Done result
-			CloudFeatures.gamer.GamerVfs.Domain(domain).DeleteValue(key)
+			LoginFeatures.gamer.GamerVfs.Domain(domain).DeleteValue(key)
 				// Result if everything went well
 				.Done(delegate (Done deleteDone)
 				{

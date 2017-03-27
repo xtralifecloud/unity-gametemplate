@@ -80,14 +80,14 @@ namespace CotcSdkTemplate
 		public static void Backend_GenerateCode(Action<string> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 			
 			// Call the API method which returns a string result
-			CloudFeatures.gamer.Godfather.Domain(domain).GenerateCode()
+			LoginFeatures.gamer.Godfather.Domain(domain).GenerateCode()
 				// Result if everything went well
 				.Done(delegate (string referralCode)
 				{
@@ -119,14 +119,14 @@ namespace CotcSdkTemplate
 		public static void Backend_UseCode(string referralCode, Action<Done> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a string result
-			CloudFeatures.gamer.Godfather.Domain(domain).UseCode(referralCode)
+			LoginFeatures.gamer.Godfather.Domain(domain).UseCode(referralCode)
 				// Result if everything went well
 				.Done(delegate (Done useDone)
 				{
@@ -157,14 +157,14 @@ namespace CotcSdkTemplate
 		public static void Backend_GetGodchildren(Action<NonpagedList<GamerInfo>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a NonpagedList<GamerInfo> result
-			CloudFeatures.gamer.Godfather.Domain(domain).GetGodchildren()
+			LoginFeatures.gamer.Godfather.Domain(domain).GetGodchildren()
 				// Result if everything went well
 				.Done(delegate (NonpagedList<GamerInfo> godchildrenList)
 				{
@@ -195,14 +195,14 @@ namespace CotcSdkTemplate
 		public static void Backend_GetGodfather(Action<GamerInfo> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
 			// Call the API method which returns a GamerInfo result
-			CloudFeatures.gamer.Godfather.Domain(domain).GetGodfather()
+			LoginFeatures.gamer.Godfather.Domain(domain).GetGodfather()
 				// Result if everything went well
 				.Done(delegate (GamerInfo godfather)
 				{

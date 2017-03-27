@@ -37,14 +37,14 @@ namespace CotcSdkTemplate
 		public static void Backend_ListAchievements(Action<Dictionary<string, AchievementDefinition>> OnSuccess = null, Action<ExceptionError> OnError = null, string domain = "private")
 		{
 			// Need an initialized Cloud and a logged in gamer to proceed
-			if (!CloudFeatures.IsGamerLoggedIn())
+			if (!LoginFeatures.IsGamerLoggedIn())
 			{
 				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 			
 			// Call the API method which returns a Dictionary<string, AchievementDefinition> result
-			CloudFeatures.gamer.Achievements.Domain(domain).List()
+			LoginFeatures.gamer.Achievements.Domain(domain).List()
 				// Result if everything went well
 				.Done(delegate (Dictionary<string, AchievementDefinition> achievementsList)
 				{
