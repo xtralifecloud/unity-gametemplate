@@ -9,9 +9,6 @@ using UnityEngine;
 public class SampleScriptEditor : Editor
 {
 	#region Serialized Object References
-	// The project's MonoScript reference
-	MonoScript script = null;
-
 	// CotcSdkTemplate's messages logging level
 	private SerializedProperty cotcSdkTemplateLogLevel;
 
@@ -124,9 +121,6 @@ public class SampleScriptEditor : Editor
 	/// </summary>
 	private void OnEnable()
 	{
-		// Get the project's MonoScript reference
-		script = MonoScript.FromMonoBehaviour((SampleScript)target);
-
 		// Find cotcSdkTemplateLogLevel property references on the serialized object
 		cotcSdkTemplateLogLevel = serializedObject.FindProperty("cotcSdkTemplateLogLevel");
 
@@ -269,7 +263,9 @@ public class SampleScriptEditor : Editor
 		serializedObject.Update();
 
 		// Display the SampleScript script field
-		script = EditorGUILayout.ObjectField("Script", script, typeof(MonoScript), false) as MonoScript;
+		EditorGUI.BeginDisabledGroup(true);
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"));
+		EditorGUI.EndDisabledGroup();
 
 		// Display the CotcSdkTemplate's messages logging level
 		EditorGUILayout.PropertyField(cotcSdkTemplateLogLevel, new GUIContent("CotcSdkTemplate Logging Level"));
