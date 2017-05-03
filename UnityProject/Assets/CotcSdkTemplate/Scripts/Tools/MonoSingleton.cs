@@ -14,7 +14,7 @@ namespace CotcSdkTemplate
 		/// <summary>
 		/// Register the singleton instance at Awake.
 		/// </summary>
-		private void Awake()
+		protected virtual void Awake()
 		{
 			if (instance == null)
 				instance = this;
