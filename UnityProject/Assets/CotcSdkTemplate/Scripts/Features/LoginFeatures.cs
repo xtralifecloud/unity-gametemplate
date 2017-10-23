@@ -320,7 +320,7 @@ namespace CotcSdkTemplate
 			}
 
 			// Call the API method which returns a Done result
-			CloudFeatures.cloud.Logout()
+			CloudFeatures.cloud.Logout(gamer)
 				// Result if everything went well
 				.Done(delegate (Done logoutDone)
 				{
