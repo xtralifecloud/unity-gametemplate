@@ -25,11 +25,11 @@ namespace CotcSdkTemplate
 			else if (string.IsNullOrEmpty(password))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The password is empty ›› Please enter a valid password");
 			// The logged in account type should be anonymous
-			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Anonymous.ToString().ToLower()))
+			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Anonymous.Describe()))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] Wrong account type ›› Only anonymous type accounts can use this feature");
 			else
 			{
-				string network = LoginNetwork.Email.ToString().ToLower();
+				string network = LoginNetwork.Email.Describe();
 				Backend_Convert(network, email, password, Convert_OnSuccess, Convert_OnError);
 			}
 		}
@@ -44,7 +44,7 @@ namespace CotcSdkTemplate
 			if (string.IsNullOrEmpty(newEmailAddress))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The new email address is empty ›› Please enter a valid new email address");
 			// The logged in account type should be email
-			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Email.ToString().ToLower()))
+			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Email.Describe()))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] Wrong account type ›› Only email type accounts can use this feature");
 			else
 				Backend_ChangeEmailAddress(newEmailAddress, ChangeEmailAddress_OnSuccess, ChangeEmailAddress_OnError);
@@ -60,7 +60,7 @@ namespace CotcSdkTemplate
 			if (string.IsNullOrEmpty(newPassword))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] The new password is empty ›› Please enter a valid new password");
 			// The logged in account type should be email
-			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Email.ToString().ToLower()))
+			else if ((LoginFeatures.gamer == null) || (LoginFeatures.gamer["network"].AsString() != LoginNetwork.Email.Describe()))
 				DebugLogs.LogError("[CotcSdkTemplate:AccountFeatures] Wrong account type ›› Only email type accounts can use this feature");
 			else
 				Backend_ChangePassword(newPassword, ChangeEmailPassword_OnSuccess, ChangeEmailPassword_OnError);

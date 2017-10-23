@@ -95,7 +95,7 @@ namespace CotcSdkTemplate
 				DebugLogs.LogError("[CotcSdkTemplate:LoginFeatures] The password is empty ›› Please enter a valid password");
 			else
 			{
-				string network = LoginNetwork.Email.ToString().ToLower();
+				string network = LoginNetwork.Email.Describe();
 				Backend_Login(network, email, password, Login_OnSuccess, Login_OnError);
 			}
 		}
