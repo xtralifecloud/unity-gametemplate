@@ -40,7 +40,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud to proceed
 			if (!CloudFeatures.IsCloudInitialized())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(CotcSdk.ErrorCode.NotSetup), ExceptionTools.notInitializedCloudErrorType));
 				return;
 			}
 

@@ -95,7 +95,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!LoginFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(CotcSdk.ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
@@ -136,7 +136,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!LoginFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(CotcSdk.ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
@@ -248,7 +248,7 @@ namespace CotcSdkTemplate
 			// Need an initialized Cloud and a logged in gamer to proceed
 			if (!LoginFeatures.IsGamerLoggedIn())
 			{
-				OnError(ExceptionTools.GetExceptionError(new CotcException(ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
+				OnError(ExceptionTools.GetExceptionError(new CotcException(CotcSdk.ErrorCode.NotLoggedIn), ExceptionTools.notLoggedInErrorType));
 				return;
 			}
 
